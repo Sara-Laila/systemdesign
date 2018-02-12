@@ -163,13 +163,67 @@ header {
 #firstCustomerView {
   z-index: 50;
   background-color: purple;
-   border-radius: 15px;
+  border-radius: 15px;
+
+  position:absolute;
+  width: 90vw;
+  margin-left: 5vw;
+  height: 50%;
+  border: 1px solid black;
+  margin-top: 30vh;
+}
+
+#firstCustomerView input[type=text] {
+    width: 80%;
+    height: 15%; 
+    border-top-left-radius: 4px 4px;
+    border-bottom-left-radius: 4px 4px;
+    padding: 3px;
+    
 }
 
 #boka {
-  padding-left: 90%;
-  width: 4em;
+  padding-left: 70%;
+}
 
+
+
+/*second Customer View*/
+#secondCustomerView {
+  z-index: 50;
+  background-color: green;
+  border-radius: 15px;
+
+  position:absolute;
+  width: 90vw;
+  margin-left: 5vw;
+  height: 70%;
+  border: 1px solid black;
+  margin-top: 90vh;
+}
+
+#secondCustomerView input[type=text] {
+    width: 80%;
+    height: 15%; 
+    border-top-left-radius: 4px 4px;
+    border-bottom-left-radius: 4px 4px;
+    padding: 3px;
+    
+}
+
+#secondCustomerView input[type=tel] {
+    width: 80%;
+    height: 15%; 
+    border-top-left-radius: 4px 4px;
+    border-bottom-left-radius: 4px 4px;
+    padding: 3px;
+    
+}
+/*Both Customer Views*/
+
+.button {
+  height:200px;
+  width:200px;
 }
 
 .place {
@@ -188,6 +242,4 @@ header {
     position: relative;
     font-weight: 900;
 }
-/*-----------------*/
-
 
