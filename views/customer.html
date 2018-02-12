@@ -41,17 +41,34 @@
     <div id="firstCustomerView">
       <form>
         <p>
-            <label for="from">From</label>
-            <input type="text" id="from" name="from" placeholder="Min position">
+            <label for="from">From:</label>
+            <input type="text" class="place from" id="from" name="from" placeholder="Min position">
           </p>
           
           <p>
-            <label for="to">To</label>
-            <input type="text" id="to" name="to"  placeholder="Välj adress">
+            <label for="to">To:</label>
+            <input type="text" class= "place to" id="to" name="to"  placeholder="Välj adress">
           </p>
 
+          <div class="bilStorlek">
+            <label>
+              <input type="radio" name="radio" checked/>
+              <div class="liten Bil">
+                <span>1-4 pers</span>
+              </div>
+            </label>
+
+            <label>
+              <input type="radio" name="radio" checked/>
+              <div class="stor Bil">
+                <span>5-7 pers</span>
+              </div>
+            </label>
+          </div>
+
+
           <div id="boka">
-            <button v-on:click="boka" class="button" type="button"><img src="./static/1md034/img/html/image_button.png">Boka</button>
+            <button v-on:click="boka" class="button"  type="button">Boka</button>
           </div>
 
       </form>

@@ -120,10 +120,32 @@ header {
 }
 
 /*FirstCustomerView*/
+
 #firstCustomerView {
   z-index: 50;
   background-color: purple;
-  position: sticky;
+   border-radius: 15px;
 }
 
+#boka {
+  padding-left: 90%;
+  width: 4em;
+
+}
+
+.place {
+  border-radius: 5px;
+  text-align: left;
+  height: 3em;
+  margin-left: 3em;
+}
+
+.Bil {
+    width: 5em;
+    height: 5em;
+    background-color: white;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    font-weight: 900;
 /*-----------------*/
