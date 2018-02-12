@@ -12,7 +12,7 @@
     <script src="/esri-leaflet/esri-leaflet.js"></script> 
     <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script> 
     <script src="js/customer.js" defer></script>
-   <!-- <script src="js/drawermenu.js" defer></script> -->
+    <!-- <script src="js/drawermenu.js" defer></script> -->
 
   </head>
   <body>
@@ -28,47 +28,34 @@
     
 
     <header>
-        <div id="hamburger-btn">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+      <div id="hamburger-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-        <a href="#" id="account-icon"></a>
-        <a href="#" id="logo"></a>
+      <a href="#" id="account-icon"></a>
+      <a href="#" id="logo"></a>
     </header>
 
-    <div id="firstCustomerView">
-      <form>
-        <p>
-            <label for="from">From</label>
-            <input type="text" id="from" name="from" placeholder="Min position">
-          </p>
-          
-          <p>
-            <label for="to">To</label>
-            <input type="text" id="to" name="to"  placeholder="Välj adress">
-          </p>
-
-          <div id="boka">
-            <button v-on:click="boka" class="button" type="button"><img src="./static/1md034/img/html/image_button.png">Boka</button>
-          </div>
-
-      </form>
-    </div>
-
     <div id="content">
+      <div id="q-dest">
+        <form>
+          <input type="text" name="firstname" placeholder="Vart vill du åka?">
+
+          <input type="submit" value="→">
+        </form>
+      </div>
       <div id="page">
+        
         <div id="my-map"></div>
 
-      
+        
         <button v-on:click="orderTaxi">ORDER TAXI</button>
         Your order number is {{ orderId }} 
       </div>
-
-
     </div>
     
-   
+    
   </body>
 </html>

@@ -10,8 +10,8 @@
 }
 
 #my-map {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     position:relative;
     z-index:0;
 }
@@ -20,8 +20,9 @@ html,
 body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  min-height: 100%
+  width: 100vw;
+  min-height: 100vh;
+  background-color: transparent;
 }
 
 header {
@@ -43,6 +44,7 @@ header {
     width: 15vw;
     height: 90%;
     border: 1px solid black;
+    border-radius: 4px;
 }
 
 #logo {
@@ -52,7 +54,44 @@ header {
     height: 90%;
     padding: 1px;
     border: 1px solid black;
+    border-radius: 4px;
 }
+
+#q-dest form{
+    background: none;
+    width: 100%;
+    height: 100%;
+}
+
+#q-dest {
+    position:absolute;
+    width: 90vw;
+    margin-left: 5vw;
+    height: 7%;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin-top: 20vh;
+    z-index: 50;
+}
+
+#q-dest input[type=text] {
+    width: 80%;
+    height: 100%; 
+    border-top-left-radius: 4px 4px;
+    border-bottom-left-radius: 4px 4px;
+    padding: 3px;
+    
+}
+
+#q-dest input[type=submit] {
+    background-color: #fff;
+    padding: 3px;
+    float:right;
+    height: 100%;
+    border: none;
+    width:20%;
+}
+
 
 .hamburger-drawer,
 #invis-drawer,
@@ -118,12 +157,3 @@ header {
   height: 2px;
   background-color: #000
 }
-
-/*FirstCustomerView*/
-#firstCustomerView {
-  z-index: 50;
-  background-color: purple;
-  position: sticky;
-}
-
-/*-----------------*/
