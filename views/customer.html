@@ -36,16 +36,37 @@
 
         <a href="#" id="account-icon"></a>
         <a href="#" id="logo"></a>
-      </header>
+    </header>
+
+    <div id="firstCustomerView">
+      <form>
+        <p>
+            <label for="from">From</label>
+            <input type="text" id="from" name="from" placeholder="Min position">
+          </p>
+          
+          <p>
+            <label for="to">To</label>
+            <input type="text" id="to" name="to"  placeholder="Välj adress">
+          </p>
+
+          <div id="boka">
+            <button v-on:click="boka" class="button" type="button"><img src="./static/1md034/img/html/image_button.png">Boka</button>
+          </div>
+
+      </form>
+    </div>
 
     <div id="content">
-    <div id="page">
-      <div id="my-map"></div>
+      <div id="page">
+        <div id="my-map"></div>
 
       
-      <button v-on:click="orderTaxi">ORDER TAXI</button>
-      Your order number is {{ orderId }} 
-    </div>
+        <button v-on:click="orderTaxi">ORDER TAXI</button>
+        Your order number is {{ orderId }} 
+      </div>
+
+
     </div>
     
    

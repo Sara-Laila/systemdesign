@@ -118,3 +118,12 @@ header {
   height: 2px;
   background-color: #000
 }
+
+/*FirstCustomerView*/
+#firstCustomerView {
+  z-index: 50;
+  background-color: purple;
+  position: sticky;
+}
+
+/*-----------------*/
