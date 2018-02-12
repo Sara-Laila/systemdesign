@@ -12,7 +12,7 @@
     <script src="/esri-leaflet/esri-leaflet.js"></script> 
     <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script> 
     <script src="js/customer.js" defer></script>
-   <!-- <script src="js/drawermenu.js" defer></script> -->
+    <!-- <script src="js/drawermenu.js" defer></script> -->
 
   </head>
   <body>
@@ -28,15 +28,16 @@
     
 
     <header>
-        <div id="hamburger-btn">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+      <div id="hamburger-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-        <a href="#" id="account-icon"></a>
-        <a href="#" id="logo"></a>
+      <a href="#" id="account-icon"></a>
+      <a href="#" id="logo"></a>
     </header>
+
 
     <div id="firstCustomerView">
       <form>
@@ -74,18 +75,25 @@
       </form>
     </div>
 
+
     <div id="content">
+      <div id="q-dest">
+        <form>
+          <input type="text" name="firstname" placeholder="Vart vill du åka?">
+
+          <input type="submit" value="→">
+        </form>
+      </div>
       <div id="page">
+        
         <div id="my-map"></div>
 
-      
+        
         <button v-on:click="orderTaxi">ORDER TAXI</button>
         Your order number is {{ orderId }} 
       </div>
-
-
     </div>
     
-   
+    
   </body>
 </html>
