@@ -9,11 +9,13 @@
     <script src="/vue/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/leaflet/leaflet.js"></script>
-    <script src="/esri-leaflet/esri-leaflet.js"></script> 
-    <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script> 
+    <script src="/esri-leaflet/esri-leaflet.js"></script>
+    <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script>
     <script src="js/customer.js" defer></script>
     <!-- <script src="js/drawermenu.js" defer></script> -->
     <script src="js/customer_vue" defer></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
   </head>
   <body>
@@ -26,7 +28,7 @@
         <li><a>Typ</a></li>
       </ul>
     </div>
-    
+
 
     <header>
       <div id="hamburger-btn">
@@ -39,36 +41,26 @@
       <a href="#" id="logo"></a>
     </header>
 
-
     <div id="firstCustomerView">
       <form id="section1">
         <p>
             <input type="text" class="place from" id="fromOne" name="from" placeholder="Från">
           </p>
-          
+
           <p>
             <input type="text" class= "place to" id="toOne" name="to"  placeholder="Till">
           </p>
-
-          <div class="bilStorlek">
-            <label>
-              <input type="radio" name="bil" checked/>
-              <div class="liten Bil">
-                <span>1-4 pers</span>
-              </div>
-            </label>
-
-            <label>
-              <input type="radio" name="bil" checked/>
-              <div class="stor Bil">
-                <span>5-7 pers</span>
-              </div>
-            </label>
-          </div>
+      <div class="bilStorlek">
+        <h3>Välj bilstorlek:</h3>
+          <input id="small" type="radio" name="car" value="liten bil" />
+          <label class="bil-cc small" for="small"></label>
+          <input id="big" type="radio" name="car" value="stor bil" />
+          <label class="bil-cc big"for="big"></label>
+      </div>
 
 
           <div id="boka">
-            <button v-on:click="toNextView" class="button One"  type="button">Boka</button>
+            <button v-on:click="toNextView" class="button One"  type="button"></button>
           </div>
       </form>
     </div>
@@ -78,25 +70,16 @@
         <p>
             <input type="text" class="place from" id="fromTwo" name="from" placeholder="Från">
           </p>
-          
           <p>
             <input type="text" class= "place to" id="toTwo" name="to"  placeholder="Till">
           </p>
 
           <div class="bilStorlek">
-            <label>
-              <input type="radio" name="bil" checked/>
-              <div class="liten Bil">
-                <span>1-4 pers</span>
-              </div>
-            </label>
-
-            <label>
-              <input type="radio" name="bil" checked/>
-              <div class="stor Bil">
-                <span>5-7 pers</span>
-              </div>
-            </label>
+            <h3>Bilstorlek:</h3>
+              <input id="small" type="radio" name="car" value="liten bil" />
+              <label class="bil-cc small" for="small"></label>
+              <input id="big" type="radio" name="car" value="stor bil" />
+              <label class="bil-cc big"for="big"></label>
           </div>
 
           <p>
@@ -104,11 +87,11 @@
           </p>
 
            <p>
-            <label for="payment">Betalnings Alternativ</label><br>
+            <label for="payment" text-align="right">Betalnings Alternativ</label><br>
             <select id="payment">
               <option name="pay" id="Swish">Swish</option>
               <option name="pay" id="Card">Card</option>
-              <option name="pay" id="Swish" selected="selected">Tears and Excuses</option>
+              <option name="pay" id="Swish" selected="selected">Paypal</option>
             </select>
           </p>
 
@@ -120,7 +103,6 @@
     </div>
 
 
-
     <div id="content">
       <div id="q-dest">
         <form>
@@ -130,15 +112,15 @@
         </form>
       </div>
       <div id="page">
-        
+
         <div id="my-map"></div>
 
-        
+
         <button v-on:click="orderTaxi">ORDER TAXI</button>
-        Your order number is {{ orderId }} 
+        Your order number is {{ orderId }}
       </div>
     </div>
-    
-    
+
+
   </body>
 </html>

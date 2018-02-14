@@ -23,6 +23,7 @@ body {
   width: 100vw;
   min-height: 100vh;
   background-color: transparent;
+  font-family: 'Open Sans', sans-serif;
 }
 
 header {
@@ -30,7 +31,7 @@ header {
   align-items: center;
   height: 52px;
   width: 100%;
-  background-color: #fff;
+  background-color: #9AACB8;
   box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.1)
 }
 
@@ -76,11 +77,12 @@ header {
 
 #q-dest input[type=text] {
     width: 80%;
-    height: 100%; 
+    height: 100%;
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
-    
+    background-color: #fff;
+
 }
 
 #q-dest input[type=submit] {
@@ -108,7 +110,7 @@ header {
 
 #hamburger-menu {
   width: 60%;
-  background-color: #f1f1f1;
+  background-color: #DDE2E3;
   z-index: 100;
   transform: translate3d(-100%, 0, 0)
 }
@@ -149,7 +151,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  
+
 }
 
 #hamburger-btn span {
@@ -162,68 +164,87 @@ header {
 
 #firstCustomerView {
   z-index: 50;
-  background-color: purple;
+  background-color: #9AACB8;
   border-radius: 15px;
 
   position:absolute;
   width: 90vw;
   margin-left: 5vw;
-  height: 50%;
-  border: 1px solid black;
+  height: 50vh;
+  border: 1px solid #9AACB8;
+  border-style: outset;
   margin-top: 30vh;
 }
 
 #firstCustomerView input[type=text] {
     width: 80%;
-    height: 15%; 
+    height: 10%;
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
-    
 }
 
 #boka {
   padding-left: 70%;
 }
 
-
-
 /*second Customer View*/
 #secondCustomerView {
   z-index: 50;
-  background-color: green;
+  background-color: #9AACB8;
   border-radius: 15px;
 
   position:absolute;
   width: 90vw;
   margin-left: 5vw;
-  height: 70%;
-  border: 1px solid black;
-  margin-top: 90vh;
+  height: 60vh;
+  border: 1px solid #9AACB8;
+  border-style: outset;
+  margin-top: 100vh;
 }
 
 #secondCustomerView input[type=text] {
     width: 80%;
-    height: 15%; 
+    height: 10%;
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
-    
 }
 
 #secondCustomerView input[type=tel] {
     width: 80%;
-    height: 15%; 
+    height: 10%;
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
-    
+    margin-left: 10%;
 }
+
+#secondCustomerView select {
+  margin: 10%;
+}
+
+
 /*Both Customer Views*/
 
 .button {
   height:200px;
   width:200px;
+}
+
+#boka .button {
+  width: 15vw;
+  height: 15vw;
+  margin: 5%;
+  background: url("/img/arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+}
+
+#boka .button:hover {
+  background-color: green;
+  cursor: pointer;
 }
 
 .place {
@@ -234,11 +255,54 @@ header {
 }
 
 .Bil {
-    width: 5em;
+    width: 10em;
     height: 5em;
-    background-color: white;
     display: inline-block;
     text-align: center;
     position: relative;
     font-weight: 900;
+}
+
+.bilStorlek h3 {
+  text-align: center;
+}
+.bilStorlek input{
+    margin: 1%;
+    margin-top: 5%;
+    padding:7%;
+    -webkit-appearance:none;
+       -moz-appearance:none;
+            appearance:none;
+}
+.small {
+  background-image: url(/img/small_car.png);
+}
+.big {
+  background-image: url(/img/big_car.png);
+}
+
+.bilStorlek input:active +.bil-cc{opacity: .9;}
+.bilStorlek input:checked +.bil-cc{
+    -webkit-filter: none;
+       -moz-filter: none;
+            filter: none;
+}
+.bil-cc{
+    cursor:pointer;
+    background-size:contain;
+    background-repeat:no-repeat;
+    display:inline-block;
+    width:25%;
+    height:23%;
+    -webkit-transition: all 100ms ease-in;
+       -moz-transition: all 100ms ease-in;
+            transition: all 100ms ease-in;
+    -webkit-filter: brightness(1.8) grayscale(1) opacity(.5);
+       -moz-filter: brightness(1.8) grayscale(1) opacity(.5);
+            filter: brightness(1.8) grayscale(1) opacity(.5);
+}
+.bil-cc:hover{
+    -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+       -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            filter: brightness(1.2) grayscale(.5) opacity(.9);
 }
