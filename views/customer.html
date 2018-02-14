@@ -13,7 +13,6 @@
     <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script> 
     <script src="js/customer.js" defer></script>
     <!-- <script src="js/drawermenu.js" defer></script> -->
-    <script src="js/customer_vue" defer></script>
 
   </head>
   <body>
@@ -39,27 +38,29 @@
       <a href="#" id="logo"></a>
     </header>
 
-
+    <div id="CustomerView">
     <div id="firstCustomerView">
       <form id="section1">
         <p>
-            <input type="text" class="place from" id="fromOne" name="from" placeholder="Från">
+            <label for="fromOne">Från</label><br>
+            <input type="text" class="place from" id="fromOne" name="from" value="Polacksbacken" >
           </p>
           
           <p>
+             <label for="toOne">Till</label><br>
             <input type="text" class= "place to" id="toOne" name="to"  placeholder="Till">
           </p>
 
           <div class="bilStorlek">
             <label>
-              <input type="radio" name="bil" checked/>
+              <input type="radio" name="bilOne" id="Liten Bil" checked="checked"/>
               <div class="liten Bil">
                 <span>1-4 pers</span>
               </div>
             </label>
 
             <label>
-              <input type="radio" name="bil" checked/>
+              <input type="radio" name="bilOne" id="Stor Bil"/>
               <div class="stor Bil">
                 <span>5-7 pers</span>
               </div>
@@ -76,23 +77,25 @@
     <div id="secondCustomerView">
       <form id="section2">
         <p>
+             <label for="fromTwo">Från</label><br>
             <input type="text" class="place from" id="fromTwo" name="from" placeholder="Från">
           </p>
           
           <p>
+             <label for="toTwo">Till</label><br>
             <input type="text" class= "place to" id="toTwo" name="to"  placeholder="Till">
           </p>
 
           <div class="bilStorlek">
             <label>
-              <input type="radio" name="bil" checked/>
+              <input type="radio" name="bilTwo" checked="checked" value="Liten Bil"/>
               <div class="liten Bil">
                 <span>1-4 pers</span>
               </div>
             </label>
 
             <label>
-              <input type="radio" name="bil" checked/>
+              <input type="radio" name="bilTwo" value="Stor Bil"/>
               <div class="stor Bil">
                 <span>5-7 pers</span>
               </div>
@@ -106,27 +109,29 @@
            <p>
             <label for="payment">Betalnings Alternativ</label><br>
             <select id="payment">
+
               <option name="pay" id="Swish">Swish</option>
               <option name="pay" id="Card">Card</option>
-              <option name="pay" id="Swish" selected="selected">Tears and Excuses</option>
+              <option name="pay" id="BankID" selected="selected">BankID</option>
+
             </select>
           </p>
 
 
           <div id="boka">
-            <button v-on:click="toNextView" class="button Two"  type="button">Gå till betalning</button>
+            <button v-on:click="toPayment" class="button Two" type="button">Gå till betalning</button>
           </div>
       </form>
     </div>
-
+  </div>
 
 
     <div id="content">
       <div id="q-dest">
         <form>
-          <input type="text" name="firstname" placeholder="Vart vill du åka?">
+          <input type="text" name="firstname" id="firstDestination" placeholder="Vart vill du åka?">
 
-          <input type="submit" value="→">
+          <button v-on:click="destinationFirst" type="button">PIL</button>
         </form>
       </div>
       <div id="page">

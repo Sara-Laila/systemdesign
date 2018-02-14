@@ -187,3 +187,83 @@ hamburgerDrawer.addEventListener('touchend',
     }
     axisCords = null;
   });
+
+/*Javascript for the two customer views*/
+
+var vm = new Vue({
+    el: '#CustomerView',
+    data: {
+      
+    },
+    methods: {
+        toNextView: function () {
+            var from = document.getElementById("fromOne").value;
+            var to = document.getElementById("toOne").value;
+
+            var carSizeOne = document.getElementsByName("bilOne");
+            var carSizeTwo = document.getElementsByName("bilTwo");
+                for (var i = 0; i < carSizeOne.length; i++) {
+                    if (carSizeOne[i].checked) {
+                    carSizeTwo[i].checked = "checked";
+                    break;
+                };
+             };
+
+             document.getElementById("fromTwo").value = from;
+             document.getElementById("toTwo").value = to;
+             hideShow("firstCustomerView", "secondCustomerView");
+        },
+
+        toPayment: function () {
+          finalInfoArray();
+        }
+    },
+});
+
+
+var vm = new Vue ({
+    el: "#q-dest",
+    data: {   
+    },
+    methods: {
+        destinationFirst: function () {
+            console.log("You are in the first function");
+            var destName = document.getElementById("firstDestination").value;
+            console.log(destName);
+            document.getElementById("toOne").value = destName;
+            hideShow("q-dest", "firstCustomerView");
+        }
+    },
+});
+
+
+function finalInfoArray() {
+    var from = document.getElementById("fromTwo").value;
+    var to = document.getElementById("toTwo").value;
+
+    var carSizeTwo = document.getElementsByName("bilTwo");
+    for (var i = 0; i < carSizeTwo.length; i++) {
+        if (carSizeTwo[i].checked) {
+            var carSizeValue = carSizeTwo[i].value;
+            break;
+        };
+    };
+    var phoneNumber = document.getElementById("tel").value;
+    var paymentOption = document.getElementsByName("pay");
+    for (var i = 0; i < paymentOption.length; i++) {
+        if (paymentOption[i].selected) {
+            var pay = paymentOption[i].id;
+            break;
+            
+        };
+    };
+    var infoArray = [from, to, carSizeValue, phoneNumber, pay];
+    console.log(infoArray);
+}
+
+function hideShow(toHide, toShow) {
+    var x = document.getElementById(toHide);
+    var y = document.getElementById(toShow);
+    x.style.display = "none";
+    y.style.display = "block";
+}
