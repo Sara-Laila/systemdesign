@@ -170,7 +170,9 @@ header {
   margin-left: 5vw;
   height: 50%;
   border: 1px solid black;
-  margin-top: 30vh;
+  margin-top: 5vh;
+
+  display: none;
 }
 
 #firstCustomerView input[type=text] {
@@ -179,7 +181,6 @@ header {
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
-    
 }
 
 #boka {
@@ -199,7 +200,8 @@ header {
   margin-left: 5vw;
   height: 70%;
   border: 1px solid black;
-  margin-top: 90vh;
+  margin-top: 5vh;
+  display: none;
 }
 
 #secondCustomerView input[type=text] {
@@ -241,5 +243,19 @@ header {
     text-align: center;
     position: relative;
     font-weight: 900;
+}
+
+#kvitto {
+  z-index: 50;
+  background-color: orange;
+  border-radius: 15px;
+
+  position:absolute;
+  width: 90vw;
+  margin-left: 5vw;
+  height: 70%;
+  border: 1px solid black;
+  margin-top: 5vh;
+  display: none;
 }
 
