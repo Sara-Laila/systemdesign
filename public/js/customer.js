@@ -7,11 +7,153 @@ var hamburgerDrawer = document.getElementById('hamburger-menu');
 var hamburgerBtn = document.getElementById('hamburger-btn');
 var hamburgerDrawerBg = document.getElementById('content');
 
+var directionsDisplay;
+var directionsService;
+
+var map, places;
+var myplace = {lat: 59.840809, lng: 17.648666};
+var myplacemarker;
+var dest;
+var destmarker;
+var placeSearch, autocomplete;
+var geocoder;
+var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        postal_town: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+};
+
 var axisCords;
 var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
 var oneByForthScreen = window.innerWidth / 4;
 var openStatus = false;
 
+
+function initMap() {
+    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsService = new google.maps.DirectionsService;
+    geocoder = new google.maps.Geocoder();
+    map = new google.maps.Map(document.getElementById('map'), {
+        
+        zoom: 14,
+        center: myplace, 
+        disableDefaultUI: true
+    });
+
+    myplacemarker = new google.maps.Marker({
+        map: map,
+        animation: google.maps.Animation.DROP,
+        position: myplace,
+        icon: '/img/markers/red_MarkerA.png'
+    });
+    
+    myplacemarker.addListener('click', toggleBounce);
+
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */ (
+            document.getElementById('autocomplete')), {
+                types: ['geocode'],
+                componentRestrictions: {'country': 'se'}
+            });
+}
+
+function geolocate() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geolocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var circle = new google.maps.Circle({
+        center: geolocation,
+        radius: position.coords.accuracy
+      });
+      autocomplete.setBounds(circle.getBounds());
+    });
+  }
+}
+
+function codeAddress() {
+    var address = document.getElementById('autocomplete').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == 'OK') {
+            dest = results[0].geometry.location;
+            map.setCenter(dest);
+        destmarker = new google.maps.Marker({
+            map: map,
+            position: dest,
+            icon: '/img/markers/green_MarkerB.png',
+            animation: google.maps.Animation.DROP
+        });
+
+            
+            directionsDisplay.setMap(map);
+
+            
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+            console.log(dest);
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var selectedMode = 'DRIVING';
+  directionsService.route({
+      origin: myplace,  
+      destination: dest,  
+    // Note that Javascript allows us to access the constant
+    // using square brackets and a string value as its
+    // "property."
+    travelMode: google.maps.TravelMode[selectedMode]
+  }, function(response, status) {
+    if (status == 'OK') {
+      directionsDisplay.setDirections(response);
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
+
+function toggleBounce() {
+  if (myplacemarker.getAnimation() !== null) {
+    myplacemarker.setAnimation(null);
+  } else {
+    myplacemarker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+
+function moveMarker() {
+}
+
+function geocodeLatLng(geocoder, map, infowindow) {
+  var input = document.getElementById('latlng').value;
+  var latlngStr = input.split(',', 2);
+  var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+  geocoder.geocode({'location': latlng}, function(results, status) {
+    if (status === 'OK') {
+      if (results[0]) {
+        map.setZoom(11);
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: map
+        });
+        infowindow.setContent(results[0].formatted_address);
+        infowindow.open(map, marker);
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
+
+/*
 var vm = new Vue({
   el: '#page',
   data: {
@@ -21,8 +163,8 @@ var vm = new Vue({
     destMarker: null,
     taxiMarkers: {}
   },
-  created: function () {
-    socket.on('initialize', function (data) {
+    created: function () {
+        socket.on('initialize', function (data) {
       // add taxi markers in the map for all taxis
       for (var taxiId in data.taxis) {
         this.taxiMarkers[taxiId] = this.putTaxiMarker(data.taxis[taxiId]);
@@ -60,7 +202,12 @@ var vm = new Vue({
   },
   mounted: function () {
     // set up the map
-    this.map = L.map('my-map').setView([59.8415,17.648], 13);
+    this.map = new google.maps.Map(document.getElementById('map'), {
+        
+    zoom: 14,
+      center: polacks, 
+    disableDefaultUI: true
+  });
 
     // create the tile layer with correct attribution
     var osmUrl='http://{s}.tile.osm.org/{z}/{x}/{y}.png';
@@ -119,14 +266,14 @@ var vm = new Vue({
     },
     moveMarker: function (event) {
       this.connectMarkers.setLatLngs([this.fromMarker.getLatLng(), this.destMarker.getLatLng()], {color: 'blue'});
-      /*socket.emit("moveMarker", { orderId: event.target.orderId,
-                                latLong: [event.target.getLatLng().lat, event.target.getLatLng().lng]
-                                });
-                                */
+      //socket.emit("moveMarker", { orderId: event.target.orderId,
+                                //latLong: [event.target.getLatLng().lat, event.target.getLatLng().lng]
+                              //  });
+                                
     }
   }
 });
-
+ */
 function drawToStart() {
   hamburgerDrawer.animate([
     {
@@ -187,7 +334,7 @@ hamburgerDrawer.addEventListener('touchend',
     }
     axisCords = null;
   });
-
+ 
 /*Javascript for the two customer views*/
 
 var vm = new Vue({
@@ -199,6 +346,7 @@ var vm = new Vue({
         toNextView: function () {
             var from = document.getElementById("fromOne").value;
             var to = document.getElementById("toOne").value;
+            moveMarker();
 
             var carSizeOne = document.getElementsByName("bilOne");
             var carSizeTwo = document.getElementsByName("bilTwo");
@@ -228,10 +376,15 @@ var vm = new Vue ({
     methods: {
         destinationFirst: function () {
             console.log("You are in the first function");
-            var destName = document.getElementById("firstDestination").value;
+            var destName = document.getElementById("autocomplete").value;
+            if(!destName){
+                alert("Invalid address");
+                return;
+            }
             console.log(destName);
             document.getElementById("toOne").value = destName;
             hideShow("q-dest", "firstCustomerView");
+            codeAddress();
         }
     },
 });
