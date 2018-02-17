@@ -1,0 +1,142 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TAXI CUSTOMER</title>
+    <link rel="stylesheet" href="leaflet/leaflet.css">
+    <link rel="stylesheet" href="/esri-leaflet-geocoder/esri-leaflet-geocoder.css">
+    <link rel="stylesheet" href="css/taxi.css">
+    <script src="/vue/vue.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/leaflet/leaflet.js"></script>
+    <script src="/esri-leaflet/esri-leaflet.js"></script> 
+    <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script> 
+    <script src="js/customer.js" defer></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
+    </script>
+    <!-- <script src="js/drawermenu.js" defer></script> -->
+
+  </head>
+  <body>
+    <div id="hamburger-menu">
+      <ul class="list">
+        <li class="active"><a>Meny [WIP]</a></li>
+        <li><a>Bokningar</a></li>
+        <li><a>Fakturor</a></li>
+        <li><a>Kundservice</a></li>
+        <li><a></a></li>
+      </ul>
+    </div>
+    
+
+    <header>
+      <div id="hamburger-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <a href="#" id="account-icon"></a>
+      <a href="#" id="logo"></a>
+    </header>
+
+    <div id="CustomerView">
+      <div id="firstCustomerView">
+        <form id="section1">
+          <p>
+            <label for="fromOne">Från</label><br>
+            <input type="text" class="place from" id="fromOne" name="from" value="Polacksbacken" >
+          </p>
+          
+          <p>
+            <label for="toOne">Till</label><br>
+            <input type="text" class= "place to" id="toOne" name="to"  placeholder="Till">
+          </p>
+
+          <div class="bilStorlek">
+        <h3>Välj bilstorlek:</h3>
+          <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
+          <label class="bil-cc small" for="small"></label>
+          <input id="big" type="radio" name="car" value="stor bil" />
+          <label class="bil-cc big"for="big"></label>
+      </div>
+
+
+          <div id="boka">
+            <button v-on:click="toNextView" class="button One"  type="button">Boka</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="secondCustomerView">
+        <form id="section2">
+          <p>
+            <label for="fromTwo">Från</label><br>
+            <input type="text" class="place from" id="fromTwo" name="from" placeholder="Från">
+          </p>
+          
+          <p>
+            <label for="toTwo">Till</label><br>
+            <input type="text" class= "place to" id="toTwo" name="to"  placeholder="Till">
+          </p>
+
+          <div class="bilStorlek">
+            <h3>Bilstorlek:</h3>
+              <input id="small" type="radio" name="bilTwo" value="liten bil" checked="checked"/>
+              <label class="bil-cc small" for="small"></label>
+              <input id="big" type="radio" name="bilTwo" value="stor bil" />
+              <label class="bil-cc big"for="big"></label>
+          </div>
+
+          <p>
+            <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
+          </p>
+
+          <p>
+            <label for="payment">Betalnings Alternativ</label><br>
+            <select id="payment">
+
+              <option name="pay" id="Swish">Swish</option>
+              <option name="pay" id="Card">Card</option>
+              <option name="pay" id="BankID" selected="selected">BankID</option>
+
+            </select>
+          </p>
+
+
+          <div id="boka">
+            <button v-on:click="toPayment" class="button Two" type="button">Gå till betalning</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="kvitto">
+        <h3>Tack för din betalning. Vi har tagit emot följande detaljer och en taxi kommer till dig innom 10 minuter</h3>
+        <p id="kvittoInfo" >
+        </p>
+      </div>
+    </div>
+
+
+
+    <div id="content">
+      <div id="q-dest">
+        <form>
+          <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
+          <button v-on:click="destinationFirst" type="button"></button>
+        </form>
+      </div>
+      <div id="map"></div>
+      <div id="page">
+        
+        
+
+        
+        <button v-on:click="orderTaxi">ORDER TAXI</button>
+        Your order number is {{ orderId }} 
+      </div>
+    </div>
+    
+    
+  </body>
+</html>
