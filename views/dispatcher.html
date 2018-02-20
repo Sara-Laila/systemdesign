@@ -14,10 +14,11 @@
     </script>
 </head>
 <body>
-  <div class="wrapper">
+  <h1>Dispatch view</h1>
 
-    <div id="map" class:"map"></div>
+  <div id="map" class:"map"></div>
 
+  <div id="DispContainer">
     <div id="warning">
       <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
     </div>
@@ -27,9 +28,37 @@
     </div>
 
     <div id="hotspot">
-      <button v-on:click="hotSpot" class="button hotSpot"  type="button">Hot Spot!</button>
+      <button v-on:click="newHotspot" class="button hotSpot"  type="button">Hot Spot!</button>
     </div>
 
+    
+  
+
+  <div id="addWarning">
+     <textarea cols="40" rows="5" id="warningDesc" placeholder="Lägg till Beskrivning"></textarea>
+     <input type="text" placeholder="Position">
+     <button v-on:click="addwarningClick" class="addingW"  type="button">Lägg till varning!</button>
+  </div>
+
+
+  <div id="seeOverview">
+
+    <div id="waitingJobs" class="jobs waiting">
+      <h3>List of waiting jobs</h3>
+    </div>
+
+     <div id="currentJobs"  class="jobs current">
+      <h3>List of current jobs</h3>
+    </div>
+
+  </div>
+
+
+  <div id="addHotspot">
+    <textarea cols="40" rows="5" id="hotspotDesc" placeholder="Lägg till Beskrivning"></textarea>
+     <input type="text" placeholder="Position">
+     <button v-on:click="addHotpotClick" class="addingH"  type="button">Lägg till hotSpot!</button>
+  </div>
   <div>
 </body>
 </html>

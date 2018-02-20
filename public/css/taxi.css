@@ -342,11 +342,39 @@ header {
 }
 
 
-
 /*---------------------------------------*/
-#warning {
-  position: absolute;
-  z-index: 100;
-  background-color: purple;
+
+#addWarning {
+  width: 80vw;
+  margin-left: 5vw;
+  height: 25vh;
+  border: 1px solid black;
+  margin-top: 5vh;
+  background-color: red;
+  display: none;
 }
-/*----------------------------------------*/
+
+#seeOverview {
+  width: 80vw;
+  margin-left: 5vw;
+  height: 25vh;
+  border: 1px solid black;
+  margin-top: 5vh;
+  background-color: orange;
+}
+
+#addHotspot {
+  width: 80vw;
+  margin-left: 5vw;
+  height: 25vh;
+  border: 1px solid black;
+  margin-top: 5vh;
+  background-color: green;
+  display: none;
+}
+
+.jobs {
+  width: 60vw;
+  height: 8vw;
+  background: white;
+}
