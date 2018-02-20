@@ -341,3 +341,12 @@ header {
   padding:2vw;
 }
 
+
+
+/*---------------------------------------*/
+#warning {
+  position: absolute;
+  z-index: 100;
+  background-color: purple;
+}
+/*----------------------------------------*/
