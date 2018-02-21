@@ -12,7 +12,153 @@ var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
 var oneByForthScreen = window.innerWidth / 4;
 var openStatus = false;
 
-var vm = new Vue({
+var directionsDisplay;
+var directionsService;
+
+var map, places;
+var myplace = {lat: 59.840809, lng: 17.648666};
+var myplacemarker;
+var dest;
+var destmarker;
+var placeSearch, autocomplete;
+var geocoder;
+var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        postal_town: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+};
+
+var axisCords;
+var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
+var oneByForthScreen = window.innerWidth / 4;
+var openStatus = false;
+
+
+function initMap() {
+    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsService = new google.maps.DirectionsService;
+    geocoder = new google.maps.Geocoder();
+    map = new google.maps.Map(document.getElementById('map'), {
+
+        zoom: 14,
+        center: myplace,
+        disableDefaultUI: true
+    });
+
+    myplacemarker = new google.maps.Marker({
+        map: map,
+        animation: google.maps.Animation.DROP,
+        position: myplace,
+        icon: '/img/markers/red_MarkerA.png'
+    });
+
+    myplacemarker.addListener('click', toggleBounce);
+
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */ (
+            document.getElementById('autocomplete')), {
+                types: ['geocode'],
+                componentRestrictions: {'country': 'se'}
+            });
+}
+
+function geolocate() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geolocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var circle = new google.maps.Circle({
+        center: geolocation,
+        radius: position.coords.accuracy
+      });
+      autocomplete.setBounds(circle.getBounds());
+    });
+  }
+}
+
+function codeAddress() {
+    var address = document.getElementById('autocomplete').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == 'OK') {
+            dest = results[0].geometry.location;
+            map.setCenter(dest);
+        destmarker = new google.maps.Marker({
+            map: map,
+            position: dest,
+            icon: '/img/markers/green_MarkerB.png',
+            animation: google.maps.Animation.DROP
+        });
+
+
+            directionsDisplay.setMap(map);
+
+
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
+            console.log(dest);
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var selectedMode = 'DRIVING';
+  directionsService.route({
+      origin: myplace,
+      destination: dest,
+    // Note that Javascript allows us to access the constant
+    // using square brackets and a string value as its
+    // "property."
+    travelMode: google.maps.TravelMode[selectedMode]
+  }, function(response, status) {
+    if (status == 'OK') {
+      directionsDisplay.setDirections(response);
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
+
+function toggleBounce() {
+  if (myplacemarker.getAnimation() !== null) {
+    myplacemarker.setAnimation(null);
+  } else {
+    myplacemarker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+
+function moveMarker() {
+}
+
+function geocodeLatLng(geocoder, map, infowindow) {
+  var input = document.getElementById('latlng').value;
+  var latlngStr = input.split(',', 2);
+  var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+  geocoder.geocode({'location': latlng}, function(results, status) {
+    if (status === 'OK') {
+      if (results[0]) {
+        map.setZoom(11);
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: map
+        });
+        infowindow.setContent(results[0].formatted_address);
+        infowindow.open(map, marker);
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
+
+/*var vm = new Vue({
     el: '#page',
     data: {
         map: null,
@@ -46,7 +192,7 @@ var vm = new Vue({
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min)) + min;
         }
-        // It's probably not a good idea to generate a random taxi number, client-side. 
+        // It's probably not a good idea to generate a random taxi number, client-side.
         this.taxiId = getRandomInt(1, 1000000);
     },
     mounted: function () {
@@ -119,7 +265,7 @@ var vm = new Vue({
             return {from: fromMarker, dest: destMarker, line: connectMarkers};
         },
     }
-});
+});*/
 
 
 
