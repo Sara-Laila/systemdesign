@@ -70,16 +70,16 @@ header {
     margin-left: 5vw;
     height: 7%;
     border-radius: 4px;
-    margin-top: 20vh;
+    margin-top: 10vh;
     z-index: 50;
 }
 
 #q-dest input[type=text] {
     width: 80%;
-    height: 100%; 
+    height: 100%;
     border-radius:4px;
     padding: 3px;
-    
+
 }
 
 #q-dest input[type=submit] {
@@ -100,13 +100,21 @@ header {
     width:20%;
     background-image: url("/img/arrow.png");
     background-size: contain;
-    background-position: center; 
+    background-position: center;
     background-repeat: no-repeat;
     border-radius: 5px;
 }
 
 #q-dest button:hover{
     opacity:0.5;
+}
+
+#typeOfService {
+  font-size: 100%;
+  background: #d9d9d9;
+  border-radius: 4px;
+  padding: 5%;
+  margin-bottom: 2%;
 }
 
 
@@ -166,7 +174,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  
+
 }
 
 #hamburger-btn span {
@@ -197,7 +205,7 @@ header {
 
 #firstCustomerView input[type=text] {
     width: 80%;
-    height: 10%; 
+    height: 10%;
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
@@ -226,20 +234,20 @@ header {
 
 #secondCustomerView input[type=text] {
     width: 80%;
-    height: 10%; 
+    height: 10%;
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
-    
+
 }
 
 #secondCustomerView input[type=tel] {
     width: 80%;
-    height: 10%; 
+    height: 10%;
     border-top-left-radius: 4px 4px;
     border-bottom-left-radius: 4px 4px;
     padding: 3px;
-    
+
 }
 /*Both Customer Views*/
 
@@ -342,6 +350,7 @@ header {
 }
 
 
+
 /*---------------------------------------*/
 
 #addWarning {
@@ -378,3 +387,4 @@ header {
   height: 8vw;
   background: white;
 }
+

@@ -6,17 +6,18 @@
     <title>TAXI DRIVER</title>
     <link rel="stylesheet" href="leaflet/leaflet.css">
     <link rel="stylesheet" href="css/taxi.css">
+    <link rel="stylesheet" href="css/driver.css">
     <script src="/vue/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/leaflet/leaflet.js"></script>
-    <script src="js/driver.js" defer></script>
+    
   </head>
   <body>
 
     <div id="hamburger-menu">
       <ul class="list">
         <li class="active"><a>TAXIAPP</a></li>
-        <li><a>Här ska det vara något</a></li>
+        <li><a href=#firstCustomerView>Här ska det vara något</a></li>
         <li><a>Något annat</a></li>
         <li><a>Lalala</a></li>
         <li><a>Typ</a></li>
@@ -32,7 +33,58 @@
 
       <a href="#" id="account-icon"></a>
       <a href="#" id="logo"></a>
+      <button v-on:click="quit">Avsluta</button>
     </header>
+
+
+<div id="firstCustomerView">
+  <table id=jobInfoTable align=center>
+  <tr>
+    <th>
+        <h3>Till</h3>
+      </th>
+    <th>
+        <h3>Från</h3>
+    </th>
+  </tr>
+  <tr>
+      <td>
+      Polacksgatan 3, Uppsala
+    </td>
+      <td>
+      Uppsala centralstation
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Tid till kund
+    </td>
+    <td>
+      10 min
+    </td>
+  </tr>
+  <tr>
+    <td>
+       <div id="declineJob">
+          <button>Avböj</button>
+      </div>
+    </td>
+    <td>
+      <div id="acceptJob">
+            <button v-on:click="acceptOrder(order)">ACCEPT</button>
+      </div>
+    </td>
+  </tr>
+</table>
+    <div id="readMore" align=center>
+        <button>Läs mer om jobbet</button>
+    </div>
+    <div id="finishButton">
+      <button v-on:click="finishOrder(order.orderId)">Körning avslutad</button>
+    </div>
+</div>
+
+
 
     <div id="content">
       <div id="page">
