@@ -3,6 +3,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TAXI CUSTOMER</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="leaflet/leaflet.css">
     <link rel="stylesheet" href="/esri-leaflet-geocoder/esri-leaflet-geocoder.css">
     <link rel="stylesheet" href="css/taxi.css">
@@ -38,8 +40,73 @@
 
       <a href="#" id="account-icon"></a>
       <a href="#" id="logo"></a>
-    </header>
 
+    </header>
+    <div class="#modals">
+    <!-- Modal -->
+    <div id="firstOrderModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Vilken tjänst vill du beställa?</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+              <input id="taxi" type="radio" name="serviceType" value="taxi" checked="checked"/>Taxi <br>
+              <input id="färdtjänst" type="radio" name="serviceType" value="färdtjänst"/>Färdtjänst
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#secondModalView">Nästa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="secondModalView" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Specifikationer:</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+              Från <br>
+              Till <br>
+            </p>
+            <div class="bilStorlek">
+              <h6>Välj bilstorlek:</h6>
+                <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
+                <label class="bil-cc small" for="small"></label>
+                <input id="big" type="radio" name="car" value="stor bil" />
+                <label class="bil-cc big"for="big"></label>
+            </div>
+          </div>
+          <p>
+            <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
+          </p>
+          <p>
+            <label for="payment">Betalnings Alternativ</label><br>
+            <select id="payment">
+              <option name="pay" id="Swish">Swish</option>
+              <option name="pay" id="Card">Card</option>
+              <option name="pay" id="BankID" selected="selected">BankID</option>
+            </select>
+          </p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+</div>
     <div id="CustomerView">
       <div id="firstCustomerView">
         <form id="section1">
@@ -53,7 +120,7 @@
             <input type="text" class= "place to" id="toOne" name="to"  placeholder="Till">
           </p>
 
-          <div class="bilStorlek">
+      <div class="bilStorlek">
         <h3>Välj bilstorlek:</h3>
           <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
           <label class="bil-cc small" for="small"></label>
@@ -117,30 +184,28 @@
       </div>
     </div>
 
-
+    <!-- Trigger the modal with a button -->
 
     <div id="content">
       <div id="q-dest">
-        <div id="typeOfService">
-          <input id="taxi" type="radio" name="serviceType" value="taxi" checked="checked"/>Taxi <br>
-          <input id="färdtjänst" type="radio" name="serviceType" value="färdtjänst"/>Färdtjänst
-        </div>
         <form>
-          <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
-          <button v-on:click="destinationFirst" type="button"></button>
+          <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Varifrån vill du åka?"></input>
+          <input type="text" name="firstname" id="autocomplete2" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#firstOrderModal"></button>
         </form>
       </div>
       <div id="map"></div>
       <div id="page">
-
-
-
-
         <button v-on:click="orderTaxi">ORDER TAXI</button>
         Your order number is {{ orderId }}
       </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
   </body>
 </html>
