@@ -9,8 +9,8 @@
     <script src="/vue/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/leaflet/leaflet.js"></script>
-    <script src="/esri-leaflet/esri-leaflet.js"></script> 
-    <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script> 
+    <script src="/esri-leaflet/esri-leaflet.js"></script>
+    <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script>
     <script src="js/customer.js" defer></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
     </script>
@@ -27,7 +27,7 @@
         <li><a></a></li>
       </ul>
     </div>
-    
+
 
     <header>
       <div id="hamburger-btn">
@@ -47,7 +47,7 @@
             <label for="fromOne">Från</label><br>
             <input type="text" class="place from" id="fromOne" name="from" value="Polacksbacken" >
           </p>
-          
+
           <p>
             <label for="toOne">Till</label><br>
             <input type="text" class= "place to" id="toOne" name="to"  placeholder="Till">
@@ -74,7 +74,7 @@
             <label for="fromTwo">Från</label><br>
             <input type="text" class="place from" id="fromTwo" name="from" placeholder="Från">
           </p>
-          
+
           <p>
             <label for="toTwo">Till</label><br>
             <input type="text" class= "place to" id="toTwo" name="to"  placeholder="Till">
@@ -121,6 +121,10 @@
 
     <div id="content">
       <div id="q-dest">
+        <div id="typeOfService">
+          <input id="taxi" type="radio" name="serviceType" value="taxi" checked="checked"/>Taxi <br>
+          <input id="färdtjänst" type="radio" name="serviceType" value="färdtjänst"/>Färdtjänst
+        </div>
         <form>
           <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
           <button v-on:click="destinationFirst" type="button"></button>
@@ -128,15 +132,15 @@
       </div>
       <div id="map"></div>
       <div id="page">
-        
-        
 
-        
+
+
+
         <button v-on:click="orderTaxi">ORDER TAXI</button>
-        Your order number is {{ orderId }} 
+        Your order number is {{ orderId }}
       </div>
     </div>
-    
-    
+
+
   </body>
 </html>
