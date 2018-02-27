@@ -437,3 +437,15 @@ function hideShow(toHide, toShow) {
     x.style.display = "none";
     y.style.display = "block";
 }
+
+    $(document).ready(function(){
+      $("#firstBtn").click(function(){
+        var selectedValue = $("input[name=serviceType]:checked").val();
+        console.log(selectedValue);
+          if (selectedValue == "färdtjänst"){
+            $("#färdtjänstModal").modal();
+          } else {
+              $("#secondModalView").modal();
+          }
+      });
+  });
