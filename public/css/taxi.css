@@ -251,10 +251,6 @@ header {
 }
 /*Both Customer Views*/
 
-.button {
-  height:200px;
-  width:200px;
-}
 
 #boka {
     position:relative;
@@ -387,4 +383,3 @@ header {
   height: 8vw;
   background: white;
 }
-

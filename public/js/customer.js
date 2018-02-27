@@ -15,7 +15,7 @@ var myplace = {lat: 59.840809, lng: 17.648666};
 var myplacemarker;
 var dest;
 var destmarker;
-var placeSearch, autocomplete;
+var placeSearch, autocomplete, autocomplete2;
 var geocoder;
 var componentForm = {
         street_number: 'short_name',
@@ -37,9 +37,9 @@ function initMap() {
     directionsService = new google.maps.DirectionsService;
     geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById('map'), {
-        
+
         zoom: 14,
-        center: myplace, 
+        center: myplace,
         disableDefaultUI: true
     });
 
@@ -49,7 +49,7 @@ function initMap() {
         position: myplace,
         icon: '/img/markers/red_MarkerA.png'
     });
-    
+
     myplacemarker.addListener('click', toggleBounce);
 
     autocomplete = new google.maps.places.Autocomplete(
@@ -58,6 +58,12 @@ function initMap() {
                 types: ['geocode'],
                 componentRestrictions: {'country': 'se'}
             });
+    autocomplete2 = new google.maps.places.Autocomplete(
+                  /** @type {!HTMLInputElement} */ (
+                    document.getElementById('autocomplete2')), {
+                        types: ['geocode'],
+                        componentRestrictions: {'country': 'se'}
+                    });
 }
 
 function geolocate() {
@@ -89,10 +95,10 @@ function codeAddress() {
             animation: google.maps.Animation.DROP
         });
 
-            
+
             directionsDisplay.setMap(map);
 
-            
+
             calculateAndDisplayRoute(directionsService, directionsDisplay);
             console.log(dest);
       } else {
@@ -104,8 +110,8 @@ function codeAddress() {
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var selectedMode = 'DRIVING';
   directionsService.route({
-      origin: myplace,  
-      destination: dest,  
+      origin: myplace,
+      destination: dest,
     // Note that Javascript allows us to access the constant
     // using square brackets and a string value as its
     // "property."
@@ -203,9 +209,9 @@ var vm = new Vue({
   mounted: function () {
     // set up the map
     this.map = new google.maps.Map(document.getElementById('map'), {
-        
+
     zoom: 14,
-      center: polacks, 
+      center: polacks,
     disableDefaultUI: true
   });
 
@@ -269,7 +275,7 @@ var vm = new Vue({
       //socket.emit("moveMarker", { orderId: event.target.orderId,
                                 //latLong: [event.target.getLatLng().lat, event.target.getLatLng().lng]
                               //  });
-                                
+
     }
   }
 });
@@ -334,13 +340,13 @@ hamburgerDrawer.addEventListener('touchend',
     }
     axisCords = null;
   });
- 
+
 /*Javascript for the two customer views*/
 
 var vm = new Vue({
     el: '#CustomerView',
     data: {
-      
+
     },
     methods: {
         toNextView: function () {
@@ -371,7 +377,7 @@ var vm = new Vue({
 
 var vm = new Vue ({
     el: "#q-dest",
-    data: {   
+    data: {
     },
     methods: {
         destinationFirst: function () {
@@ -407,14 +413,14 @@ function finalInfoArray() {
         if (paymentOption[i].selected) {
             var pay = paymentOption[i].id;
             break;
-            
+
         };
     };
     var infoArray = [from, to, carSizeValue, phoneNumber, pay];
     console.log(infoArray);
 
     var listItem = document.createElement("ul");
-    
+
     for (var i = 0; i < infoArray.length; i++) {
       var dot = document.createElement("li")
       dot.appendChild(document.createTextNode(infoArray[i]));
@@ -431,3 +437,15 @@ function hideShow(toHide, toShow) {
     x.style.display = "none";
     y.style.display = "block";
 }
+
+    $(document).ready(function(){
+      $("#firstBtn").click(function(){
+        var selectedValue = $("input[name=serviceType]:checked").val();
+        console.log(selectedValue);
+          if (selectedValue == "färdtjänst"){
+            $("#färdtjänstModal").modal();
+          } else {
+              $("#secondModalView").modal();
+          }
+      });
+  });
