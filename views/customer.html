@@ -14,10 +14,21 @@
     <script src="/esri-leaflet/esri-leaflet.js"></script>
     <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script>
     <script src="js/customer.js" defer></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
     </script>
     <!-- <script src="js/drawermenu.js" defer></script> -->
-
+    <style>
+      .modal-header, h4, .close {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+      }
+      .modal-footer {
+        background-color: #f9f9f9;
+      }
+      </style>
   </head>
   <body>
     <div id="hamburger-menu">
@@ -60,7 +71,7 @@
             </p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#secondModalView">Nästa</button>
+            <button type="button" class="btn btn-default" id="firstBtn" data-dismiss="modal">Nästa</button>
           </div>
         </div>
       </div>
@@ -141,6 +152,42 @@
         </form>
       </div>
 
+  <div class="modal fade" id="färdtjänstModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:35px 50px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4><span class="glyphicon glyphicon-lock"></span> Login</h4>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+          <form role="form">
+            <div class="form-group">
+              <label for="usrname"><span class="glyphicon glyphicon-user"></span> Username</label>
+              <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+              <input type="text" class="form-control" id="psw" placeholder="Enter password">
+            </div>
+            <div class="checkbox">
+              <label><input type="checkbox" value="" checked>Remember me</label>
+            </div>
+              <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+          <p>Not a member? <a href="#">Sign Up</a></p>
+          <p>Forgot <a href="#">Password?</a></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
       <div id="secondCustomerView">
         <form id="section2">
           <p>
@@ -206,6 +253,30 @@
         Your order number is {{ orderId }}
       </div>
     </div>
+      <script>
+        var typeTravels = document.getElementsByName('serviceType');
+        var typeTravel;
+        for(var i = 0; i < typeTravels.length; i++){
+          if(typeTravels[i].checked){
+            typeTravel = typeTravels[i].value;
+            console.log(typeTravel);
+          }
+        }
+        if (typeTravel == "färdtjänst"){
+          $(document).ready(function(){
+            $("#firstBtn").click(function(){
+              $("#färdtjänstModal").modal();
+            });
+          });
+        } else {
+            $(document).ready(function(){
+              $("#firstBtn").click(function(){
+                $("#secondModalView").modal();
+              });
+            });
+
+        }
+      </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
