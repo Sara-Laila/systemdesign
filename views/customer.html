@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="leaflet/leaflet.css">
     <link rel="stylesheet" href="/esri-leaflet-geocoder/esri-leaflet-geocoder.css">
     <link rel="stylesheet" href="css/taxi.css">
+    <link rel="stylesheet" href="css/modals.css">
     <script src="/vue/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/leaflet/leaflet.js"></script>
@@ -18,17 +19,6 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
     </script>
     <!-- <script src="js/drawermenu.js" defer></script> -->
-    <style>
-      .modal-header, h4, .close {
-      background-color: #5cb85c;
-      color:white !important;
-      text-align: center;
-      font-size: 30px;
-      }
-      .modal-footer {
-        background-color: #f9f9f9;
-      }
-      </style>
   </head>
   <body>
     <div id="hamburger-menu">
@@ -57,7 +47,6 @@
     <!-- Modal -->
     <div id="firstOrderModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
@@ -71,7 +60,7 @@
             </p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" id="firstBtn" data-dismiss="modal">Nästa</button>
+            <button type="button" class="btn btn-default" id="firstBtn" data-dismiss="modal" data-toggle=modal data-target="#secondModalView">Nästa</button>
           </div>
         </div>
       </div>
@@ -79,11 +68,10 @@
 
     <div id="secondModalView" class="modal fade" role="dialog">
       <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="#firstOrderModal">Backa</button>
             <h4 class="modal-title">Specifikationer:</h4>
           </div>
           <div class="modal-body">
@@ -100,10 +88,8 @@
             </div>
           </div>
           <p>
-            <label for="timeInput">Vilken tid vill du bli hämtad?</label><br>
-            <select id="timeInput">
+            <label for="pickupTime">Vilken tid vill du bli hämtad?</label><br>
               <input type="time" class= "time" id="pickupTime" name="time">
-            </select>
             </p>
           <p>
             <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
@@ -117,40 +103,32 @@
             </select>
           </p>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Boka</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
           </div>
         </div>
-
       </div>
     </div>
 </div>
-    <div id="CustomerView">
-      <div id="firstCustomerView">
-        <form id="section1">
-          <p>
-            <label for="fromOne">Från</label><br>
-            <input type="text" class="place from" id="fromOne" name="from" value="Polacksbacken" >
-          </p>
 
-          <p>
-            <label for="toOne">Till</label><br>
-            <input type="text" class= "place to" id="toOne" name="to"  placeholder="Till">
-          </p>
-
-      <div class="bilStorlek">
-        <h3>Välj bilstorlek:</h3>
-          <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
-          <label class="bil-cc small" for="small"></label>
-          <input id="big" type="radio" name="car" value="stor bil" />
-          <label class="bil-cc big"for="big"></label>
+<div id="kvittoModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Kvitto:</h4>
       </div>
-
-
-          <div id="boka">
-            <button v-on:click="toNextView" class="button One"  type="button">Boka</button>
-          </div>
-        </form>
+      <div class="modal-body">
+          <h3>Tack för din betalning. Vi har tagit emot följande detaljer och en taxi kommer till dig inom [NUM] minuter</h3>
+          <p id="kvittoInfo" >
+          </p>
       </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class="modal fade" id="färdtjänstModal" role="dialog">
     <div class="modal-dialog">
@@ -186,58 +164,6 @@
 
     </div>
   </div>
-
-
-      <div id="secondCustomerView">
-        <form id="section2">
-          <p>
-            <label for="fromTwo">Från</label><br>
-            <input type="text" class="place from" id="fromTwo" name="from" placeholder="Från">
-          </p>
-
-          <p>
-            <label for="toTwo">Till</label><br>
-            <input type="text" class= "place to" id="toTwo" name="to"  placeholder="Till">
-          </p>
-
-          <div class="bilStorlek">
-            <h3>Bilstorlek:</h3>
-              <input id="small" type="radio" name="bilTwo" value="liten bil" checked="checked"/>
-              <label class="bil-cc small" for="small"></label>
-              <input id="big" type="radio" name="bilTwo" value="stor bil" />
-              <label class="bil-cc big"for="big"></label>
-          </div>
-
-          <p>
-            <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
-          </p>
-
-          <p>
-            <label for="payment">Betalnings Alternativ</label><br>
-            <select id="payment">
-
-              <option name="pay" id="Swish">Swish</option>
-              <option name="pay" id="Card">Card</option>
-              <option name="pay" id="BankID" selected="selected">BankID</option>
-
-            </select>
-          </p>
-
-
-          <div id="boka">
-            <button v-on:click="toPayment" class="button Two" type="button">Gå till betalning</button>
-          </div>
-        </form>
-      </div>
-
-      <div id="kvitto">
-        <h3>Tack för din betalning. Vi har tagit emot följande detaljer och en taxi kommer till dig innom 10 minuter</h3>
-        <p id="kvittoInfo" >
-        </p>
-      </div>
-    </div>
-
-    <!-- Trigger the modal with a button -->
 
     <div id="content">
       <div id="q-dest">
