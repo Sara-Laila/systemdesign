@@ -7,11 +7,6 @@ var hamburgerDrawer = document.getElementById('hamburger-menu');
 var hamburgerBtn = document.getElementById('hamburger-btn');
 var hamburgerDrawerBg = document.getElementById('content');
 
-var axisCords;
-var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
-var oneByForthScreen = window.innerWidth / 4;
-var openStatus = false;
-
 var directionsDisplay;
 var directionsService;
 
@@ -20,7 +15,7 @@ var myplace = {lat: 59.840809, lng: 17.648666};
 var myplacemarker;
 var dest;
 var destmarker;
-var placeSearch, autocomplete;
+var placeSearch, autocomplete, autocomplete2;
 var geocoder;
 var componentForm = {
         street_number: 'short_name',
@@ -63,6 +58,12 @@ function initMap() {
                 types: ['geocode'],
                 componentRestrictions: {'country': 'se'}
             });
+    autocomplete2 = new google.maps.places.Autocomplete(
+                  /** @type {!HTMLInputElement} */ (
+                    document.getElementById('autocomplete2')), {
+                        types: ['geocode'],
+                        componentRestrictions: {'country': 'se'}
+                    });
 }
 
 function geolocate() {
@@ -265,41 +266,38 @@ function geocodeLatLng(geocoder, map, infowindow) {
             return {from: fromMarker, dest: destMarker, line: connectMarkers};
         },
     }
-});*/
-
-
-
+    });*/
 
 function drawToStart() {
-    hamburgerDrawer.animate([
-        {
-            transform: `translate3d(${axisCords ? axisCords + 'px' : 0 + 'px'}, 0, 0)`
-        },
-        {
-            transform: 'translate3d(-100%, 0, 0)'
-        }
-    ], {
-        duration: 500,
-        easing: 'ease-in-out'
+  hamburgerDrawer.animate([
+    {
+      transform: `translate3d(${axisCords ? axisCords + 'px' : 0 + 'px'}, 0, 0)`
+    },
+    {
+      transform: 'translate3d(-100%, 0, 0)'
+    }
+  ], {
+      duration: 500,
+      easing: 'ease-in-out'
     });
-    hamburgerDrawer.style.transform = 'translate3d(-100%, 0, 0)';
-    openStatus = false;
+  hamburgerDrawer.style.transform = 'translate3d(-100%, 0, 0)';
+  openStatus = false;
 }
 
 function drawToEnd() {
-    hamburgerDrawer.animate([
-        {
-            transform: `translate3d(${axisCords ? axisCords + 'px' : -100 + '%'}, 0, 0)`
-        },
-        {
-            transform: 'translate3d(0, 0, 0)'
-        }
-    ], {
-        duration: 500,
-        easing: 'ease-in-out'
+  hamburgerDrawer.animate([
+    {
+      transform: `translate3d(${axisCords ? axisCords + 'px' : -100 + '%'}, 0, 0)`
+    },
+    {
+      transform: 'translate3d(0, 0, 0)'
+    }
+  ], {
+      duration: 500,
+      easing: 'ease-in-out'
     });
-    hamburgerDrawer.style.transform = 'translate3d(0, 0, 0)';
-    openStatus = true;
+  hamburgerDrawer.style.transform = 'translate3d(0, 0, 0)';
+  openStatus = true;
 }
 
 // Click on Menu Button to Drawer
@@ -307,26 +305,135 @@ hamburgerBtn.addEventListener('click', drawToEnd);
 
 // Click on Background to Close
 hamburgerDrawerBg.addEventListener('click', function(){
-    if (openStatus) drawToStart();
+  if (openStatus) drawToStart();
 });
 
 hamburgerDrawer.addEventListener('touchmove',
-                                 function(e) {
-                                     axisCords = e.changedTouches[0].pageX - hamburgerDrawerWidth;
-                                     if (axisCords > 0) axisCords = 0;
-                                     this.style.transform = 'translate3d(' + axisCords + 'px, 0, 0)';
-                                 });
+  function(e) {
+    axisCords = e.changedTouches[0].pageX - hamburgerDrawerWidth;
+    if (axisCords > 0) axisCords = 0;
+    this.style.transform = 'translate3d(' + axisCords + 'px, 0, 0)';
+});
 
 hamburgerDrawer.addEventListener('touchend',
-                                 function(e) {
-                                     var endPoint = e.changedTouches[0].pageX;
-                                     var isOverThreshold = endPoint > oneByForthScreen && endPoint < hamburgerDrawerWidth;
-                                     if (endPoint < oneByForthScreen) {
-                                         drawToStart();
-                                     } else if (isOverThreshold) {
-                                         drawToEnd();
-                                     } else {
-                                         openStatus = true;
-                                     }
-                                     axisCords = null;
-                                 });
+  function(e) {
+    var endPoint = e.changedTouches[0].pageX;
+    var isOverThreshold = endPoint > oneByForthScreen && endPoint < hamburgerDrawerWidth;
+    if (endPoint < oneByForthScreen) {
+      drawToStart();
+    } else if (isOverThreshold) {
+      drawToEnd();
+    } else {
+      openStatus = true;
+    }
+    axisCords = null;
+  });
+
+/*Javascript for the two customer views*/
+
+var vm = new Vue({
+    el: '#CustomerView',
+    data: {
+
+    },
+    methods: {
+        toNextView: function () {
+            var from = document.getElementById("fromOne").value;
+            var to = document.getElementById("toOne").value;
+            moveMarker();
+
+            var carSizeOne = document.getElementsByName("bilOne");
+            var carSizeTwo = document.getElementsByName("bilTwo");
+                for (var i = 0; i < carSizeOne.length; i++) {
+                    if (carSizeOne[i].checked) {
+                    carSizeTwo[i].checked = "checked";
+                    break;
+                };
+             };
+
+             document.getElementById("fromTwo").value = from;
+             document.getElementById("toTwo").value = to;
+             hideShow("firstCustomerView", "secondCustomerView");
+        },
+
+        toPayment: function () {
+          finalInfoArray();
+        }
+    },
+});
+
+
+var vm = new Vue ({
+    el: "#q-dest",
+    data: {
+    },
+    methods: {
+        destinationFirst: function () {
+            console.log("You are in the first function");
+            var destName = document.getElementById("autocomplete").value;
+            if(!destName){
+                alert("Invalid address");
+                return;
+            }
+            console.log(destName);
+            document.getElementById("toOne").value = destName;
+            hideShow("q-dest", "firstCustomerView");
+            codeAddress();
+        }
+    },
+});
+
+
+function finalInfoArray() {
+    var from = document.getElementById("fromTwo").value;
+    var to = document.getElementById("toTwo").value;
+
+    var carSizeTwo = document.getElementsByName("bilTwo");
+    for (var i = 0; i < carSizeTwo.length; i++) {
+        if (carSizeTwo[i].checked) {
+            var carSizeValue = carSizeTwo[i].value;
+            break;
+        };
+    };
+    var phoneNumber = document.getElementById("tel").value;
+    var paymentOption = document.getElementsByName("pay");
+    for (var i = 0; i < paymentOption.length; i++) {
+        if (paymentOption[i].selected) {
+            var pay = paymentOption[i].id;
+            break;
+
+        };
+    };
+    var infoArray = [from, to, carSizeValue, phoneNumber, pay];
+    console.log(infoArray);
+
+    var listItem = document.createElement("ul");
+
+    for (var i = 0; i < infoArray.length; i++) {
+      var dot = document.createElement("li")
+      dot.appendChild(document.createTextNode(infoArray[i]));
+      listItem.appendChild(dot);
+    };
+    document.getElementById("kvittoInfo").appendChild(listItem);
+
+    hideShow("secondCustomerView", "kvitto");
+}
+
+function hideShow(toHide, toShow) {
+    var x = document.getElementById(toHide);
+    var y = document.getElementById(toShow);
+    x.style.display = "none";
+    y.style.display = "block";
+}
+
+    $(document).ready(function(){
+      $("#firstBtn").click(function(){
+        var selectedValue = $("input[name=serviceType]:checked").val();
+        console.log(selectedValue);
+          if (selectedValue == "färdtjänst"){
+            $("#färdtjänstModal").modal();
+          } else {
+              $("#secondModalView").modal();
+          }
+      });
+  });
