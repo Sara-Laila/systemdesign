@@ -16,9 +16,8 @@
     <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script>
     <script src="js/customer.js" defer></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
-    </script>
-    <!-- <script src="js/drawermenu.js" defer></script> -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places"></script>
+    
   </head>
   <body>
     <div id="hamburger-menu">
@@ -167,7 +166,7 @@
 
     <div id="content">
       <div id="q-dest">
-        <form>
+        <form id="q-dest">
           <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Varifrån vill du åka?"></input>
           <input type="text" name="firstname" id="autocomplete2" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
           <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#firstOrderModal"></button>
