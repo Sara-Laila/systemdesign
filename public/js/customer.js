@@ -412,6 +412,17 @@ var vm = new Vue ({
     },
 });
 
+$('#q-dest').keypress(function(e){
+
+    if (e.which == 13) {
+        callModal("#firstOrderModal");
+    }
+
+});
+
+function callModal(modal){
+    $(modal).modal()
+}
 
 function finalInfoArray() {
   console.log("entered finalInfoArray");
@@ -478,3 +489,40 @@ function hideShow(toHide, toShow) {
           }
       });
   });
+
+/*Skicka orderns till servern*/
+function getInfo() {
+  var tel = document.getElementById("tel").value;
+  console.log(tel);
+  var payOpt = document.getElementsByName("pay");
+  console.log(payOpt);
+  for (var i = 0; i < payOpt.length; i++) {
+    if (payOpt[i].selected) {
+      var payment = payOpt[i].id;
+    };
+  };
+  var array = [tel, payment];
+   console.log(array);
+
+   return array;
+
+}
+
+var send = new Vue({
+  el: '#secondModalView',
+  data: {
+    orderId: Math.floor(1000 + Math.random() * 9000),
+    position: {x:0, y:0},
+  },
+  methods: {
+    sendOrder: function () {
+          console.log("Är i sendOrder");
+          /*Här skickas allti iväg, lägg till i getInfo() vad som behövs*/
+      socket.emit("addOrder", { orderId: this.orderId,
+                                details: { x: this.position.x, y: this.position.y},
+                                customerInfo: getInfo(),
+                              });
+      console.log(this.orderId);
+    }
+  }
+});
