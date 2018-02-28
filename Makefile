@@ -21,6 +21,7 @@ add: public/ views/ clean
 	git add Makefile
 
 clean:
+
 	rm -rf node_modules/ *#* *~*
 	rm -f views/*#* views/*~*
 	rm -f public/*/*~* public/*/*#*

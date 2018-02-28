@@ -100,13 +100,15 @@ header {
     width:20%;
 }
 
-#q-dest button {
+#serviceForm {
+  font-weight: bold;
+}
+
+#goForwardButton {
     background-color: #02A14D;
-    padding: 3px;
-    float:right;
     height: 100%;
     border: none;
-    width:20%;
+    width:32%;
     background-image: url("/img/arrow.png");
     background-size: contain;
     background-position: center;
@@ -114,8 +116,12 @@ header {
     border-radius: 5px;
 }
 
+#typeOfServiceButton {
+  height: 100%;
+}
 #q-dest button:hover{
-    opacity:0.5;
+    background-color: green;
+    color: white;
 }
 
 #typeOfService {
@@ -125,7 +131,6 @@ header {
   padding: 5%;
   margin-bottom: 2%;
 }
-
 
 .hamburger-drawer,
 #invis-drawer,
@@ -325,7 +330,7 @@ header {
     background-repeat:no-repeat;
     display:inline-block;
     width:25%;
-    height:23%;
+    height:6%;
     -webkit-transition: all 100ms ease-in;
        -moz-transition: all 100ms ease-in;
             transition: all 100ms ease-in;
