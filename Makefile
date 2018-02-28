@@ -24,5 +24,7 @@ clean:
 	rm -rf node_modules/
 	rm -f views/*#*
 	rm -f public/*/*#*
+	rm -f views/*~*
+	rm -f public/*/*~*
 
 .PHONY = all branch
