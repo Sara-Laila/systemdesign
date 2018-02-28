@@ -91,6 +91,10 @@ header {
     width:20%;
 }
 
+#serviceForm {
+  font-weight: bold;
+}
+
 #goForwardButton {
     background-color: #02A14D;
     height: 100%;

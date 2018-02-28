@@ -31,6 +31,23 @@ var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
 var oneByForthScreen = window.innerWidth / 4;
 var openStatus = false;
 
+function showWhereTo() {
+  console.log("I showWhereTo");
+  console.log(autocomplete);
+  console.log(autocomplete2);
+  var from = document.getElementById("autocomplete").value;
+  var to =document.getElementById("autocomplete2").value;
+
+  var placeToPut = document.getElementById("whereTo");
+  var paragraph1 = document.createElement("p")
+  var paragraph2 = document.createElement("p")
+  var fromText = document.createTextNode("Från " + from);
+  var toText = document.createTextNode("Till " + to);
+  paragraph1.appendChild(fromText);
+  paragraph2.appendChild(toText);
+  placeToPut.appendChild(paragraph1);
+  placeToPut.appendChild(paragraph2);
+};
 
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
@@ -343,7 +360,7 @@ hamburgerDrawer.addEventListener('touchend',
 
 /*Javascript for the two customer views*/
 
-var vm = new Vue({
+/*var vm = new Vue({
     el: '#CustomerView',
     data: {
 
@@ -372,7 +389,7 @@ var vm = new Vue({
           finalInfoArray();
         }
     },
-});
+});*/
 
 
 var vm = new Vue ({
@@ -397,15 +414,18 @@ var vm = new Vue ({
 
 
 function finalInfoArray() {
+  console.log("entered finalInfoArray");
   //get address
     var from = document.getElementById("autocomplete").value;
     var to = document.getElementById("autocomplete2").value;
 //get type of serviceType
-  if(document.getElementByName("taxi").clicked == true) {
-      var serviceTypeValue = document.getElementByName("taxi").value;
-    } else if (document.getElementByName("färdtjänst").clicked == true){
-      var serviceTypeValue = document.getElementByName("färdtjänst").value;
-    }
+    var service = document.getElementsByName("typeOfService");
+    for (var i = 0; i < service.length; i++) {
+        if (service[i].checked) {
+            var serviceValue = service[i].value;
+            break;
+        };
+    };
 
 //get car size
     var carSizeTwo = document.getElementsByName("car");
@@ -417,8 +437,8 @@ function finalInfoArray() {
     };
 
     var phoneNumber = document.getElementById("tel").value;
-    var date = document.getElementsByName("date").value;
-    var time = document.getElementsByName("time");
+    var date = document.getElementById("date").value;
+    var time = document.getElementById("pickupTime").value;
     var paymentOption = document.getElementsByName("pay");
     for (var i = 0; i < paymentOption.length; i++) {
         if (paymentOption[i].selected) {
@@ -427,7 +447,7 @@ function finalInfoArray() {
 
         };
     };
-    var infoArray = [from, to, serviceTypeValue, carSizeValue, phoneNumber, date, time, pay];
+    var infoArray = [from, to, serviceValue, carSizeValue, phoneNumber, date, time, pay];
     console.log(infoArray);
 
     var listItem = document.createElement("ul");
@@ -436,9 +456,9 @@ function finalInfoArray() {
       var dot = document.createElement("li")
       dot.appendChild(document.createTextNode(infoArray[i]));
       listItem.appendChild(dot);
-    };
+    }
     document.getElementById("kvittoInfo").appendChild(listItem);
-}
+};
 
 function hideShow(toHide, toShow) {
     var x = document.getElementById(toHide);
