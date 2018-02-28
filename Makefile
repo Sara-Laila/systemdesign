@@ -7,6 +7,10 @@ git-%: 	branch
 	git commit -m "$(@:git-%=%)"
 	git push origin $(GIT_BRANCH)
 
+branch-%: clean
+	rm -rf node_modules/
+	git checkout "$(@:branch-%=%)"
+
 add: public/ views/ clean
 	git add public/.
 	git add views/.
