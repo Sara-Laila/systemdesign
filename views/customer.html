@@ -23,7 +23,8 @@
   <body>
     <div id="hamburger-menu">
       <ul class="list">
-        <li class="active"><a>Meny [WIP]</a></li>
+        <li class="active"><a>Meny</a></li>
+        <li><a data-toggle=modal data-target=#kvittoModal>Kvitto till senaste bokningen</a></li>
         <li><a>Bokningar</a></li>
         <li><a>Fakturor</a></li>
         <li><a>Kundservice</a></li>
@@ -89,6 +90,7 @@
           </div>
           <p>
             <label for="pickupTime">Vilken tid vill du bli hämtad?</label><br>
+              <input type="date" name="date" id="data">
               <input type="time" class= "time" id="pickupTime" name="time">
             </p>
           <p>
@@ -103,7 +105,7 @@
             </select>
           </p>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
+            <button v-on:click="finalInfoArray" type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
           </div>
         </div>
       </div>
@@ -167,10 +169,26 @@
 
     <div id="content">
       <div id="q-dest">
-        <form>
-          <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Varifrån vill du åka?"></input>
-          <input type="text" name="firstname" id="autocomplete2" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
-          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#firstOrderModal"></button>
+        <form id="firstForm">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Varifrån vill du åka?"></input>
+                <input type="text" name="firstname" id="autocomplete2" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <button id="typeOfServiceButton" type="button" name="taxi" value="taxi">Taxi</button>
+                <button id="typeOfServiceButton" type="button" name="färdtjänst" value="färdtjänst">Färdtjänst</button>
+                <button id="goForwardButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#firstOrderModal"></button>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
       <div id="map"></div>
@@ -179,7 +197,7 @@
         Your order number is {{ orderId }}
       </div>
     </div>
-      
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"

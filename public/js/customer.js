@@ -397,17 +397,28 @@ var vm = new Vue ({
 
 
 function finalInfoArray() {
-    var from = document.getElementById("fromTwo").value;
-    var to = document.getElementById("toTwo").value;
+  //get address
+    var from = document.getElementById("autocomplete").value;
+    var to = document.getElementById("autocomplete2").value;
+//get type of serviceType
+  if(document.getElementByName("taxi").clicked == true) {
+      var serviceTypeValue = document.getElementByName("taxi").value;
+    } else if (document.getElementByName("färdtjänst").clicked == true){
+      var serviceTypeValue = document.getElementByName("färdtjänst").value;
+    }
 
-    var carSizeTwo = document.getElementsByName("bilTwo");
+//get car size
+    var carSizeTwo = document.getElementsByName("car");
     for (var i = 0; i < carSizeTwo.length; i++) {
         if (carSizeTwo[i].checked) {
             var carSizeValue = carSizeTwo[i].value;
             break;
         };
     };
+
     var phoneNumber = document.getElementById("tel").value;
+    var date = document.getElementsByName("date").value;
+    var time = document.getElementsByName("time");
     var paymentOption = document.getElementsByName("pay");
     for (var i = 0; i < paymentOption.length; i++) {
         if (paymentOption[i].selected) {
@@ -416,7 +427,7 @@ function finalInfoArray() {
 
         };
     };
-    var infoArray = [from, to, carSizeValue, phoneNumber, pay];
+    var infoArray = [from, to, serviceTypeValue, carSizeValue, phoneNumber, date, time, pay];
     console.log(infoArray);
 
     var listItem = document.createElement("ul");
@@ -427,8 +438,6 @@ function finalInfoArray() {
       listItem.appendChild(dot);
     };
     document.getElementById("kvittoInfo").appendChild(listItem);
-
-    hideShow("secondCustomerView", "kvitto");
 }
 
 function hideShow(toHide, toShow) {
