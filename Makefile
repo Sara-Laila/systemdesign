@@ -1,5 +1,9 @@
 GIT_BRANCH=
 
+all:
+	npm install
+	node app.js
+
 branch:	
 	$(eval GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD))
 
@@ -20,3 +24,5 @@ clean:
 	rm -rf node_modules/
 	rm -f views/*#*
 	rm -f public/*/*#*
+
+.PHONY = all branch
