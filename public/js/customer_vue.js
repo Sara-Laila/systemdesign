@@ -1,19 +1,16 @@
 var vm = new Vue({
-    el: '#firstCustomerView',
+    el: 'whereTo',
     methods: {
-        firstCustomerView: function () {
-            var from = document.getElementById("from").value;
-            var to = document.getElementById("to").value;
+        showWhereTo: function() {
+          var from = document.getElementById("autocomplete").value;
+          var to =document.getElementById("autocomplete2").value;
 
-            var carSize = document.getElementsByName("bil");
-                for (var i = 0; i < carSize.length; i++) {
-                    if (carSize[i].checked) {
-                    var size = carSize[i].id;
-                    break;
-                };
-             };
+          var placeToPut = document.getElementById("whereTo");
+          var fromText = document.createTextNode(from);
+          var toText = document.createTextNode(to);
+          placeToPut.appendChild(fromText);
+          placeToPut.appendChild(toText);
 
-             var firstInfoArray = [from, to, size];
-        };
+        }
     };
 });
