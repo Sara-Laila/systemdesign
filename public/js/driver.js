@@ -51,6 +51,7 @@ function initMap() {
     });
 
     myplacemarker.addListener('click', toggleBounce);
+
 }
 
 function geolocate() {
