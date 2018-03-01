@@ -14,7 +14,7 @@ var vm = new Vue({
       this.orders = data.orders;
     }.bind(this));
 
-    socket.on('currentQueue', function (data) {
+    socket.on('taxiOrdered', function (data) {
       this.orders = data.orders;
     }.bind(this));
   },
@@ -59,14 +59,7 @@ function initMap() {
         icon: '/img/markers/red_MarkerA.png'
     });
 
-    myplacemarker.addListener('click', toggleBounce);
-
-    autocomplete = new google.maps.places.Autocomplete(
-        /** @type {!HTMLInputElement} */ (
-            document.getElementById('autocomplete')), {
-                types: ['geocode'],
-                componentRestrictions: {'country': 'se'}
-            });
+ 
 }
 /*----------------------------------------------------*/
 
