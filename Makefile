@@ -4,6 +4,9 @@ all:
 	npm install
 	node app.js
 
+edit: 	public/ views/  clean
+	emacsclient public/css/* views/* public/js/*
+
 branch:	
 	$(eval GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD))
 
