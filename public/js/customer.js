@@ -47,7 +47,23 @@ function showWhereTo() {
   paragraph2.appendChild(toText);
   placeToPut.appendChild(paragraph1);
   placeToPut.appendChild(paragraph2);
+
+  var whatService = getTypeOfService();
+  if (whatService == "taxi") {
+      hideDivs("carType");
+      hideDivs("special");
+      hideDivs("personalNum");
+  }
 };
+
+var hideDivs = function(divToHide) {
+    var x = document.getElementById(divToHide);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
 
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
@@ -412,6 +428,16 @@ var vm = new Vue ({
     },
 });
 
+var getTypeOfService = function() {
+  var service = document.getElementsByName("typeOfService");
+  for (var i = 0; i < service.length; i++) {
+      if (service[i].checked) {
+          var serviceValue = service[i].value;
+          break;
+      };
+  };
+  return serviceValue;
+}
 
 function finalInfoArray() {
   console.log("entered finalInfoArray");
@@ -419,14 +445,7 @@ function finalInfoArray() {
     var from = document.getElementById("autocomplete").value;
     var to = document.getElementById("autocomplete2").value;
 //get type of serviceType
-    var service = document.getElementsByName("typeOfService");
-    for (var i = 0; i < service.length; i++) {
-        if (service[i].checked) {
-            var serviceValue = service[i].value;
-            break;
-        };
-    };
-
+    var serviceValue = getTypeOfService();
 //get car size
     var carSizeTwo = document.getElementsByName("car");
     for (var i = 0; i < carSizeTwo.length; i++) {
@@ -435,7 +454,7 @@ function finalInfoArray() {
             break;
         };
     };
-
+//get phoneNumber, date, pickupTime, paymentOption
     var phoneNumber = document.getElementById("tel").value;
     var date = document.getElementById("date").value;
     var time = document.getElementById("pickupTime").value;
@@ -444,7 +463,6 @@ function finalInfoArray() {
         if (paymentOption[i].selected) {
             var pay = paymentOption[i].id;
             break;
-
         };
     };
     var infoArray = [from, to, serviceValue, carSizeValue, phoneNumber, date, time, pay];
