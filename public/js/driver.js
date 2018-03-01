@@ -320,10 +320,6 @@ hamburgerDrawer.addEventListener('touchend',
 /*Javascript for the two customer views*/
 
 
-
-
-
-
 function finalInfoArray() {
     var from = document.getElementById("fromTwo").value;
     var to = document.getElementById("toTwo").value;
