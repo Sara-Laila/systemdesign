@@ -437,7 +437,17 @@ var vm = new Vue ({
     },
 });
 
-<<<<<<< HEAD
+var getTypeOfService = function() {
+  var service = document.getElementsByName("typeOfService");
+  for (var i = 0; i < service.length; i++) {
+      if (service[i].checked) {
+          var serviceValue = service[i].value;
+          break;
+      };
+  };
+  return serviceValue;
+}
+
 $('#q-dest').keypress(function(e){
 
     if (e.which == 13) {
@@ -448,17 +458,7 @@ $('#q-dest').keypress(function(e){
 
 function callModal(modal){
     $(modal).modal()
-=======
-var getTypeOfService = function() {
-  var service = document.getElementsByName("typeOfService");
-  for (var i = 0; i < service.length; i++) {
-      if (service[i].checked) {
-          var serviceValue = service[i].value;
-          break;
-      };
-  };
-  return serviceValue;
->>>>>>> master
+
 }
 
 function finalInfoArray() {
