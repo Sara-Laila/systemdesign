@@ -51,6 +51,10 @@ function initMap() {
     });
 
     myplacemarker.addListener('click', toggleBounce);
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 }
 
 function geolocate() {
@@ -318,6 +322,13 @@ hamburgerDrawer.addEventListener('touchend',
 
 /*Javascript for the two customer views*/
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> master
 
 function finalInfoArray() {
     var from = document.getElementById("fromTwo").value;
