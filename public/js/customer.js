@@ -50,14 +50,23 @@ function showWhereTo() {
 
   var whatService = getTypeOfService();
   if (whatService == "taxi") {
-      hideDivs("carType");
       hideDivs("special");
       hideDivs("personalNum");
+  } else {
+    hideDivs("carType");
   }
 };
 
 var hideDivs = function(divToHide) {
     var x = document.getElementById(divToHide);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+var hideClass = function(classToHide) {
+    var x = document.getElementsByClassName(classToHide);
     if (x.style.display === "none") {
         x.style.display = "block";
     } else {

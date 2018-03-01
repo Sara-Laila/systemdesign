@@ -64,35 +64,44 @@
                   <label class="bil-cc big"for="big"></label>
               </div>
             </div>
-          </div>
           <div id="special">
-            <div class="checkbox">
-              <h6>Special krav:</h6>
-              <label><input type="checkbox" name="specialChoice" value="rullstol">Rullstol</label>
+            <h6>Special krav:</h6>
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="checkbox">
+                  <label><input type="checkbox" name="specialChoice" value="rullstol">Rullstol</label>
+                </div>
+                <div id="numAdults">
+                  <label for="numPassenger">Antal vuxna:</label><br>
+                  <select id="numPassenger">
+                    <option name="passengers" id="0" selected="selected">0</option>
+                    <option name="passengers" id="1">1</option>
+                    <option name="passengers" id="2" >2</option>
+                    <option name="passengers" id="3" >3</option>
+                    <option name="passengers" id="4" >4</option>
+                  </select>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="checkbox">
+                  <label><input type="checkbox" name="specialChoice" value="ledarhund">Sällskap/ledarhund</label>
+                </div>
+                <div id="numChildren">
+                  <label for="numPassenger">Antal barn:</label><br>
+                  <select id="numPassenger">
+                    <option name="passengers" id="0" selected="selected">0</option>
+                    <option name="passengers" id="1">1</option>
+                    <option name="passengers" id="2" >2</option>
+                    <option name="passengers" id="3" >3</option>
+                    <option name="passengers" id="4" >4</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="checkbox">
-              <label><input type="checkbox" name="specialChoice" value="ledarhund">Sällskap/ledarhund</label>
             </div>
-            <div id="numAdults">
-              <label for="numPassenger">Antal vuxna:</label><br>
-              <select id="numPassenger">
-                <option name="passengers" id="0" selected="selected">0</option>
-                <option name="passengers" id="1">1</option>
-                <option name="passengers" id="2" >2</option>
-                <option name="passengers" id="3" >3</option>
-                <option name="passengers" id="4" >4</option>
-              </select>
-            </div>
-            <div id="numChildren">
-              <label for="numPassenger">Antal barn (under 18 år):</label><br>
-              <select id="numPassenger">
-                <option name="passengers" id="0" selected="selected">0</option>
-                <option name="passengers" id="1">1</option>
-                <option name="passengers" id="2" >2</option>
-                <option name="passengers" id="3" >3</option>
-                <option name="passengers" id="4" >4</option>
-              </select>
-            </div>
+          </div>
           </div>
           <div id="dayAndTime">
             <p>
