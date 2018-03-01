@@ -450,14 +450,7 @@ function finalInfoArray() {
     var infoArray = [from, to, serviceValue, carSizeValue, phoneNumber, date, time, pay];
     console.log(infoArray);
 
-    var listItem = document.createElement("ul");
-
-    for (var i = 0; i < infoArray.length; i++) {
-      var dot = document.createElement("li")
-      dot.appendChild(document.createTextNode(infoArray[i]));
-      listItem.appendChild(dot);
-    }
-    document.getElementById("kvittoInfo").appendChild(listItem);
+    return infoArray;
 };
 
 function hideShow(toHide, toShow) {

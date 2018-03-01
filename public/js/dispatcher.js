@@ -4,6 +4,21 @@
 'use strict';
 var socket = io();
 
+var vm = new Vue({
+  el: '#orders',
+  data: {
+    orders: {},
+  },
+  created: function () {
+    socket.on('initialize', function (data) {
+      this.orders = data.orders;
+    }.bind(this));
+
+    socket.on('currentQueue', function (data) {
+      this.orders = data.orders;
+    }.bind(this));
+  },
+});
 /*MAP stuff ---------------------------------*/
 
 var directionsDisplay;
@@ -31,9 +46,9 @@ function initMap() {
     directionsService = new google.maps.DirectionsService;
     geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById('map'), {
-        
+
         zoom: 14,
-        center: myplace, 
+        center: myplace,
         disableDefaultUI: true
     });
 
@@ -43,7 +58,7 @@ function initMap() {
         position: myplace,
         icon: '/img/markers/red_MarkerA.png'
     });
-    
+
     myplacemarker.addListener('click', toggleBounce);
 
     autocomplete = new google.maps.places.Autocomplete(
@@ -58,12 +73,13 @@ function initMap() {
 
 
 
+
 function show(toShow) {
     var y = document.getElementById(toShow);
     if (y.style.display == "block") {
       y.style.display = "none";
     }
-    else { 
+    else {
       y.style.display = "block";
     }
 }

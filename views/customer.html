@@ -15,6 +15,7 @@
     <script src="/esri-leaflet/esri-leaflet.js"></script>
     <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script>
     <script src="js/customer.js" defer></script>
+    <script src="js/send_to_dispatch.js" defer></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
     </script>
@@ -81,7 +82,7 @@
             </select>
           </p>
           <div class="modal-footer">
-            <button onclick=finalInfoArray() type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
+            <button v-on:click="addOrder" type="submit" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
           </div>
         </div>
       </div>
