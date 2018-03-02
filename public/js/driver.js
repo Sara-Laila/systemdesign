@@ -52,18 +52,6 @@ function initMap() {
 
     myplacemarker.addListener('click', toggleBounce);
 
-    autocomplete = new google.maps.places.Autocomplete(
-        /** @type {!HTMLInputElement} */ (
-            document.getElementById('autocomplete')), {
-                types: ['geocode'],
-                componentRestrictions: {'country': 'se'}
-            });
-    autocomplete2 = new google.maps.places.Autocomplete(
-                  /** @type {!HTMLInputElement} */ (
-                    document.getElementById('autocomplete2')), {
-                        types: ['geocode'],
-                        componentRestrictions: {'country': 'se'}
-                    });
 }
 
 function geolocate() {
@@ -330,58 +318,6 @@ hamburgerDrawer.addEventListener('touchend',
   });
 
 /*Javascript for the two customer views*/
-
-var vm = new Vue({
-    el: '#CustomerView',
-    data: {
-
-    },
-    methods: {
-        toNextView: function () {
-            var from = document.getElementById("fromOne").value;
-            var to = document.getElementById("toOne").value;
-            moveMarker();
-
-            var carSizeOne = document.getElementsByName("bilOne");
-            var carSizeTwo = document.getElementsByName("bilTwo");
-                for (var i = 0; i < carSizeOne.length; i++) {
-                    if (carSizeOne[i].checked) {
-                    carSizeTwo[i].checked = "checked";
-                    break;
-                };
-             };
-
-             document.getElementById("fromTwo").value = from;
-             document.getElementById("toTwo").value = to;
-             hideShow("firstCustomerView", "secondCustomerView");
-        },
-
-        toPayment: function () {
-          finalInfoArray();
-        }
-    },
-});
-
-
-var vm = new Vue ({
-    el: "#q-dest",
-    data: {
-    },
-    methods: {
-        destinationFirst: function () {
-            console.log("You are in the first function");
-            var destName = document.getElementById("autocomplete").value;
-            if(!destName){
-                alert("Invalid address");
-                return;
-            }
-            console.log(destName);
-            document.getElementById("toOne").value = destName;
-            hideShow("q-dest", "firstCustomerView");
-            codeAddress();
-        }
-    },
-});
 
 
 function finalInfoArray() {

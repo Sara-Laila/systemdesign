@@ -9,38 +9,42 @@
   <script src="/vue/vue.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/leaflet/leaflet.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="css/dispatcher.css">
+  
   <script src="js/dispatcher.js" defer></script>
-   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
-    </script>
+    
 </head>
 <body>
-  <h1>Dispatch view</h1>
 
-  <div id="map" class:"map"></div>
+    
+  
 
-  <div id="DispContainer">
-    <div id="warning">
-      <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+       <div id="warning">
+          <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
+       </div>
+       <div id="warning">
+          <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
+       </div>
+       <div id="warning">
+          <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
+       </div>
+ 
+      </div>
+      <div class="col-sm-10">
+        <div id="map"></div>
+      </div>
     </div>
-
-    <div id="Dispoverview">
-      <button v-on:click="overview" class="button overview"  type="button">Översikt</button>
-    </div>
-
-    <div id="hotspot">
-      <button v-on:click="newHotspot" class="button hotSpot"  type="button">Hot Spot!</button>
-    </div>
-
-
-
-  <div id="addWarning">
-     <textarea cols="40" rows="5" id="warningDesc" placeholder="Lägg till Beskrivning"></textarea>
-     <input type="text" placeholder="Position">
-     <button v-on:click="addwarningClick" class="addingW"  type="button">Lägg till varning!</button>
   </div>
-
-
-    <div id="orders">
+  
+  <div id="orders">
     <div id="orderList">
       <div v-for="(order, key) in orders">
         #{{ key }}: {{ order.customerDetails.join(", ") }};
@@ -52,13 +56,5 @@
     </div>
 
 
-
-
-  <div id="addHotspot">
-    <textarea cols="40" rows="5" id="hotspotDesc" placeholder="Lägg till Beskrivning"></textarea>
-     <input type="text" placeholder="Position">
-     <button v-on:click="addHotpotClick" class="addingH"  type="button">Lägg till hotSpot!</button>
-  </div>
-  <div>
 </body>
 </html>

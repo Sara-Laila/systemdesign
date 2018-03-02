@@ -47,7 +47,32 @@ function showWhereTo() {
   paragraph2.appendChild(toText);
   placeToPut.appendChild(paragraph1);
   placeToPut.appendChild(paragraph2);
+
+  var whatService = getTypeOfService();
+  if (whatService == "taxi") {
+      hideDivs("special");
+      hideDivs("personalNum");
+  } else {
+    hideDivs("carType");
+  }
 };
+
+var hideDivs = function(divToHide) {
+    var x = document.getElementById(divToHide);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+var hideClass = function(classToHide) {
+    var x = document.getElementsByClassName(classToHide);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
 
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
@@ -413,21 +438,39 @@ var vm = new Vue ({
 });
 
 
+var getTypeOfService = function() {
+  var service = document.getElementsByName("typeOfService");
+  for (var i = 0; i < service.length; i++) {
+      if (service[i].checked) {
+          var serviceValue = service[i].value;
+          break;
+      };
+  };
+  return serviceValue;
+}
+
+$('#q-dest').keypress(function(e){
+
+    if (e.which == 13) {
+        callModal("#firstOrderModal");
+    }
+
+});
+
+function callModal(modal){
+    $(modal).modal()
+
+}
+
 function finalInfoArray() {
   console.log("entered finalInfoArray");
   //get address
     var from = document.getElementById("autocomplete").value;
     var to = document.getElementById("autocomplete2").value;
 //get type of serviceType
-    var service = document.getElementsByName("typeOfService");
-    for (var i = 0; i < service.length; i++) {
-        if (service[i].checked) {
-            var serviceValue = service[i].value;
-            break;
-        };
-    };
-
+    var serviceType = getTypeOfService();
 //get car size
+  if(serviceType == "taxi") {
     var carSizeTwo = document.getElementsByName("car");
     for (var i = 0; i < carSizeTwo.length; i++) {
         if (carSizeTwo[i].checked) {
@@ -435,23 +478,64 @@ function finalInfoArray() {
             break;
         };
     };
-
+  }
+//get phoneNumber, date, pickupTime, paymentOption
     var phoneNumber = document.getElementById("tel").value;
     var date = document.getElementById("date").value;
     var time = document.getElementById("pickupTime").value;
-    var paymentOption = document.getElementsByName("pay");
-    for (var i = 0; i < paymentOption.length; i++) {
-        if (paymentOption[i].selected) {
-            var pay = paymentOption[i].id;
-            break;
-
-        };
-    };
-    var infoArray = [from, to, serviceValue, carSizeValue, phoneNumber, date, time, pay];
+    var pay = getInfoFromDropdown("pay");
+    //get extra info if serviceType=färdtjänst
+    if (serviceType == "färdtjänst") {
+      var specialDemands = getSpecialDemands();
+      var numPassengers = getNumberOfPassengers();
+      var pNumber = document.getElementById("perNum").value;
+      var infoArray = [from, to, serviceType, specialDemands, numPassengers, pNumber, phoneNumber, date, time, pay];
+    } else {
+      var infoArray = [from, to, serviceType, carSizeValue, phoneNumber, date, time, pay];
+    }
     console.log(infoArray);
-
     return infoArray;
 };
+
+function createInfoList(placeToPut) {
+  var infoArray = finalInfoArray();
+  var listItem = document.createElement("ul");
+  
+  for (var i = 0; i < infoArray.length; i++) {
+    var dot = document.createElement("li")
+    dot.appendChild(document.createTextNode(infoArray[i]));
+    listItem.appendChild(dot);
+  }
+  document.getElementById(placeToPut).appendChild(listItem);
+}
+
+function getSpecialDemands() {
+  var choices = document.getElementsByName("specialChoice");
+  var choicesValue = [];
+  for (var i = 0; i < choices.length; i++) {
+    if(choices[i].checked) {
+      choicesValue += choices[i].value + ", ";
+    }
+  }
+  return choicesValue;
+}
+function getInfoFromDropdown(name) {
+  var options = document.getElementsByName(name);
+  for (var i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+          var selectedOption = options[i].id;
+          break;
+      };
+  };
+  return selectedOption;
+}
+function getNumberOfPassengers() {
+  var adults = getInfoFromDropdown("passengers");
+  var children = getInfoFromDropdown("passengers2");
+  var total = ["vuxna: "+ adults, "barn: "+ children];
+  return total;
+}
+
 
 function hideShow(toHide, toShow) {
     var x = document.getElementById(toHide);
@@ -471,3 +555,40 @@ function hideShow(toHide, toShow) {
           }
       });
   });
+
+/*Skicka orderns till servern*/
+function getInfo() {
+  var tel = document.getElementById("tel").value;
+  console.log(tel);
+  var payOpt = document.getElementsByName("pay");
+  console.log(payOpt);
+  for (var i = 0; i < payOpt.length; i++) {
+    if (payOpt[i].selected) {
+      var payment = payOpt[i].id;
+    };
+  };
+  var array = [tel, payment];
+   console.log(array);
+
+   return array;
+
+}
+
+var send = new Vue({
+  el: '#secondModalView',
+  data: {
+    orderId: Math.floor(1000 + Math.random() * 9000),
+    position: {x:0, y:0},
+  },
+  methods: {
+    sendOrder: function () {
+          console.log("Är i sendOrder");
+          /*Här skickas allti iväg, lägg till i getInfo() vad som behövs*/
+      socket.emit("addOrder", { orderId: this.orderId,
+                                details: { x: this.position.x, y: this.position.y},
+                                customerInfo: getInfo(),
+                              });
+      console.log(this.orderId);
+    }
+  }
+});
