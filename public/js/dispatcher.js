@@ -17,7 +17,7 @@ var vm = new Vue({
 
     socket.on('taxiAdded', function (taxi) {
       this.$set(this.taxis, taxi.taxiId, taxi);
-      this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
+      //this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
     }.bind(this));
 
     socket.on('taxiMoved', function (taxi) {

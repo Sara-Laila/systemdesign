@@ -3,6 +3,97 @@
 /* exported vm */
 'use strict';
 var socket = io();
+
+var vm = new Vue({
+  el: '#loggButtons',
+  data: {
+    buttonId: "logginButton",
+    loggText: "Logga in",
+    currentJobs: "#job",
+    taxiId: 0,
+    taxiLocation: null,
+    orders: {},
+    customerMarkers: {}
+    },
+    created: function () {
+        socket.on('initialize', function (data) {
+            this.orders = data.orders;
+        }.bind(this));
+        socket.on('currentQueue', function (data) {
+            this.orders = data.orders;
+        }.bind(this));
+
+
+
+
+        //Helper function, should probably not be here
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+        // It's probably not a good idea to generate a random taxi number, client-side.
+        this.taxiId = getRandomInt(1, 1000000);
+    },
+    mounted: function () {
+
+
+    },
+    methods: {
+        loggInLoggOff: function() {
+          if (this.loggText == "Logga in") {
+            this.loggText = "Logga ut";
+            changeHeaderColor("#5cb85c");
+            this.setTaxiLocation();
+            //socket.emit('addTaxi', {"123"}); addTaxi! TODO
+          } else {
+            this.loggText = "Logga in";
+            changeHeaderColor("white");
+            this.quit();
+            //Here messages to dispather should be sent - removeTaxi! TODO
+          }
+        },
+        setTaxiLocation: function () {
+          /* TODO! FRÅN MIKAELS SKELETTKOD
+            if (this.taxiLocation === null) {
+                this.taxiLocation = L.marker([event.latlng.lat, event.latlng.lng], {icon: this.taxiIcon, draggable: true}).addTo(this.map);
+                this.taxiLocation.on("drag", this.moveTaxi);
+                socket.emit("addTaxi", { taxiId: this.taxiId,
+                                         latLong: [event.latlng.lat, event.latlng.lng]
+                                       });
+            }
+            else {
+                this.taxiLocation.setLatLng(event.latlng);
+                this.moveTaxi(event);
+            }
+            */
+            socket.emit("addTaxi", { taxiId: this.taxiId
+                                   });
+        },
+        moveTaxi: function (event) {
+          /* TODO! FRÅN MIKAELS SKELETTKOD
+            socket.emit("moveTaxi", { taxiId: this.taxiId,
+                                      latLong: [event.latlng.lat, event.latlng.lng]
+                                    });*/
+        },
+        quit: function () {
+            socket.emit("taxiQuit", this.taxiId);
+        },
+        acceptOrder: function (order) {
+            order.taxiIdConfirmed = this.taxiId;
+            socket.emit("orderAccepted", order);
+        },
+        finishOrder: function (orderId) {
+            Vue.delete(this.orders, orderId);
+            socket.emit("finishOrder", orderId);
+        },
+        putCustomerMarkers: function (order) {
+
+        },
+    },
+});
+
+/*******/
 var hamburgerDrawer = document.getElementById('hamburger-menu');
 var hamburgerBtn = document.getElementById('hamburger-btn');
 var hamburgerDrawerBg = document.getElementById('content');
@@ -31,6 +122,25 @@ var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
 var oneByForthScreen = window.innerWidth / 4;
 var openStatus = false;
 
+function hideDivs(divToHide) {
+  var x = document.getElementById(divToHide);
+  if (x.style.display === "none") {
+      x.style.display = "block";
+  } else {
+      x.style.display = "none";
+  }
+};
+function hideAndShow(toHide, toShow) {
+    var x = document.getElementById(toHide);
+    var y = document.getElementById(toShow);
+    x.style.display = "none";
+    y.style.display = "block";
+};
+
+
+function changeHeaderColor(color) {
+  document.getElementById("taxiid").style.backgroundColor = color;
+}
 
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
@@ -51,6 +161,7 @@ function initMap() {
     });
 
     myplacemarker.addListener('click', toggleBounce);
+
 }
 
 function geolocate() {
@@ -317,42 +428,6 @@ hamburgerDrawer.addEventListener('touchend',
   });
 
 /*Javascript for the two customer views*/
-
-
-function finalInfoArray() {
-    var from = document.getElementById("fromTwo").value;
-    var to = document.getElementById("toTwo").value;
-
-    var carSizeTwo = document.getElementsByName("bilTwo");
-    for (var i = 0; i < carSizeTwo.length; i++) {
-        if (carSizeTwo[i].checked) {
-            var carSizeValue = carSizeTwo[i].value;
-            break;
-        };
-    };
-    var phoneNumber = document.getElementById("tel").value;
-    var paymentOption = document.getElementsByName("pay");
-    for (var i = 0; i < paymentOption.length; i++) {
-        if (paymentOption[i].selected) {
-            var pay = paymentOption[i].id;
-            break;
-
-        };
-    };
-    var infoArray = [from, to, carSizeValue, phoneNumber, pay];
-    console.log(infoArray);
-
-    var listItem = document.createElement("ul");
-
-    for (var i = 0; i < infoArray.length; i++) {
-      var dot = document.createElement("li")
-      dot.appendChild(document.createTextNode(infoArray[i]));
-      listItem.appendChild(dot);
-    };
-    document.getElementById("kvittoInfo").appendChild(listItem);
-
-    hideShow("secondCustomerView", "kvitto");
-}
 
 function hideShow(toHide, toShow) {
     var x = document.getElementById(toHide);

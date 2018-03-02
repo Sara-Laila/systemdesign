@@ -20,38 +20,30 @@
   </head>
   <body>
 
-    <div id="hamburger-menu">
-      <ul class="list">
-        <li class="active"><a>TAXIAPP</a></li>
-        <li><a data-toggle="modal" data-target="#myModal">Taxibokning</a></li>
-        <li><a>Mina körningar</a></li>
-        <li><a>Lalala</a></li>
-        <li><a>Typ</a></li>
-      </ul>
-    </div>
-
-    <header>
-      <div id="hamburger-btn">
-        <span></span>
-        <span></span>
-        <span></span>
+      <div id="hamburger-menu">
+        <ul class="list">
+          <li class="active"><a>Meny</a></li>
+          <li id="job"><a data-toggle="modal" data-target="#currentJobModal">Nytt jobb</a></li>
+          <li id="drivingJob"><a data-toggle="modal" data-target="#drivingModal">Nuvarande jobb</a></li>
+        </ul>
       </div>
 
-      
-      <div id="taxiid">TAXI DRIVER # {{ taxiId }}</div>
+      <header>
+        <div id="hamburger-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
 
-       <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Visa resa</button>
-      <a href="#" id="account-icon"></a>
+        <div id="taxiid">TAXI DRIVER # {{ taxiId }}</div>
+        <div id="loggButtons">
+          <button v-on:click="loggInLoggOff" id="logginButton" type="button" class="btn btn-default">{{loggText}}</button>
+        </div>
+      </header>
 
 
-      <a href="#" id="logo"></a>
-      <button v-on:click="quit">Avsluta</button>
-    </header>
-    <!-- Modal -->
-      <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="currentJobModal" role="dialog">
         <div class="modal-dialog">
-
-          <!-- Modal content-->
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -63,68 +55,41 @@
                 Till <br>
                 Tid <br>
                 Typ av resa <br>
+                Special krav <br>
               </p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+              <button v-on:click="acceptOrder(order)" type="button" class="btn btn-default" data-dismiss="modal">Acceptera</button>
             </div>
           </div>
-
         </div>
-</div>
-<!--
-<div id="firstCustomerView">
-  <table id=jobInfoTable align=center>
-  <tr>
-    <th>
-        <h3>Till</h3>
-      </th>
-    <th>
-        <h3>Från</h3>
-    </th>
-  </tr>
-  <tr>
-      <td>
-      Polacksgatan 3, Uppsala
-    </td>
-      <td>
-      Uppsala centralstation
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Tid till kund
-    </td>
-    <td>
-      10 min
-    </td>
-  </tr>
-  <tr>
-    <td>
-       <div id="declineJob">
-          <button>Avböj</button>
-      </div>
-    </td>
-    <td>
-      <div id="acceptJob">
-            <button v-on:click="acceptOrder(order)">ACCEPT</button>
-      </div>
-    </td>
-  </tr>
-</table>
-    <div id="readMore" align=center>
-        <button>Läs mer om jobbet</button>
     </div>
-    <div id="finishButton">
-      <button v-on:click="finishOrder(order.orderId)">Körning avslutad</button>
+    <div class="modal fade" id="drivingModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Nuvarande körning</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                Från <br>
+                Till <br>
+                <button type="button" class="btn btn-default" name="button">Ring kunden</button>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button id="finishButton" v-on:click="finishOrder(order.orderId)" type="button" class="btn btn-default" data-dismiss="modal">Körning färdig</button>
+              <button id="startButton" v-on:click="acceptOrder(order)" type="button" class="btn btn-default" data-dismiss="modal">Starta</button>
+            </div>
+          </div>
+        </div>
     </div>
-</div>
-
--->
 
     <div id="content">
       <div id="page">
         <div id="map"></div>
+
         <ul>
           <div v-for="order in orders" v-if="order.taxiId == taxiId">
             # {{ order.orderId}} From: {{ order.fromLatLong[0].toFixed(3) }}, {{ order.fromLatLong[1].toFixed(3) }} Destination: {{ order.destLatLong[0].toFixed(3) }}, {{ order.destLatLong[1].toFixed(3) }}

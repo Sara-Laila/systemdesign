@@ -52,7 +52,14 @@
         #{{ key }}: {{ order.customerDetails.join(", ") }};
       </div>
     </div>
+
+    <div id="taxiList">
+      <div v-for="taxi in taxis">
+        # {{ taxi.taxiId}};
+      </div>
+    </div>
   </div>
+
      <div id="currentJobs"  class="jobs current">
       <h3>List of current jobs</h3>
     </div>
