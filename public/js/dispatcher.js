@@ -13,6 +13,7 @@ var vm = new Vue({
   created: function () {
     socket.on('initialize', function (data) {
       this.orders = data.orders;
+      this.taxis = data.taxis;
     }.bind(this));
 
     socket.on('taxiAdded', function (taxi) {

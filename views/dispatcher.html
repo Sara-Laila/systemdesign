@@ -50,6 +50,11 @@
     <div id="orderList">
       <div v-for="(order, key) in orders">
         #{{ key }}: {{ order.customerDetails.join(", ") }};
+
+        <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
+              <option disabled value="">Assign a taxi</option>
+              <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
+            </select> {{ order.taxiIdConfirmed }}
       </div>
     </div>
 
@@ -58,6 +63,8 @@
         # {{ taxi.taxiId}};
       </div>
     </div>
+
+
   </div>
 
      <div id="currentJobs"  class="jobs current">

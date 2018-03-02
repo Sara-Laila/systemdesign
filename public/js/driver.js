@@ -5,7 +5,7 @@
 var socket = io();
 
 var vm = new Vue({
-  el: '#loggButtons',
+  el: '#drivercontent',
   data: {
     buttonId: "logginButton",
     loggText: "Logga in",
@@ -41,6 +41,8 @@ var vm = new Vue({
     },
     methods: {
         loggInLoggOff: function() {
+          //this.loggText är det som står på knappen
+          //logga in == föraren är utloggad
           if (this.loggText == "Logga in") {
             this.loggText = "Logga ut";
             changeHeaderColor("#5cb85c");

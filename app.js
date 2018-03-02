@@ -145,7 +145,7 @@ io.on('connection', function (socket) {
   socket.on('orderAccepted', function(order) {
     data.updateOrderDetails(order);
     io.emit('orderAccepted', order );
-  })
+  });
 });
 
 var server = http.listen(app.get('port'), function () {
