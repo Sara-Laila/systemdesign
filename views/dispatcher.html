@@ -42,5 +42,16 @@
     </div>
   </div>
 
+  <div id="orders">
+    <div id="orderList">
+      <div v-for="(order, key) in orders">
+        #{{ key }}: {{ order.customerDetails.join(", ") }};
+      </div>
+    </div>
+  </div>
+     <div id="currentJobs"  class="jobs current">
+      <h3>List of current jobs</h3>
+    </div>
+
 </body>
 </html>

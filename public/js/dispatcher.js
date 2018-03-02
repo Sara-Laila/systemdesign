@@ -37,6 +37,7 @@ function initMap() {
         disableDefaultUI: true
     });
 
+    //TODO add all taximarkers.
     myplacemarker = new google.maps.Marker({
         map: map,
         animation: google.maps.Animation.DROP,
@@ -44,14 +45,9 @@ function initMap() {
         icon: '/img/markers/red_MarkerA.png'
     });
     
-    myplacemarker.addListener('click', toggleBounce);
+    //myplacemarker.addListener('click', toggleBounce);
 
-    autocomplete = new google.maps.places.Autocomplete(
-        /** @type {!HTMLInputElement} */ (
-            document.getElementById('autocomplete')), {
-                types: ['geocode'],
-                componentRestrictions: {'country': 'se'}
-            });
+    
 }
 /*----------------------------------------------------*/
 
