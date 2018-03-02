@@ -8,10 +8,26 @@ var vm = new Vue({
   el: '#orders',
   data: {
     orders: {},
+    taxis: {}
   },
   created: function () {
     socket.on('initialize', function (data) {
       this.orders = data.orders;
+    }.bind(this));
+
+    socket.on('taxiAdded', function (taxi) {
+      this.$set(this.taxis, taxi.taxiId, taxi);
+      this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
+    }.bind(this));
+
+    socket.on('taxiMoved', function (taxi) {
+      //TODO! MIKAELS SKELETTKOD SOM EJ FUNKAR MED VÅR ATM :)
+      /*this.taxis[taxi.taxiId].latLong = taxi.latLong;
+      this.taxiMarkers[taxi.taxiId].setLatLng(taxi.latLong); */
+    }.bind(this));
+
+    socket.on('taxiQuit', function (taxiId) {
+      Vue.delete(this.taxis, taxiId);
     }.bind(this));
 
     socket.on('taxiOrdered', function (order) {
@@ -21,11 +37,16 @@ var vm = new Vue({
     socket.on('orderAccepted', function (order) {
       this.$set(this.orders, order.orderId, order);
     }.bind(this));
-    
+
     socket.on('orderFinished', function (orderId) {
       Vue.delete(this.orders, orderId);
     }.bind(this));
   },
+  methods: {
+    assignTaxi: function (order) {
+      socket.emit("taxiAssigned", order);
+    },
+  }
 });
 /*MAP stuff ---------------------------------*/
 
