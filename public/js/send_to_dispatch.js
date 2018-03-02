@@ -5,6 +5,7 @@ var vm = new Vue({
   el: '#secondModalView',
   data: {
     orderId: null,
+    taxiId: 0,
     map: null,
     fromMarker: null,
     destMarker: null,
