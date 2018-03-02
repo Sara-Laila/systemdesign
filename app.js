@@ -109,6 +109,7 @@ io.on('connection', function (socket) {
   socket.on('orderTaxi', function (order) {
     var orderId = data.addOrder(order);
     order.orderId = orderId;
+    console.log("New order: ", order);
     // send updated info to all connected clients, note the use of "io" instead of "socket"
     io.emit('taxiOrdered', order);
     // send the orderId back to the customer who ordered
@@ -116,6 +117,7 @@ io.on('connection', function (socket) {
   });
   socket.on('addTaxi', function (taxi) {
     data.addTaxi(taxi);
+    console.log("Taxi",taxi.taxiId,"has logged on!");
     // send updated info to all connected clients, note the use of io instead of socket
     io.emit('taxiAdded', taxi);
   });
