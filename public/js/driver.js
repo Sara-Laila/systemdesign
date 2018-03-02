@@ -31,6 +31,47 @@ var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
 var oneByForthScreen = window.innerWidth / 4;
 var openStatus = false;
 
+var vm = new Vue({
+    el: '#loggButtons',
+    data: {
+      buttonId: "logginButton",
+      loggText: "Logga in",
+      currentJobs: "#job",
+    },
+    methods: {
+        loggInLoggOff: function() {
+          if (this.loggText == "Logga in") {
+            this.loggText = "Logga ut";
+            changeHeaderColor("#5cb85c");
+            //socket.emit('addTaxi', {"123"}); addTaxi! TODO
+          } else {
+            this.loggText = "Logga in";
+            changeHeaderColor("white");
+            //Here messages to dispather should be sent - removeTaxi! TODO
+          }
+        },
+    },
+});
+
+function hideDivs(divToHide) {
+  var x = document.getElementById(divToHide);
+  if (x.style.display === "none") {
+      x.style.display = "block";
+  } else {
+      x.style.display = "none";
+  }
+};
+function hideAndShow(toHide, toShow) {
+    var x = document.getElementById(toHide);
+    var y = document.getElementById(toShow);
+    x.style.display = "none";
+    y.style.display = "block";
+};
+
+
+function changeHeaderColor(color) {
+  document.getElementById("taxiid").style.backgroundColor = color;
+}
 
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
@@ -318,42 +359,6 @@ hamburgerDrawer.addEventListener('touchend',
   });
 
 /*Javascript for the two customer views*/
-
-
-function finalInfoArray() {
-    var from = document.getElementById("fromTwo").value;
-    var to = document.getElementById("toTwo").value;
-
-    var carSizeTwo = document.getElementsByName("bilTwo");
-    for (var i = 0; i < carSizeTwo.length; i++) {
-        if (carSizeTwo[i].checked) {
-            var carSizeValue = carSizeTwo[i].value;
-            break;
-        };
-    };
-    var phoneNumber = document.getElementById("tel").value;
-    var paymentOption = document.getElementsByName("pay");
-    for (var i = 0; i < paymentOption.length; i++) {
-        if (paymentOption[i].selected) {
-            var pay = paymentOption[i].id;
-            break;
-
-        };
-    };
-    var infoArray = [from, to, carSizeValue, phoneNumber, pay];
-    console.log(infoArray);
-
-    var listItem = document.createElement("ul");
-
-    for (var i = 0; i < infoArray.length; i++) {
-      var dot = document.createElement("li")
-      dot.appendChild(document.createTextNode(infoArray[i]));
-      listItem.appendChild(dot);
-    };
-    document.getElementById("kvittoInfo").appendChild(listItem);
-
-    hideShow("secondCustomerView", "kvitto");
-}
 
 function hideShow(toHide, toShow) {
     var x = document.getElementById(toHide);
