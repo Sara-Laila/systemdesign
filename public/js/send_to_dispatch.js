@@ -16,7 +16,7 @@ var vm = new Vue({
     addOrder: function (event) {
           console.log("Är i addOrder");
 
-      socket.emit('orderTaxi', { orderId: this.getNext(),
+      socket.emit("addOrder", { orderId: this.getNext(),
                                 customerDetails: finalInfoArray(),
                               });
     }
