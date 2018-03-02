@@ -4,6 +4,29 @@
 'use strict';
 var socket = io();
 
+var vm = new Vue({
+  el: '#orders',
+  data: {
+    orders: {},
+  },
+  created: function () {
+    socket.on('initialize', function (data) {
+      this.orders = data.orders;
+    }.bind(this));
+
+    socket.on('taxiOrdered', function (order) {
+      this.$set(this.orders, order.orderId, order);
+    }.bind(this));
+
+    socket.on('orderAccepted', function (order) {
+      this.$set(this.orders, order.orderId, order);
+    }.bind(this));
+    
+    socket.on('orderFinished', function (orderId) {
+      Vue.delete(this.orders, orderId);
+    }.bind(this));
+  },
+});
 /*MAP stuff ---------------------------------*/
 
 var directionsDisplay;
@@ -31,25 +54,25 @@ function initMap() {
     directionsService = new google.maps.DirectionsService;
     geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById('map'), {
-        
+
         zoom: 14,
-        center: myplace, 
+        center: myplace,
         disableDefaultUI: true
     });
 
-    //TODO add all taximarkers.
     myplacemarker = new google.maps.Marker({
         map: map,
         animation: google.maps.Animation.DROP,
         position: myplace,
         icon: '/img/markers/red_MarkerA.png'
     });
-    
+
     //myplacemarker.addListener('click', toggleBounce);
 
-    
+
 }
 /*----------------------------------------------------*/
+
 
 
 
@@ -59,7 +82,7 @@ function show(toShow) {
     if (y.style.display == "block") {
       y.style.display = "none";
     }
-    else { 
+    else {
       y.style.display = "block";
     }
 }

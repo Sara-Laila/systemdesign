@@ -15,12 +15,13 @@
     <script src="/esri-leaflet/esri-leaflet.js"></script>
     <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script>
     <script src="js/customer.js" defer></script>
+    <script src="js/send_to_dispatch.js" defer></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places"></script>
-    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
+    </script>
+    <!-- <script src="js/drawermenu.js" defer></script> -->
   </head>
   <body>
-    <div id="customercontent">
     <div id="hamburger-menu">
       <ul class="list">
         <li class="active"><a>Meny</a></li>
@@ -54,84 +55,34 @@
             <h4 class="modal-title">Specifikationer:</h4>
           </div>
           <div class="modal-body">
-            <p id="whereTo"></p>
-            <div id="carType">
-              <div class="bilStorlek">
-                <h6>Välj bilstorlek:</h6>
-                  <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
-                  <label class="bil-cc small" for="small"></label>
-                  <input id="big" type="radio" name="car" value="stor bil" />
-                  <label class="bil-cc big"for="big"></label>
-              </div>
-            </div>
-          <div id="special">
-            <h6>Special krav:</h6>
-          <div class="container">
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="checkbox">
-                  <label><input type="checkbox" name="specialChoice" value="rullstol">Rullstol</label>
-                </div>
-                <div id="numAdults">
-                  <label for="numPassenger">Antal vuxna:</label><br>
-                  <select id="numPassenger">
-                    <option name="passengers" id="0" selected="selected">0</option>
-                    <option name="passengers" id="1">1</option>
-                    <option name="passengers" id="2" >2</option>
-                    <option name="passengers" id="3" >3</option>
-                    <option name="passengers" id="4" >4</option>
-                  </select>
-                </div>
-              </div>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="checkbox">
-                  <label><input type="checkbox" name="specialChoice" value="ledarhund">Sällskap/ledarhund</label>
-                </div>
-                <div id="numChildren">
-                  <label for="numPassenger">Antal barn:</label><br>
-                  <select id="numPassenger">
-                    <option name="passengers2" id="0" selected="selected">0</option>
-                    <option name="passengers2" id="1">1</option>
-                    <option name="passengers2" id="2" >2</option>
-                    <option name="passengers2" id="3" >3</option>
-                    <option name="passengers2" id="4" >4</option>
-                  </select>
-                </div>
-              </div>
-            </div>
+            <p id="whereTo">
+            </p>
+            <div class="bilStorlek">
+              <h6>Välj bilstorlek:</h6>
+                <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
+                <label class="bil-cc small" for="small"></label>
+                <input id="big" type="radio" name="car" value="stor bil" />
+                <label class="bil-cc big"for="big"></label>
             </div>
           </div>
-          </div>
-          <div id="dayAndTime">
-            <p>
-              <label for="pickupTime">Vilken tid vill du bli hämtad?</label><br>
+          <p>
+            <label for="pickupTime">Vilken tid vill du bli hämtad?</label><br>
               <input type="date" name="date" id="date">
               <input type="time" class= "time" id="pickupTime" name="time">
-              </p>
-          </div>
-          <div id="personalNum">
-            <p>
-              <input type="number" class= "perNum" id="perNum" name="perNum"  placeholder="Ditt personnummer">
             </p>
-          </div>
-          <div id="phoneNumber">
-            <p>
-              <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
-            </p>
-          </div>
-          <div id="paymentOption">
-            <p>
-              <label for="payment">Betalnings Alternativ</label><br>
-              <select id="payment">
-                <option name="pay" id="Swish">Swish</option>
-                <option name="pay" id="Card">Card</option>
-                <option name="pay" id="BankID" selected="selected">BankID</option>
-              </select>
-            </p>
-          </div>
+          <p>
+            <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
+          </p>
+          <p>
+            <label for="payment">Betalnings Alternativ</label><br>
+            <select id="payment">
+              <option name="pay" id="Swish">Swish</option>
+              <option name="pay" id="Card">Card</option>
+              <option name="pay" id="BankID" selected="selected">BankID</option>
+            </select>
+          </p>
           <div class="modal-footer">
-            <button onclick=createInfoList("kvittoInfo") type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
+            <button v-on:click="orderTaxi" type="submit" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
           </div>
         </div>
       </div>
@@ -188,8 +139,7 @@
       </div>
       <div id="map"></div>
       <div id="page">
-        <button v-on:click="orderTaxi">ORDER TAXI</button>
-        Your order number is {{ orderId }}
+
       </div>
     </div>
 
@@ -199,6 +149,6 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    </div>
+
   </body>
 </html>

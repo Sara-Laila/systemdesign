@@ -5,7 +5,8 @@ all:
 	node app.js
 
 edit: 	public/ views/  clean
-	emacsclient public/css/* views/* public/js/*
+	#emacsclient public/css/* views/* public/js/*
+	atom views/ public/ app.js
 
 branch:	
 	$(eval GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD))
