@@ -23,6 +23,7 @@ add: public/ views/ clean
 	git add public/.
 	git add views/.
 	git add Makefile
+	git add app.js
 
 clean:
 
