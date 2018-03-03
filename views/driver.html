@@ -78,17 +78,6 @@
               <p>
                 Från <br>
                 Till <br>
-<<<<<<< HEAD
-                <button type="button" class="btn btn-default" name="button">Ring kunden</button>
-              </p>
-            </div>
-            <div class="modal-footer">
-              <button id="finishButton" v-on:click="finishOrder(order.orderId)" type="button" class="btn btn-default" data-dismiss="modal">Körning färdig</button>
-              <button id="startButton" v-on:click="acceptOrder(order)" type="button" class="btn btn-default" data-dismiss="modal">Starta</button>
-            </div>
-          </div>
-        </div>
-=======
                 Tid <br>
                 Typ av resa <br>
                 Special krav <br>
@@ -120,7 +109,6 @@
             </div>
           </div>
         </div>
->>>>>>> 3824d318d9a80b55400aff4933160492353b482f
     </div>
 
     <div id="content">
@@ -128,22 +116,8 @@
       <div id="page">
         <div id="map"></div>
 
-<<<<<<< HEAD
+        
 
-=======
-        <ul>
-          <div v-for="order in orders" v-if="order.taxiId == taxiId">
-            # {{ order.orderId}} From: {{ order.fromLatLong[0].toFixed(3) }}, {{ order.fromLatLong[1].toFixed(3) }} Destination: {{ order.destLatLong[0].toFixed(3) }}, {{ order.destLatLong[1].toFixed(3) }}
-            <ul>
-              <li v-for="item in order.orderItems">
-                {{ item }}
-              </li>
-            </ul>
-            <button v-on:click="acceptOrder(order)">ACCEPT</button><button v-on:click="finishOrder(order.orderId)">FINISH</button>
-          </div>
-        </ul>
-        <button v-on:click="quit">Quit</button>
->>>>>>> 3824d318d9a80b55400aff4933160492353b482f
       </div>
     </div>
   </div>
