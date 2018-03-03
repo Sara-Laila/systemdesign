@@ -86,13 +86,13 @@
             <div class="modal-body">
               <ul>
                 <div v-for="order in orders" v-if="order.taxiId == taxiId">
-                  # {{ order.orderId}}
-                  From: {{  }}, {{  }}
-                  Destination: {{  }}, {{  }}
+                  # Order nr {{ order.orderId}} <br>
+                  Från: {{order.customerDetails[0]}} <br>
+                  Destination: {{ order.customerDetails[1] }}  <br>
 
             <div class="modal-footer">
               <button v-on:click="finishOrder(order.orderId)" type="button" class="btn btn-default">Avsluta</button>
-              <button v-on:click="acceptOrder(order)" type="button" class="btn btn-default">Acceptera</button>
+              <button v-on:click="acceptOrder(order)" type="button" class="btn btn-default" data-dismiss="modal">Acceptera</button>
             </div>
             </ul>
             </div>
@@ -100,6 +100,7 @@
           </div>
         </div>
     </div>
+
     <div class="modal fade" id="drivingModal" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -108,37 +109,26 @@
               <h4 class="modal-title">Nuvarande körning</h4>
             </div>
             <div class="modal-body">
+              <ul>
+                <div v-for="order in orders">
+                  # Order nr {{ order.orderId}} <br>
+                  Från: {{order.customerDetails[0]}} <br>
+                  Destination: {{ order.customerDetails[1] }}  <br>
+
+                </div>
+            </ul>
               <p>
-                Från <br>
+                Från {{this.currentJob.customerDetails[0]}}<br>
                 Till <br>
                 Tid <br>
                 Typ av resa <br>
                 Special krav <br>
-              </p>
-            </div>
-            <div class="modal-footer">
-              <button v-on:click="acceptOrder(order)" type="button" class="btn btn-default" data-dismiss="modal">Acceptera</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="modal fade" id="drivingModal" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Nuvarande körning</h4>
-            </div>
-            <div class="modal-body">
-              <p>
-                Från <br>
-                Till <br>
                 <button type="button" class="btn btn-default" name="button">Ring kunden</button>
               </p>
             </div>
             <div class="modal-footer">
-              <button id="finishButton" v-on:click="finishOrder(order.orderId)" type="button" class="btn btn-default" data-dismiss="modal">Körning färdig</button>
-              <button id="startButton" v-on:click="acceptOrder(order)" type="button" class="btn btn-default" data-dismiss="modal">Starta</button>
+              <button id="finishButton" v-on:click="finishOrder(this.currentJob.orderId)" type="button" class="btn btn-default" data-dismiss="modal">Körning färdig</button>
+              <button v-on:click="startOrder" type="button" class="btn btn-default" >Starta</button>
             </div>
           </div>
         </div>
@@ -149,11 +139,12 @@
       <div id="page">
         <div id="map"></div>
 
-        
+
 
       </div>
     </div>
   </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"

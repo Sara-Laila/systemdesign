@@ -9,7 +9,7 @@ var to;
 var from;
 
 var map, places;
-var myplace;
+var myplace = null;
 navigator.geolocation.getCurrentPosition(success, error, options);
 var myplacemarker;
 var dest;
@@ -20,7 +20,7 @@ var vm = new Vue({
   data: {
     buttonId: "logginButton",
     loggText: "Logga in",
-    currentJob: 0,
+    currentJob: null,
     taxiId: 0,
     typeCar: null,
     taxiLocation: null,
@@ -51,6 +51,7 @@ var vm = new Vue({
         showLogin: function() {
           if(this.taxiId == 0){
             $("#logInModal").modal();
+
           } else {
             this.loggInLoggOff();
           }
@@ -82,30 +83,17 @@ var vm = new Vue({
           //socket.emit('addTaxi', {"123"}); addTaxi! TODO
         },
         setTaxiLocation: function () {
-          /* TODO! FRÅN MIKAELS SKELETTKOD
-            if (this.taxiLocation === null) {
-                this.taxiLocation = L.marker([event.latlng.lat, event.latlng.lng], {icon: this.taxiIcon, draggable: true}).addTo(this.map);
-                this.taxiLocation.on("drag", this.moveTaxi);
-                socket.emit("addTaxi", { taxiId: this.taxiId,
-                                         latLong: [event.latlng.lat, event.latlng.lng]
-                                       });
-            }
-            else {
-                this.taxiLocation.setLatLng(event.latlng);
-                this.moveTaxi(event);
-            }
-            */
-            navigator.geolocation.getCurrentPosition(success, error, options);
-            console.log(myplace,"SETTAXI");
-            moveMarker(myplacemarker, myplace);
+            myplace = document.getElementById("autocomplete").value;
+            test(myplace);
+
+            //denna ska göra om en adress till koordinat
+
             socket.emit("addTaxi", { taxiId: this.taxiId,
                                      typeOfCar: this.typeCar,
                                    });
-
         },
         moveTaxi: function (event) {
-          navigator.geolocation.getCurrentPosition(success, error, options);
-          moveMarker(myplacemarker, myplace);
+          test(event); //event ska vara address den skall flytta till
           /* TODO! FRÅN MIKAELS SKELETTKOD
             socket.emit("moveTaxi", { taxiId: this.taxiId,
                                       latLong: [event.latlng.lat, event.latlng.lng]
@@ -119,11 +107,21 @@ var vm = new Vue({
           console.log(order.customerDetails[0]);
           console.log(order.customerDetails[1]);
             order.taxiIdConfirmed = this.taxiId;
-            from = order.customerDetails[0];
-            to = order.customerDetails[1];
-            this.currentJob = order.orderId;
+            //from = order.customerDetails[0];
+            //to = order.customerDetails[1];
+            from = myplace;
+            to = order.customerDetails[0];
+            this.currentJob = order;
             codeAddress();
             socket.emit("orderAccepted", order);
+        },
+        startOrder: function(){
+          console.log("KOMMER DEN ENS HIT????");
+          from = this.currentJob.customerDetails[0];
+          to = this.currentJob.customerDetails[1];
+          console.log(from, "I STARTORDER");
+          console.log(to);
+          codeAddress();
         },
         finishOrder: function (orderId) {
             Vue.delete(this.orders, orderId);
@@ -185,8 +183,10 @@ function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
     geocoder = new google.maps.Geocoder();
+    if(myplace == null){
+      myplace = new google.maps.LatLng(59.8586, 17.6389);
+    }
 
-    console.log(myplace);
     map = new google.maps.Map(document.getElementById('map'), {
 
         zoom: 14,
@@ -214,13 +214,10 @@ function initMap() {
 function geolocate() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      var geolocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
+      var geolocation = myplace;
       var circle = new google.maps.Circle({
         center: geolocation,
-        radius: position.coords.accuracy
+        radius: 10000
       });
       autocomplete.setBounds(circle.getBounds());
     });
@@ -235,8 +232,7 @@ var options = {
 
 function success(pos) {
   var crd = pos.coords;
-  myplace = new google.maps.LatLng(`${crd.latitude}`, `${crd.longitude}`);
-  console.log(myplace, "SUCCESS");
+  //myplace = new google.maps.LatLng(`${crd.latitude}`, `${crd.longitude}`);
 
   /*console.log('Your current position is:');
   console.log(`Latitude : ${crd.latitude}`);
@@ -248,16 +244,19 @@ function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 };
 
-function codeAddress(address) {
+function codeAddress() {
+
+  singleCodeAddress(to);
+  singleCodeAddress(from);/*
     geocoder.geocode( { 'address': to}, function(results, status) {
         if (status == 'OK') {
             to = results[0].geometry.location;
-        /*destmarker = new google.maps.Marker({
+      destmarker = new google.maps.Marker({
             map: map,
             position: dest,
             icon: '/img/markers/green_MarkerB.png',
             animation: google.maps.Animation.DROP
-        });*/
+        });
 
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
@@ -272,16 +271,55 @@ function codeAddress(address) {
               position: dest,
               icon: '/img/markers/green_MarkerB.png',
               animation: google.maps.Animation.DROP
-          });*/
+          });
 
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
         }
-    });
+    });*/
 
     directionsDisplay.setMap(map);
     //directionsDisplay.setPanel(document.getElementById('directionsPanel'));
     calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+function test(address){
+  geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        console.log(address,"in singleCodeAddress before res");
+          address = results[0].geometry.location;
+      /*destmarker = new google.maps.Marker({
+          map: map,
+          position: dest,
+          icon: '/img/markers/green_MarkerB.png',
+          animation: google.maps.Animation.DROP
+      });*/
+      console.log(address, "in singleCodeAddress");
+      moveMarker(myplacemarker,address);
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+
+function singleCodeAddress(address){
+  geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        console.log(address,"in singleCodeAddress before res");
+          address= results[0].geometry.location;
+      /*destmarker = new google.maps.Marker({
+          map: map,
+          position: dest,
+          icon: '/img/markers/green_MarkerB.png',
+          animation: google.maps.Animation.DROP
+      });*/
+      console.log(address, "in singleCodeAddress");
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -318,6 +356,7 @@ function moveMarker(marker, cord) {
       animation: google.maps.Animation.DROP,
       position: cord
     });
+
     map.setCenter(cord);
     console.log(cord);
 }

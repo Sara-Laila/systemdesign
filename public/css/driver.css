@@ -21,3 +21,7 @@
     border-radius: 4px;
     padding: 0 1vw;
 }
+
+.pac-container {
+    z-index: 1054 !important;
+ }
