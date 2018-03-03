@@ -21,18 +21,19 @@
 </head>
 <body>
 
+<div id="DispContainer">
 
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-2">
-       <div id="warning">
-          <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
+       <div id="orders">
+          <button class="button orders"  type="button" class="btn btn-default" data-toggle="modal" data-target="#ordersModal">Beställningar</button>
        </div>
-       <div id="warning">
-          <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
+       <div id="ongoingOrders">
+          <button class="button ongoingOrders"  type="button" class="btn btn-default" data-toggle="modal" data-target="#ongoingModal">Pågående körninger</button>
        </div>
-       <div id="warning">
-          <button v-on:click="newWarning" class="button warning"  type="button">Varning!</button>
+       <div id="loggedInDrivers">
+          <button class="button loggedInDrivers"  type="button" class="btn btn-default" data-toggle="modal" data-target="#loggedInModal">Inloggade chafförer</button>
        </div>
 
       </div>
@@ -42,43 +43,93 @@
     </div>
   </div>
 
-  <div id="DispContainer">
+<!--Modal för beställningar och lediga chafförer. Här görs tilldelningen-->
+  <div id="ordersModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Koordinera körningar</h4>
+        </div>
 
+        <div class="modal-body modal-lg">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4">
+                <h5>Beställningar:</h5>
+                <div id="orders">
+                <div id="orderList">
+                  <div v-for="(order, key) in orders">
+                    #{{ key }}: {{ order.customerDetails.join(", ") }};
 
+                    <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
+                          <option disabled value="">Assign a taxi</option>
+                          <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
+                        </select> {{ order.taxiIdConfirmed }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <h5>Lediga chafförer:</h5>
+                <div id="taxiList">
+                  <div v-for="taxi in taxis">
+                    # {{ taxi.taxiId}};
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+          </div>
+        </div>
 
-    <div id="orders">
-    <div id="orderList">
-      <div v-for="(order, key) in orders">
-        #{{ key }}: {{ order.customerDetails.join(", ") }};
+      </div>
+    </div>
+  </div>
 
-        <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
-              <option disabled value="">Assign a taxi</option>
-              <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
-            </select> {{ order.taxiIdConfirmed }}
+<!--Modal för pågående körningar-->
+    <div id="ongoingModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Pågående körningar:</h4>
+          </div>
+          <div class="modal-body">
+              KÖRNINGAR
+          </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div id="taxiList">
-      <div v-for="taxi in taxis">
-        # {{ taxi.taxiId}};
+<!--Modal med alla inloggade chafförer-->
+    <div id="loggedInModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Inloggade chafförer</h4>
+          </div>
+          <div class="modal-body">
+                <div id="taxiList">
+                  <div v-for="taxi in taxis">
+                    # {{ taxi.taxiId}};
+                  </div>
+                </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-
   </div>
 
-     <div id="currentJobs"  class="jobs current">
-      <h3>List of current jobs</h3>
-    </div>
-
-
-
-
-  <div id="addHotspot">
-    <textarea cols="40" rows="5" id="hotspotDesc" placeholder="Lägg till Beskrivning"></textarea>
-     <input type="text" placeholder="Position">
-     <button v-on:click="addHotpotClick" class="addingH"  type="button">Lägg till hotSpot!</button>
-  </div>
-  <div>
 </body>
 </html>
