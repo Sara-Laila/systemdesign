@@ -17,6 +17,7 @@
     <script src="js/customer.js" defer></script>
     <script src="js/send_to_dispatch.js" defer></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
     </script>
     <!-- <script src="js/drawermenu.js" defer></script> -->
@@ -26,7 +27,7 @@
       <ul class="list">
         <li class="active"><a>Meny</a></li>
         <li><a data-toggle=modal data-target=#kvittoModal>Kvitto till senaste bokningen</a></li>
-        <li><a>Bokningar</a></li>
+        <li><a id="tidigareBokningar" v-on:click="gatherBookings" data-toggle=modal data-target=#tidigareBokningarModal>Bokningar</a></li>
         <li><a>Fakturor</a></li>
         <li><a>Kundservice</a></li>
         <li><a></a></li>
@@ -45,6 +46,38 @@
       <a href="#" id="logo"></a>
 
     </header>
+
+    <div id="tidigareBokningarModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Dina bokningar</h4>
+    </div>
+    <div class="modal-body">
+      <p>
+        <div id="listPreviousOrders">
+          <div v-for="(order, key) in previousOrders">
+            #{{ key }}: {{ order.customerDetails.join(", ") }};
+
+            <select v-on:change="editOrder(order)" v-model="selected">
+                  <option disabled value="">Alternativ</option>
+                  <option>Ändra resa</option>
+                  <option>Avboka resa</option>
+                </select>
+          </div>
+        </div>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Ändra resa</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Avboka resa</button>
+    </div>
+    </div>
+    </div>
+    </div>
 
     <div id="secondModalView" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -72,6 +105,9 @@
               </p>
             <p>
               <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
+            </p>
+            <p>
+                <input type="text"  id="customerId"   placeholder="Ditt kundnummer">
             </p>
             <p>
               <label for="payment">Betalnings Alternativ</label><br>
@@ -133,7 +169,6 @@
     </div>
   </div>
 </div>
-
     <div id="content">
       <div id="q-dest">
         <form id="firstForm">

@@ -122,8 +122,12 @@ io.on('connection', function (socket) {
     console.log("skapat nytt fält");
     var orderId = data.addOrder(order);
     order.orderId = orderId;
-    var customerId = data.addCustomerId();
-    order.customerId = customerId;
+    var customerId = order["customerId"];
+    if (customerId == '') {
+        customerId = data.addCustomerId();
+        order.customerId = customerId;
+    }
+
 
     console.log("New order: ", order);
     // send updated info to all connected clients, note the use of "io" instead of "socket"
@@ -132,6 +136,13 @@ io.on('connection', function (socket) {
     socket.emit('orderId', orderId);
     // send the customerId back to the customer who ordered
     socket.emit('customerId', customerId);
+  });
+    //change an order
+  socket.on('changeOrder', function (order) {
+    data.addTaxi(taxi);
+    console.log("Taxi",taxi.taxiId,"has logged on!");
+    // send updated info to all connected clients, note the use of io instead of socket
+    io.emit('taxiAdded', taxi);
   });
   socket.on('addTaxi', function (taxi) {
     data.addTaxi(taxi);

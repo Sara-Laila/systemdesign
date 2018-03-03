@@ -1,7 +1,7 @@
 'use strict';
 var socket = io();
 
-var vm = new Vue({
+var vm1 = new Vue({
   el: '#secondModalView',
   data: {
     orderId: null,
@@ -44,7 +44,10 @@ var vm = new Vue({
   },
   methods: {
     orderTaxi: function() {
-      socket.emit('orderTaxi', { customerDetails: finalInfoArray(),
+      var array = finalInfoArray();
+      var customerId = array[5];
+      socket.emit('orderTaxi', { customerDetails: array,
+                                 customerId: customerId,
                               });
                                 /* FRÅN MIKAELS KOD
               socket.emit("orderTaxi", { fromLatLong: [this.fromMarker.getLatLng().lat, this.fromMarker.getLatLng().lng],
@@ -52,5 +55,57 @@ var vm = new Vue({
                                          orderItems: { passengers: 1, bags: 1, animals: "doge" }
                                        }); */
     },
+  }
+});
+
+var vm2 = new Vue({
+  el: '#tidigareBokningar',
+  data: {
+    customerId: null,
+    orders: {},
+    previousOrders: {},
+  },
+  created: function () {
+    socket.on('initialize', function (data) {
+      this.orders = data.orders;
+      console.log(this.orders[1001]);
+    }.bind(this));
+  },
+  methods: {
+    gatherBookings: function() {
+    console.log("Är i gatherBookings");
+    var id = vm1.customerId;
+    console.log(id);
+    var array = Object.values(this.orders);
+    var length = array.length;
+    console.log(length);
+    for (var i = 0; i < length; i++) {
+      var obj = array[i];
+      var customerId = obj.customerId;
+      if (customerId == id) {
+        this.previousOrders[obj.orderId] = obj;
+        console.log(obj.orderId);
+      }
+    }
+    vm3.setData();
+    }
+  }
+});
+var vm3 = new Vue({
+  el: '#tidigareBokningarModal',
+  data: {
+    customerId: 0,
+    previousOrders: {},
+    selected: '',
+  },
+  methods: {
+    editOrder: function (order) {
+
+    },
+    setData: function() {
+      console.log("är i vm3");
+      this.customerId = vm1.customerId;
+      this.previousOrders = vm2.previousOrders;
+    }
   }
 });

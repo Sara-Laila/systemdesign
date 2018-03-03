@@ -318,6 +318,7 @@ function finalInfoArray() {
     };
 
     var phoneNumber = document.getElementById("tel").value;
+    var customerId = document.getElementById("customerId").value;
     var date = document.getElementById("date").value;
     var time = document.getElementById("pickupTime").value;
     var paymentOption = document.getElementsByName("pay");
@@ -328,7 +329,7 @@ function finalInfoArray() {
 
         };
     };
-    var infoArray = [from, to, serviceValue, carSizeValue, phoneNumber, date, time, pay];
+    var infoArray = [from, to, serviceValue, carSizeValue, phoneNumber, customerId, date, time, pay];
     console.log(infoArray);
 
     return infoArray;
