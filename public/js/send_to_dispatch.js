@@ -39,6 +39,7 @@ var vm = new Vue({
   },
   methods: {
     orderTaxi: function() {
+      createInfoList("kvittoInfo");
       socket.emit('orderTaxi', { customerDetails: finalInfoArray(),
                               });
                                 /* FRÅN MIKAELS KOD

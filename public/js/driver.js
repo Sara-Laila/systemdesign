@@ -161,7 +161,6 @@ var axisCords;
 var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
 var oneByForthScreen = window.innerWidth / 4;
 var openStatus = false;
-
 function hideDivs(divToHide) {
   var x = document.getElementById(divToHide);
   if (x.style.display === "none") {

@@ -111,6 +111,28 @@
               <p>
                 Från <br>
                 Till <br>
+                Tid <br>
+                Typ av resa <br>
+                Special krav <br>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button v-on:click="acceptOrder(order)" type="button" class="btn btn-default" data-dismiss="modal">Acceptera</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="modal fade" id="drivingModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Nuvarande körning</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                Från <br>
+                Till <br>
                 <button type="button" class="btn btn-default" name="button">Ring kunden</button>
               </p>
             </div>
@@ -127,6 +149,7 @@
       <div id="page">
         <div id="map"></div>
 
+        
 
       </div>
     </div>

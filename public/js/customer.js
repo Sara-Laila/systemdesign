@@ -35,10 +35,10 @@ var openStatus = false;
 
 function showWhereTo() {
   console.log("I showWhereTo");
-
-  from = document.getElementById("autocomplete").value;
-  myplace = from;
-  to =document.getElementById("autocomplete2").value;
+  console.log(autocomplete);
+  console.log(autocomplete2);
+  var from = document.getElementById("autocomplete").value;
+  var to =document.getElementById("autocomplete2").value;
 
   var placeToPut = document.getElementById("whereTo");
   var paragraph1 = document.createElement("p")
@@ -49,8 +49,24 @@ function showWhereTo() {
   paragraph2.appendChild(toText);
   placeToPut.appendChild(paragraph1);
   placeToPut.appendChild(paragraph2);
+
+  var whatService = getTypeOfService();
+  if (whatService == "taxi") {
+      hideDivs("special");
+      hideDivs("personalNum");
+  } else {
+    hideDivs("carType");
+  }
 };
 
+var hideDivs = function(divToHide) {
+    var x = document.getElementById(divToHide);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
@@ -293,6 +309,29 @@ var vm = new Vue ({
     },
 });
 
+var getTypeOfService = function() {
+  var service = document.getElementsByName("typeOfService");
+  for (var i = 0; i < service.length; i++) {
+      if (service[i].checked) {
+          var serviceValue = service[i].value;
+          break;
+      };
+  };
+  return serviceValue;
+}
+
+$('#q-dest').keypress(function(e){
+
+     if (e.which == 13) {
+         callModal("#firstOrderModal");
+     }
+
+ });
+
+ function callModal(modal){
+     $(modal).modal()
+
+ }
 
 function finalInfoArray() {
   console.log("entered finalInfoArray");
@@ -300,15 +339,9 @@ function finalInfoArray() {
     var from = document.getElementById("autocomplete").value;
     var to = document.getElementById("autocomplete2").value;
 //get type of serviceType
-    var service = document.getElementsByName("typeOfService");
-    for (var i = 0; i < service.length; i++) {
-        if (service[i].checked) {
-            var serviceValue = service[i].value;
-            break;
-        };
-    };
-
+    var serviceType = getTypeOfService();
 //get car size
+  if(serviceType == "taxi") {
     var carSizeTwo = document.getElementsByName("car");
     for (var i = 0; i < carSizeTwo.length; i++) {
         if (carSizeTwo[i].checked) {
@@ -316,23 +349,63 @@ function finalInfoArray() {
             break;
         };
     };
-
+  }
+//get phoneNumber, date, pickupTime, paymentOption
     var phoneNumber = document.getElementById("tel").value;
     var date = document.getElementById("date").value;
     var time = document.getElementById("pickupTime").value;
-    var paymentOption = document.getElementsByName("pay");
-    for (var i = 0; i < paymentOption.length; i++) {
-        if (paymentOption[i].selected) {
-            var pay = paymentOption[i].id;
-            break;
-
-        };
-    };
-    var infoArray = [from, to, serviceValue, carSizeValue, phoneNumber, date, time, pay];
+    var pay = getInfoFromDropdown("pay");
+    //get extra info if serviceType=färdtjänst
+    if (serviceType == "färdtjänst") {
+      var specialDemands = getSpecialDemands();
+      var numPassengers = getNumberOfPassengers();
+      var pNumber = document.getElementById("perNum").value;
+      var infoArray = [from, to, serviceType, specialDemands, numPassengers, pNumber, phoneNumber, date, time, pay];
+    } else {
+      var infoArray = [from, to, serviceType, carSizeValue, phoneNumber, date, time, pay];
+    }
     console.log(infoArray);
-
     return infoArray;
 };
+
+function createInfoList(placeToPut) {
+  var infoArray = finalInfoArray();
+  var listItem = document.createElement("ul");
+
+  for (var i = 0; i < infoArray.length; i++) {
+    var dot = document.createElement("li")
+    dot.appendChild(document.createTextNode(infoArray[i]));
+    listItem.appendChild(dot);
+  }
+  document.getElementById(placeToPut).appendChild(listItem);
+}
+
+function getSpecialDemands() {
+  var choices = document.getElementsByName("specialChoice");
+  var choicesValue = [];
+  for (var i = 0; i < choices.length; i++) {
+    if(choices[i].checked) {
+      choicesValue += choices[i].value + ", ";
+    }
+  }
+  return choicesValue;
+}
+function getInfoFromDropdown(name) {
+  var options = document.getElementsByName(name);
+  for (var i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+          var selectedOption = options[i].id;
+          break;
+      };
+  };
+  return selectedOption;
+}
+function getNumberOfPassengers() {
+  var adults = getInfoFromDropdown("passengers");
+  var children = getInfoFromDropdown("passengers2");
+  var total = ["vuxna: "+ adults, "barn: "+ children];
+  return total;
+}
 
 function hideShow(toHide, toShow) {
     var x = document.getElementById(toHide);
