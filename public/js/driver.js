@@ -13,8 +13,9 @@ var vm = new Vue({
   data: {
     buttonId: "logginButton",
     loggText: "Logga in",
-    currentJobs: "#job",
+    currentJob: 0,
     taxiId: 0,
+    typeCar: null,
     taxiLocation: null,
     orders: {},
     customerMarkers: {}
@@ -31,38 +32,32 @@ var vm = new Vue({
               if(this.taxiId == this.orders[order].taxiId){
                 $("#currentJobModal").modal();
               }
-
-
-
             }
-
-
         }.bind(this));
-
-
-
-
         //Helper function, should probably not be here
-        function getRandomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
         // It's probably not a good idea to generate a random taxi number, client-side.
-        this.taxiId = getRandomInt(1, 1000000);
+
     },
     mounted: function () {
-
-
     },
     methods: {
+        showLogin: function() {
+          if(this.taxiId == 0){
+            $("#logInModal").modal();
+          } else {
+            this.loggInLoggOff();
+          }
+        },
         loggInLoggOff: function() {
           //this.loggText är det som står på knappen
           //logga in == föraren är utloggad
+
+
           if (this.loggText == "Logga in") {
             this.loggText = "Logga ut";
             changeHeaderColor("#5cb85c");
             this.setTaxiLocation();
+
             //socket.emit('addTaxi', {"123"}); addTaxi! TODO
           } else {
             this.loggText = "Logga in";
@@ -70,6 +65,14 @@ var vm = new Vue({
             this.quit();
             //Here messages to dispather should be sent - removeTaxi! TODO
           }
+        },
+        sendInfo: function () {
+          var taxiId = document.getElementById("taxiId").value;
+          this.taxiId = taxiId;
+          var typeCar = $("input[name=typeOfCar]:checked").val();
+          this.typeCar = typeCar;
+          this.loggInLoggOff();
+          //socket.emit('addTaxi', {"123"}); addTaxi! TODO
         },
         setTaxiLocation: function () {
           /* TODO! FRÅN MIKAELS SKELETTKOD
@@ -85,7 +88,8 @@ var vm = new Vue({
                 this.moveTaxi(event);
             }
             */
-            socket.emit("addTaxi", { taxiId: this.taxiId
+            socket.emit("addTaxi", { taxiId: this.taxiId,
+                                     typeOfCar: this.typeCar,
                                    });
         },
         moveTaxi: function (event) {
@@ -104,6 +108,7 @@ var vm = new Vue({
             order.taxiIdConfirmed = this.taxiId;
             from = order.customerDetails[0];
             to = order.customerDetails[1];
+            this.currentJob = order.orderId;
             codeAddress();
             socket.emit("orderAccepted", order);
         },

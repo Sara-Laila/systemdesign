@@ -48,15 +48,6 @@ header {
     border-radius: 4px;
 }
 
-#taxiid {
-    position: relative;
-    width: 28vw;
-    height: 90%;
-    border: 1px solid black;
-    border-radius: 4px;
-    padding: 0 1vw;
-}
-
 #logo {
     position: relative;
     width: 20vw;
@@ -397,5 +388,3 @@ header {
   height: 8vw;
   background: white;
 }
-
-
