@@ -8,6 +8,13 @@ var socket = io();
 var to;
 var from;
 
+var map, places;
+var myplace;
+navigator.geolocation.getCurrentPosition(success, error, options);
+var myplacemarker;
+var dest;
+var destmarker;
+
 var vm = new Vue({
   el: '#drivercontent',
   data: {
@@ -88,11 +95,17 @@ var vm = new Vue({
                 this.moveTaxi(event);
             }
             */
+            navigator.geolocation.getCurrentPosition(success, error, options);
+            console.log(myplace,"SETTAXI");
+            moveMarker(myplacemarker, myplace);
             socket.emit("addTaxi", { taxiId: this.taxiId,
                                      typeOfCar: this.typeCar,
                                    });
+
         },
         moveTaxi: function (event) {
+          navigator.geolocation.getCurrentPosition(success, error, options);
+          moveMarker(myplacemarker, myplace);
           /* TODO! FRÅN MIKAELS SKELETTKOD
             socket.emit("moveTaxi", { taxiId: this.taxiId,
                                       latLong: [event.latlng.lat, event.latlng.lng]
@@ -122,6 +135,8 @@ var vm = new Vue({
     },
 });
 
+
+
 /*******/
 var hamburgerDrawer = document.getElementById('hamburger-menu');
 var hamburgerBtn = document.getElementById('hamburger-btn');
@@ -130,11 +145,7 @@ var hamburgerDrawerBg = document.getElementById('content');
 var directionsDisplay;
 var directionsService;
 
-var map, places;
-var myplace = {lat: 59.840809, lng: 17.648666};
-var myplacemarker;
-var dest;
-var destmarker;
+
 var placeSearch, autocomplete, autocomplete2;
 var geocoder;
 var componentForm = {
@@ -175,6 +186,8 @@ function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
     geocoder = new google.maps.Geocoder();
+
+    console.log(myplace);
     map = new google.maps.Map(document.getElementById('map'), {
 
         zoom: 14,
@@ -182,15 +195,21 @@ function initMap() {
         disableDefaultUI: true
     });
 
+
     myplacemarker = new google.maps.Marker({
         map: map,
         animation: google.maps.Animation.DROP,
         position: myplace,
         icon: '/img/markers/red_MarkerA.png'
     });
-
     myplacemarker.addListener('click', toggleBounce);
 
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */ (
+            document.getElementById('autocomplete')), {
+                types: ['geocode'],
+                componentRestrictions: {'country': 'se'}
+            });
 }
 
 function geolocate() {
@@ -208,6 +227,27 @@ function geolocate() {
     });
   }
 }
+
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  myplace = new google.maps.LatLng(`${crd.latitude}`, `${crd.longitude}`);
+  console.log(myplace, "SUCCESS");
+
+  /*console.log('Your current position is:');
+  console.log(`Latitude : ${crd.latitude}`);
+  console.log(`Longitude: ${crd.longitude}`);
+  console.log(`More or less ${crd.accuracy} meters.`);*/
+};
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+};
 
 function codeAddress(address) {
     geocoder.geocode( { 'address': to}, function(results, status) {
@@ -272,7 +312,15 @@ function toggleBounce() {
   }
 }
 
-function moveMarker() {
+function moveMarker(marker, cord) {
+    marker.setMap(null);
+    marker = new google.maps.Marker({
+      map: map,
+      animation: google.maps.Animation.DROP,
+      position: cord
+    });
+    map.setCenter(cord);
+    console.log(cord);
 }
 
 function geocodeLatLng(geocoder, map, infowindow) {

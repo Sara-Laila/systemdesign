@@ -49,18 +49,21 @@
     <div id="orders">
     <div id="orderList">
       <div v-for="(order, key) in orders">
-        #{{ key }}: {{ order.customerDetails.join(", ") }};
+        #{{ key }}: {{ order.customerDetails.join(", ") }}; <br>
+        Ordernr: {{key}} <br />
+        Från: {{order.customerDetails[0]}} <br />
+        Till: {{order.customerDetails[1]}} <br />
 
         <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
               <option disabled value="">Assign a taxi</option>
-              <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
+              <option v-for="taxi in taxis" :value="taxi.taxiId"># {{taxi.taxiId}}  </option>
             </select> {{ order.taxiIdConfirmed }}
       </div>
     </div>
 
     <div id="taxiList">
       <div v-for="taxi in taxis">
-        # {{ taxi.taxiId}};
+        {{ taxi.typeOfCar}} - ID {{taxi.taxiId}}
       </div>
     </div>
 
