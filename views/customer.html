@@ -17,7 +17,7 @@
     <script src="js/customer.js" defer></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places"></script>
-    
+
   </head>
   <body>
     <div id="hamburger-menu">
@@ -178,7 +178,7 @@
                   <input id="taxi" type="radio" name="typeOfService" value="taxi">
                   <label for="färdtjänst">Färdtjänst</label>
                   <input id="färdtjänst" type="radio" name="typeOfService" value="färdtjänst">
-                  <button onclick="showWhereTo()" id="goForwardButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#secondModalView"></button>
+                  <button onclick="showWhereTo();initMap();" id="goForwardButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#secondModalView"></button>
                 </div>
               </div>
             </div>

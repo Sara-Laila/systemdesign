@@ -93,6 +93,18 @@ function initMap() {
 
     myplacemarker.addListener('click', toggleBounce);
 
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */ (
+            document.getElementById('autocomplete')), {
+                types: ['geocode'],
+                componentRestrictions: {'country': 'se'}
+            });
+    autocomplete2 = new google.maps.places.Autocomplete(
+                  /** @type {!HTMLInputElement} */ (
+                    document.getElementById('autocomplete2')), {
+                        types: ['geocode'],
+                        componentRestrictions: {'country': 'se'}
+                    });
 }
 
 function geolocate() {
