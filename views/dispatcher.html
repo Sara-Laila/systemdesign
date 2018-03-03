@@ -53,7 +53,7 @@
 
         <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
               <option disabled value="">Assign a taxi</option>
-              <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
+              <option v-for="taxi in taxis" :value="taxi.taxiId">{{taxi.typeOfCar}}   #{{ taxi.taxiId}}</option>
             </select> {{ order.taxiIdConfirmed }}
       </div>
     </div>

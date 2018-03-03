@@ -42,11 +42,17 @@ function Data() {
   this.orders = {};
   this.taxis = {};
   this.currentOrderNumber = 1000;
+  this.currentCustomerId = 2000;
 }
 
 Data.prototype.getOrderNumber = function () {
   this.currentOrderNumber += 1;
   return this.currentOrderNumber;
+}
+
+Data.prototype.getCustomerId = function () {
+  this.currentCustomerId += 1;
+  return this.currentCustomerId;
 }
 
 /*
@@ -57,6 +63,12 @@ Data.prototype.addOrder = function (order) {
   //Store the order in an "associative array" with orderId as key
   this.orders[orderId] = order;
   return orderId;
+};
+
+Data.prototype.addCustomerId = function () {
+  var customerId = this.getCustomerId();
+  console.log("är i addCustomerId");
+  return customerId;
 };
 
 /*
@@ -107,8 +119,12 @@ io.on('connection', function (socket) {
                               taxis: data.getAllTaxis() });
   // Add a listener for when a connected client emits an "orderTaxi" message
   socket.on('orderTaxi', function (order) {
+    console.log("skapat nytt fält");
     var orderId = data.addOrder(order);
     order.orderId = orderId;
+    var customerId = data.addCustomerId();
+    order.customerId = customerId;
+
     console.log("New order: ", order);
     // send updated info to all connected clients, note the use of "io" instead of "socket"
     io.emit('taxiOrdered', order);
