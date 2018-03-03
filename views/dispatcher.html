@@ -55,13 +55,17 @@
         <div class="modal-body modal-lg">
           <div class="container">
             <div class="row">
-              <div class="col-lg-4">
-                <h5>Beställningar:</h5>
+              <div class="col-md-6">
+                <h4>Beställningar:</h4>
                 <div id="orders">
                 <div id="orderList">
                   <div v-for="(order, key) in orders">
-                    #{{ key }}: {{ order.customerDetails.join(", ") }};
-
+                    #{{ key }}:<br>
+                    Från: {{order.customerDetails[0]}}<br>
+                    Till: {{order.customerDetails[1]}}<br>
+                    Typ: {{order.customerDetails[2]}}<br>
+                    Krav: {{order.customerDetails[3]}}<br>
+                    <br>
                     <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
                           <option disabled value="">Assign a taxi</option>
                           <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
@@ -69,8 +73,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6">
-                <h5>Lediga chafförer:</h5>
+            </div>
+                <div class="col-md-6">
+                <h4>Lediga chafförer</h4>
                 <div id="taxiList">
                   <div v-for="taxi in taxis">
                     # {{ taxi.taxiId}};
