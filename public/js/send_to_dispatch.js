@@ -5,6 +5,7 @@ var vm = new Vue({
   el: '#secondModalView',
   data: {
     orderId: null,
+    customerId: null,
     taxiId: 0,
     map: null,
     fromMarker: null,
@@ -22,6 +23,10 @@ var vm = new Vue({
       console.log(this.orderId)
     }.bind(this));
 
+    socket.on('customerId', function (customerId) {
+      this.customerId = customerId;
+      console.log(this.customerId)
+    }.bind(this));
   /*  socket.on('taxiAdded', function (taxi) {
       this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
     }.bind(this));

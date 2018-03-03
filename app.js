@@ -130,6 +130,8 @@ io.on('connection', function (socket) {
     io.emit('taxiOrdered', order);
     // send the orderId back to the customer who ordered
     socket.emit('orderId', orderId);
+    // send the customerId back to the customer who ordered
+    socket.emit('customerId', customerId);
   });
   socket.on('addTaxi', function (taxi) {
     data.addTaxi(taxi);
