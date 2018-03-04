@@ -4,6 +4,7 @@ var socket = io();
 var vm1 = new Vue({
   el: '#secondModalView',
   data: {
+    orders: {},
     orderId: null,
     customerId: null,
     taxiId: 0,
@@ -14,18 +15,18 @@ var vm1 = new Vue({
   },
   created: function () {
     socket.on('initialize', function (data) {
-      // add taxi markers in the map for all taxis
-
+      this.orders = data.orders;
     }.bind(this));
-
-    socket.on('orderId', function (orderId) {
-      this.orderId = orderId;
-      console.log(this.orderId)
+    //får tillbaka fr servern tilldelat ordernummer samt senast adderade ordern så att this.orders kan uppdateras
+    socket.on('orderId', function (data) {
+      this.orderId = data.orderId;
+      console.log(this.orderId);
+      this.orders[data.orderId] = data.order;
     }.bind(this));
 
     socket.on('customerId', function (customerId) {
       this.customerId = customerId;
-      console.log(this.customerId)
+      console.log(this.customerId);
     }.bind(this));
   /*  socket.on('taxiAdded', function (taxi) {
       this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
@@ -68,7 +69,6 @@ var vm2 = new Vue({
   created: function () {
     socket.on('initialize', function (data) {
       this.orders = data.orders;
-      console.log(this.orders[1001]);
     }.bind(this));
   },
   methods: {
@@ -76,6 +76,7 @@ var vm2 = new Vue({
     console.log("Är i gatherBookings");
     var id = vm1.customerId;
     console.log(id);
+    this.orders = vm1.orders;
     var array = Object.values(this.orders);
     var length = array.length;
     console.log(length);
@@ -92,15 +93,25 @@ var vm2 = new Vue({
   }
 });
 var vm3 = new Vue({
-  el: '#tidigareBokningarModal',
+  el: '#modaler',
   data: {
     customerId: 0,
     previousOrders: {},
     selected: '',
+    editedOrder: {},
   },
   methods: {
     editOrder: function (order) {
+      console.log(order.edit);
+      if (order.edit == "delete") {
+        $('#tidigareBokningarModal').modal('hide');
+        $("#avbokningModal").modal();
+        this.editedOrder = order;
+      }
 
+    },
+    deleteOrder: function (order) {
+      socket.emit('finishOrder', order.orderId);
     },
     setData: function() {
       console.log("är i vm3");

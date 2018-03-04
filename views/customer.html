@@ -46,7 +46,7 @@
       <a href="#" id="logo"></a>
 
     </header>
-
+<div id="modaler">
     <div id="tidigareBokningarModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
@@ -62,10 +62,10 @@
           <div v-for="(order, key) in previousOrders">
             #{{ key }}: {{ order.customerDetails.join(", ") }};
 
-            <select v-on:change="editOrder(order)" v-model="selected">
+            <select v-on:change="editOrder(order)" v-model="order.edit">
                   <option disabled value="">Alternativ</option>
-                  <option>Ändra resa</option>
-                  <option>Avboka resa</option>
+                  <option value="change">Ändra resa</option>
+                  <option value="delete">Avboka resa</option>
                 </select>
           </div>
         </div>
@@ -78,6 +78,29 @@
     </div>
     </div>
     </div>
+
+    <div id="avbokningModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Är du säker på att du vill avboka denna resa?</h4>
+    </div>
+    <div class="modal-body">
+      <p>
+        {{editedOrder}}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+      <button v-on:click="deleteOrder(editedOrder)" type="button" class="btn btn-default" data-dismiss="modal">Avboka resa</button>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
 
     <div id="secondModalView" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -123,31 +146,6 @@
           </div>
         </div>
       </div>
-  </div>
-
-  <div id="editOrderModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-  <!-- Modal content-->
-  <div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h4 class="modal-title">Ändra/avboka resa</h4>
-  </div>
-  <div class="modal-body">
-    <p>
-      <div class="form-group">
-  <label for="text">Ordernummer:</label>
-  <input type="text" class="form-control" id="ordernr">
-  </div>
-    </p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Ändra resa</button>
-    <button type="button" class="btn btn-default" data-dismiss="modal">Avboka resa</button>
-  </div>
-  </div>
-  </div>
   </div>
 
 <div id="kvittoModal" class="modal fade" role="dialog">

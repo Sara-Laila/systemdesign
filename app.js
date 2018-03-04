@@ -133,7 +133,8 @@ io.on('connection', function (socket) {
     // send updated info to all connected clients, note the use of "io" instead of "socket"
     io.emit('taxiOrdered', order);
     // send the orderId back to the customer who ordered
-    socket.emit('orderId', orderId);
+    socket.emit('orderId', { order: order,
+                             orderId: orderId});
     // send the customerId back to the customer who ordered
     socket.emit('customerId', customerId);
   });
