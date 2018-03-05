@@ -1,13 +1,6 @@
 # systemdesign
 projekt - systemdesign med ett användarperspektiv. Taxiapplikation :squirrel:
 
-# very-taxi-skeleton
-This skeleton code gives a folder structure and some basic communication patterns to quickly build prototypes of real-time map-based apps.
-
-With only fundamental pattern matching abilities and basic HTML/CSS/JS knowledge you will be able to create functional prototypes of taxi services. The skeleton code makes use of the modules/frameworks [express js](https://expressjs.com), [socket.io](http://socket.io), [vue js](https://vuejs.org/), [leaflet js](http://leafletjs.com/), and [esri leaflet geocoder](https://github.com/Esri/esri-leaflet-geocoder) but for prototyping purposes you will most likely not need to understand these libraries very well.
-
-Do not use this skeleton code for creating production apps. Security and stability have not been considered.
-
 ## Getting started
 
 1. Install [Node JS](https://nodejs.org)
@@ -18,5 +11,3 @@ Do not use this skeleton code for creating production apps. Security and stabili
 6. Use a web browser to check what is happening at `localhost:3000`
 7. Use another web browser to check what is happening at `localhost:3000`
 8. Use another device to check what is happening at `<your IP address>:3000` (for this you may need to adjust your computer's firewall to allow connections to Node)
-
-That should be enough to get started. Happy tinkering!
