@@ -54,8 +54,9 @@ function showWhereTo() {
   if (whatService == "taxi") {
       hideDivs("special");
       hideDivs("personalNum");
-  } else {
+    } else {
     hideDivs("carType");
+    hideDivs("paymentOption");
   }
 };
 
@@ -255,40 +256,6 @@ hamburgerDrawer.addEventListener('touchend',
     axisCords = null;
   });
 
-/*Javascript for the two customer views*/
-
-/*var vm = new Vue({
-    el: '#CustomerView',
-    data: {
-
-    },
-    methods: {
-        toNextView: function () {
-            var from = document.getElementById("fromOne").value;
-            var to = document.getElementById("toOne").value;
-            moveMarker();
-
-            var carSizeOne = document.getElementsByName("bilOne");
-            var carSizeTwo = document.getElementsByName("bilTwo");
-                for (var i = 0; i < carSizeOne.length; i++) {
-                    if (carSizeOne[i].checked) {
-                    carSizeTwo[i].checked = "checked";
-                    break;
-                };
-             };
-
-             document.getElementById("fromTwo").value = from;
-             document.getElementById("toTwo").value = to;
-             hideShow("firstCustomerView", "secondCustomerView");
-        },
-
-        toPayment: function () {
-          finalInfoArray();
-        }
-    },
-});*/
-
-
 var vm = new Vue ({
     el: "#q-dest",
     data: {
@@ -318,42 +285,7 @@ var getTypeOfService = function() {
       };
   };
   return serviceValue;
-}
-
-$('#q-dest').keypress(function(e){
-
-     if (e.which == 13) {
-         callModal("#firstOrderModal");
-     }
-
- });
-
- function callModal(modal){
-     $(modal).modal()
-
- }
-
- function setInputDate(_id){
-    var _dat = document.querySelector(_id);
-    var hoy = new Date(),
-        d = hoy.getDate(),
-        m = hoy.getMonth()+1,
-        y = hoy.getFullYear(),
-        data;
-
-    if(d < 10){
-        d = "0"+d;
-    };
-    if(m < 10){
-        m = "0"+m;
-    };
-
-    data = y+"-"+m+"-"+d;
-    console.log(data);
-    _dat.value = data;
 };
-
-setInputDate("#myDate");
 
 function finalInfoArray() {
   console.log("entered finalInfoArray");

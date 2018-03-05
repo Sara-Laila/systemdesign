@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="css/modals.css">
     <script src="/vue/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/leaflet/leaflet.js"></script>
-    <script src="/esri-leaflet/esri-leaflet.js"></script>
-    <script src="/esri-leaflet-geocoder/esri-leaflet-geocoder.js"></script>
     <script src="js/customer.js" defer></script>
     <script src="js/send_to_dispatch.js" defer></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -59,12 +56,16 @@
     <div class="modal-body">
       <p>
         <div id="listPreviousOrders">
+          <p v-if="Object.keys(previousOrders).length === 0">
+            Inga bokningar att ändra eller avboka!
+          </p>
+
           <div v-for="(order, key) in previousOrders">
             #{{ key }}: <br>
             Från: {{order.customerDetails[0]}}<br>
             Till: {{order.customerDetails[1]}}<br>
-            Dag: {{order.customerDetails[6]}}<br>
-            Tid: {{order.customerDetails[7]}}<br>
+            Dag: {{order.customerDetails[7]}}<br>
+            Tid: {{order.customerDetails[8]}}<br>
             Typ: {{order.customerDetails[2]}}<br>
 
             <label for="editDropdown">Ändra/Avboka</label>
@@ -74,6 +75,8 @@
                   <option value="delete">Avboka resa</option>
             </select>
           </div>
+
+
         </div>
       </p>
     </div>
@@ -97,14 +100,14 @@
       <p>
         Från: {{editedOrder[0]}}<br>
         Till: {{editedOrder[1]}}<br>
-        Dag: {{editedOrder[6]}}<br>
-        Tid: {{editedOrder[7]}}<br>
+        Dag: {{editedOrder[7]}}<br>
+        Tid: {{editedOrder[8]}}<br>
         Typ: {{editedOrder[2]}}<br>
       </p>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">NEJ</button>
-      <button v-on:click="deleteOrder(editedOrder)" type="button" class="btn btn-default" data-dismiss="modal">JA</button>
+      <button v-on:click="deleteOrder(orderId)" type="button" class="btn btn-default" data-dismiss="modal">JA</button>
     </div>
     </div>
     </div>
@@ -240,8 +243,8 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-12">
-                <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Varifrån vill du åka?"></input>
-                <input type="text" name="firstname" id="autocomplete2" onFocus="geolocate()" placeholder="Vart vill du åka?"></input>
+                <input type="text" name="firstname" id="autocomplete" onFocus="geolocate()" placeholder="Varifrån vill du åka?" required></input>
+                <input type="text" name="firstname" id="autocomplete2" onFocus="geolocate()" placeholder="Vart vill du åka?" required></input>
               </div>
             </div>
             <div class="row">

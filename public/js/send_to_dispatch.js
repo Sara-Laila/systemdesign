@@ -29,6 +29,7 @@ var vm1 = new Vue({
 
     socket.on('orderFinished', function (orderId) {
       delete this.orders[orderId];
+      delete this.previousOrders[orderId];
     }.bind(this));
     socket.on('customerId', function (customerId) {
       this.customerId = customerId;
@@ -77,6 +78,10 @@ var vm2 = new Vue({
     socket.on('initialize', function (data) {
       this.orders = data.orders;
     }.bind(this));
+    socket.on('orderFinished', function (orderId) {
+      delete this.orders[orderId];
+      delete this.previousOrders[orderId];
+    }.bind(this));
   },
   methods: {
     gatherBookings: function() {
@@ -110,6 +115,12 @@ var vm3 = new Vue({
     selected: '',
     customerDetails: [],
     editedOrder: {},
+    orderId: 0
+  },
+  created: function(){
+    socket.on('orderFinished', function (orderId) {
+      delete this.previousOrders[orderId];
+    }.bind(this));
   },
   methods: {
     editOrder: function (order) {
@@ -119,19 +130,21 @@ var vm3 = new Vue({
         $('#tidigareBokningarModal').modal('hide');
         $("#avbokningModal").modal();
         this.editedOrder = order.customerDetails;
+        this.orderId = order.orderId;
       }
       //nu ska vi ändra i ordern
 
 
     },
     deleteOrder: function (order) {
-      socket.emit('finishOrder', order.orderId);
-      delete vm2.previousOrders[order.orderId];
-      delete this.previousOrders[order.orderId];
+      socket.emit('finishOrder', order);
+      console.log(order, "I DELETE ORDER SDJAKDJSADKAJKSD");
+
     },
     setData: function() {
       console.log("är i vm3");
       this.customerId = vm2.customerId;
+      console.log(  this.previousOrders, "VM2",   vm2.previousOrders);
       this.previousOrders = vm2.previousOrders;
     }
   }
