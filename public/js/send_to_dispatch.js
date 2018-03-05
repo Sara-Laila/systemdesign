@@ -31,10 +31,6 @@ var vm1 = new Vue({
       delete this.orders[orderId];
       delete this.previousOrders[orderId];
     }.bind(this));
-    socket.on('customerId', function (customerId) {
-      this.customerId = customerId;
-      console.log(this.customerId);
-    }.bind(this));
   /*  socket.on('taxiAdded', function (taxi) {
       this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
     }.bind(this));
@@ -54,7 +50,14 @@ var vm1 = new Vue({
     orderTaxi: function() {
       var array = finalInfoArray();
       this.customerDetails = array;
-      var customerId = array[5];
+      var customerId;
+      if (array.length == 10) {
+          customerId = array[5];
+      } else {
+        customerId = array[6];
+      }
+      console.log(customerId);
+      this.customerId = customerId;
       socket.emit('orderTaxi', { customerDetails: array,
                                  customerId: customerId,
                               });
