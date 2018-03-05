@@ -65,10 +65,12 @@
                     Till: {{order.customerDetails[1]}}<br>
                     Typ: {{order.customerDetails[2]}}<br>
                     Krav: {{order.customerDetails[3]}}<br>
+                    Dag: <br>
+                    Tid: <br>
                     <br>
                     <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
                           <option disabled value="">Assign a taxi</option>
-                          <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
+                          <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}},{{taxi.typeOfCar}}  </option>
                         </select> {{ order.taxiIdConfirmed }}
                   </div>
                 </div>
@@ -78,7 +80,7 @@
                 <h4>Lediga chafförer</h4>
                 <div id="taxiList">
                   <div v-for="taxi in taxis">
-                    # {{ taxi.taxiId}};
+                    # {{taxi.taxiId}}, {{taxi.typeOfCar}}
                   </div>
                 </div>
               </div>
@@ -89,10 +91,8 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
           </div>
         </div>
-
       </div>
-    </div>
-
+</div>
 <!--Modal för pågående körningar-->
     <div id="ongoingModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -123,7 +123,7 @@
           <div class="modal-body">
                 <div id="taxiList">
                   <div v-for="taxi in taxis">
-                    # {{ taxi.taxiId}};
+                    # {{ taxi.taxiId}}
                   </div>
                 </div>
             <div class="modal-footer">
@@ -133,8 +133,8 @@
         </div>
       </div>
     </div>
-  </div>
 </div>
+
 
 </body>
 </html>

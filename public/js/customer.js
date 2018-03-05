@@ -54,8 +54,9 @@ function showWhereTo() {
   if (whatService == "taxi") {
       hideDivs("special");
       hideDivs("personalNum");
-  } else {
+    } else {
     hideDivs("carType");
+    hideDivs("paymentOption");
   }
 };
 
@@ -255,40 +256,6 @@ hamburgerDrawer.addEventListener('touchend',
     axisCords = null;
   });
 
-/*Javascript for the two customer views*/
-
-/*var vm = new Vue({
-    el: '#CustomerView',
-    data: {
-
-    },
-    methods: {
-        toNextView: function () {
-            var from = document.getElementById("fromOne").value;
-            var to = document.getElementById("toOne").value;
-            moveMarker();
-
-            var carSizeOne = document.getElementsByName("bilOne");
-            var carSizeTwo = document.getElementsByName("bilTwo");
-                for (var i = 0; i < carSizeOne.length; i++) {
-                    if (carSizeOne[i].checked) {
-                    carSizeTwo[i].checked = "checked";
-                    break;
-                };
-             };
-
-             document.getElementById("fromTwo").value = from;
-             document.getElementById("toTwo").value = to;
-             hideShow("firstCustomerView", "secondCustomerView");
-        },
-
-        toPayment: function () {
-          finalInfoArray();
-        }
-    },
-});*/
-
-
 var vm = new Vue ({
     el: "#q-dest",
     data: {
@@ -318,20 +285,7 @@ var getTypeOfService = function() {
       };
   };
   return serviceValue;
-}
-
-$('#q-dest').keypress(function(e){
-
-     if (e.which == 13) {
-         callModal("#firstOrderModal");
-     }
-
- });
-
- function callModal(modal){
-     $(modal).modal()
-
- }
+};
 
 function finalInfoArray() {
   console.log("entered finalInfoArray");
@@ -362,7 +316,7 @@ function finalInfoArray() {
       var pNumber = document.getElementById("perNum").value;
       var infoArray = [from, to, serviceType, specialDemands, numPassengers, pNumber, phoneNumber, date, time, pay];
     } else {
-      var infoArray = [from, to, serviceType, carSizeValue, phoneNumber, date, time, pay];
+      var infoArray = [from, to, serviceType, carSizeValue, ,0,phoneNumber, date, time, pay];
     }
     console.log(infoArray);
     return infoArray;
@@ -410,7 +364,9 @@ function getNumberOfPassengers() {
 function hideShow(toHide, toShow) {
     var x = document.getElementById(toHide);
     var y = document.getElementById(toShow);
-    x.style.display = "none";
+    if(x != null) {
+      x.style.display = "none";
+    }
     y.style.display = "block";
 }
 

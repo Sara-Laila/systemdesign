@@ -8,13 +8,21 @@ var socket = io();
 var to;
 var from;
 
+var map, places;
+var myplace = null;
+navigator.geolocation.getCurrentPosition(success, error, options);
+var myplacemarker;
+var dest;
+var destmarker;
+
 var vm = new Vue({
   el: '#drivercontent',
   data: {
     buttonId: "logginButton",
     loggText: "Logga in",
-    currentJobs: "#job",
+    currentJob: null,
     taxiId: 0,
+    typeCar: null,
     taxiLocation: null,
     orders: {},
     customerMarkers: {}
@@ -31,38 +39,30 @@ var vm = new Vue({
               if(this.taxiId == this.orders[order].taxiId){
                 $("#currentJobModal").modal();
               }
-
-
-
             }
-
-
         }.bind(this));
-
-
-
-
-        //Helper function, should probably not be here
-        function getRandomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
-        // It's probably not a good idea to generate a random taxi number, client-side.
-        this.taxiId = getRandomInt(1, 1000000);
     },
     mounted: function () {
-
-
     },
     methods: {
+        showLogin: function() {
+          if(this.taxiId == 0){
+            $("#logInModal").modal();
+
+          } else {
+            this.loggInLoggOff();
+          }
+        },
         loggInLoggOff: function() {
           //this.loggText är det som står på knappen
           //logga in == föraren är utloggad
+
+
           if (this.loggText == "Logga in") {
             this.loggText = "Logga ut";
             changeHeaderColor("#5cb85c");
             this.setTaxiLocation();
+
             //socket.emit('addTaxi', {"123"}); addTaxi! TODO
           } else {
             this.loggText = "Logga in";
@@ -71,24 +71,27 @@ var vm = new Vue({
             //Here messages to dispather should be sent - removeTaxi! TODO
           }
         },
+        sendInfo: function () {
+          var taxiId = document.getElementById("taxiId").value;
+          this.taxiId = taxiId;
+          var typeCar = $("input[name=typeOfCar]:checked").val();
+          this.typeCar = typeCar;
+          this.loggInLoggOff();
+          //socket.emit('addTaxi', {"123"}); addTaxi! TODO
+        },
         setTaxiLocation: function () {
-          /* TODO! FRÅN MIKAELS SKELETTKOD
-            if (this.taxiLocation === null) {
-                this.taxiLocation = L.marker([event.latlng.lat, event.latlng.lng], {icon: this.taxiIcon, draggable: true}).addTo(this.map);
-                this.taxiLocation.on("drag", this.moveTaxi);
-                socket.emit("addTaxi", { taxiId: this.taxiId,
-                                         latLong: [event.latlng.lat, event.latlng.lng]
-                                       });
-            }
-            else {
-                this.taxiLocation.setLatLng(event.latlng);
-                this.moveTaxi(event);
-            }
-            */
-            socket.emit("addTaxi", { taxiId: this.taxiId
+            myplace = document.getElementById("autocomplete").value;
+            test(myplace);
+            //denna ska göra om en adress till koordinat
+
+            socket.emit("addTaxi", { taxiId: this.taxiId,
+                                     typeOfCar: this.typeCar,
                                    });
         },
         moveTaxi: function (event) {
+          var address = event;
+          //test(address);
+          this.taxiLocation = address; //event ska vara address den skall flytta till
           /* TODO! FRÅN MIKAELS SKELETTKOD
             socket.emit("moveTaxi", { taxiId: this.taxiId,
                                       latLong: [event.latlng.lat, event.latlng.lng]
@@ -102,20 +105,89 @@ var vm = new Vue({
           console.log(order.customerDetails[0]);
           console.log(order.customerDetails[1]);
             order.taxiIdConfirmed = this.taxiId;
-            from = order.customerDetails[0];
-            to = order.customerDetails[1];
+            //from = order.customerDetails[0];
+            //to = order.customerDetails[1];
+            from = myplace;
+            to = order.customerDetails[0];
+            this.currentJob = order;
+            myplacemarker.setMap(null);
             codeAddress();
+            vm2.setCurrentJob(this.currentJob);
+
             socket.emit("orderAccepted", order);
+        },
+        startOrder: function(){
+
+          from = this.currentJob.customerDetails[0];
+          to = this.currentJob.customerDetails[1];
+          console.log(from, "I STARTORDER");
+          console.log(to);
+          codeAddress();
+          console.log(this.currentJob, "I STARTORDER");
+          vm2.orderStarted = true;
         },
         finishOrder: function (orderId) {
             Vue.delete(this.orders, orderId);
+            directionsDisplay.setMap(null);
+            myplace = this.currentJob.customerDetails[1];
+            test(myplace);
+            map.setZoom(14);
             socket.emit("finishOrder", orderId);
         },
         putCustomerMarkers: function (order) {
 
         },
+        hasCurrentJob: function(){
+          if(this.currentJob != null){
+            return this.currentJob;
+          }
+          else {
+            return null;
+          }
+        },
+        getNewOrderId: function(){
+
+        }
     },
 });
+
+var vm2 = new Vue({
+  el: '#currentjob',
+  data: {
+    orderObj: null,
+    order: {},
+    orderId: 0,
+    orderStarted: false
+  },
+  created: function() {
+      this.orderObj = vm.hasCurrentJob();
+    },
+  mounted: function() {
+
+  },
+  methods: {
+    setCurrentJob: function(order) {
+      this.orderObj = order;
+      this.order = order.customerDetails;
+      //this.orderId = order.orderId;
+      //this.to = order.customerDetails[0];
+      //this.from = order.customerDetails[1];
+      //this.customerNumber = order.customerDetails[5];
+    },
+    startOrder: function () {
+      vm.startOrder();
+      this.orderStarted = true;
+    },
+    finishOrder: function(){
+      vm.finishOrder(this.orderObj.orderId);
+      this.order = {};
+      this.orderStarted = false;
+    }
+
+  }
+
+});
+
 
 /*******/
 var hamburgerDrawer = document.getElementById('hamburger-menu');
@@ -125,11 +197,7 @@ var hamburgerDrawerBg = document.getElementById('content');
 var directionsDisplay;
 var directionsService;
 
-var map, places;
-var myplace = {lat: 59.840809, lng: 17.648666};
-var myplacemarker;
-var dest;
-var destmarker;
+
 var placeSearch, autocomplete, autocomplete2;
 var geocoder;
 var componentForm = {
@@ -169,6 +237,10 @@ function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
     geocoder = new google.maps.Geocoder();
+    if(myplace == null){
+      myplace = new google.maps.LatLng(59.8586, 17.6389);
+    }
+
     map = new google.maps.Map(document.getElementById('map'), {
 
         zoom: 14,
@@ -176,43 +248,69 @@ function initMap() {
         disableDefaultUI: true
     });
 
+
     myplacemarker = new google.maps.Marker({
         map: map,
         animation: google.maps.Animation.DROP,
         position: myplace,
         icon: '/img/markers/red_MarkerA.png'
     });
-
     myplacemarker.addListener('click', toggleBounce);
 
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */ (
+            document.getElementById('autocomplete')), {
+                types: ['geocode'],
+                componentRestrictions: {'country': 'se'}
+            });
 }
 
 function geolocate() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      var geolocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
+      var geolocation = myplace;
       var circle = new google.maps.Circle({
         center: geolocation,
-        radius: position.coords.accuracy
+        radius: 10000
       });
       autocomplete.setBounds(circle.getBounds());
     });
   }
 }
 
-function codeAddress(address) {
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  //myplace = new google.maps.LatLng(`${crd.latitude}`, `${crd.longitude}`);
+
+  /*console.log('Your current position is:');
+  console.log(`Latitude : ${crd.latitude}`);
+  console.log(`Longitude: ${crd.longitude}`);
+  console.log(`More or less ${crd.accuracy} meters.`);*/
+};
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+};
+
+function codeAddress() {
+
+  singleCodeAddress(to);
+  singleCodeAddress(from);/*
     geocoder.geocode( { 'address': to}, function(results, status) {
         if (status == 'OK') {
             to = results[0].geometry.location;
-        /*destmarker = new google.maps.Marker({
+      destmarker = new google.maps.Marker({
             map: map,
             position: dest,
             icon: '/img/markers/green_MarkerB.png',
             animation: google.maps.Animation.DROP
-        });*/
+        });
 
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
@@ -227,16 +325,56 @@ function codeAddress(address) {
               position: dest,
               icon: '/img/markers/green_MarkerB.png',
               animation: google.maps.Animation.DROP
-          });*/
+          });
 
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
         }
-    });
+    });*/
 
     directionsDisplay.setMap(map);
     //directionsDisplay.setPanel(document.getElementById('directionsPanel'));
     calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+function test(address){
+  geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        console.log(address,"in singleCodeAddress before res");
+          address = results[0].geometry.location;
+      /*destmarker = new google.maps.Marker({
+          map: map,
+          position: dest,
+          icon: '/img/markers/green_MarkerB.png',
+          animation: google.maps.Animation.DROP
+      });*/
+      console.log(address, "in singleCodeAddress");
+      myplacemarker.setMap(null);
+      moveMarker(myplacemarker,address);
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+
+function singleCodeAddress(address){
+  geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+        console.log(address,"in singleCodeAddress before res");
+          address= results[0].geometry.location;
+      /*destmarker = new google.maps.Marker({
+          map: map,
+          position: dest,
+          icon: '/img/markers/green_MarkerB.png',
+          animation: google.maps.Animation.DROP
+      });*/
+      console.log(address, "in singleCodeAddress");
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
@@ -266,7 +404,16 @@ function toggleBounce() {
   }
 }
 
-function moveMarker() {
+function moveMarker(marker, cord) {
+    marker.setMap(null);
+    marker = new google.maps.Marker({
+      map: map,
+      animation: google.maps.Animation.DROP,
+      position: cord
+    });
+
+    map.setCenter(cord);
+    console.log(cord);
 }
 
 function geocodeLatLng(geocoder, map, infowindow) {
