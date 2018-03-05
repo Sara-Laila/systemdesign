@@ -70,7 +70,7 @@
                     <br>
                     <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
                           <option disabled value="">Assign a taxi</option>
-                          <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}}  </option>
+                          <option v-for="taxi in taxis" :value="taxi.taxiId"># {{ taxi.taxiId}},{{taxi.typeOfCar}}  </option>
                         </select> {{ order.taxiIdConfirmed }}
                   </div>
                 </div>
@@ -80,7 +80,7 @@
                 <h4>Lediga chafförer</h4>
                 <div id="taxiList">
                   <div v-for="taxi in taxis">
-                    # {{ taxi.taxiId}};
+                    # {{taxi.taxiId}}, {{taxi.typeOfCar}}
                   </div>
                 </div>
               </div>
@@ -123,7 +123,7 @@
           <div class="modal-body">
                 <div id="taxiList">
                   <div v-for="taxi in taxis">
-                    # {{ taxi.taxiId}};
+                    # {{ taxi.taxiId}}
                   </div>
                 </div>
             <div class="modal-footer">

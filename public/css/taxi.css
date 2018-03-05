@@ -51,11 +51,12 @@ header {
 #logo {
     position: relative;
     width: 20vw;
-    margin-left: 25vw;
+    margin-left: 30vw;
     height: 90%;
     padding: 1px;
-    border: 1px solid black;
-    border-radius: 4px;
+    background-image: url("/img/logo.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 #q-dest form{
