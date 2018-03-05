@@ -333,6 +333,28 @@ $('#q-dest').keypress(function(e){
 
  }
 
+ function setInputDate(_id){
+    var _dat = document.querySelector(_id);
+    var hoy = new Date(),
+        d = hoy.getDate(),
+        m = hoy.getMonth()+1,
+        y = hoy.getFullYear(),
+        data;
+
+    if(d < 10){
+        d = "0"+d;
+    };
+    if(m < 10){
+        m = "0"+m;
+    };
+
+    data = y+"-"+m+"-"+d;
+    console.log(data);
+    _dat.value = data;
+};
+
+setInputDate("#myDate");
+
 function finalInfoArray() {
   console.log("entered finalInfoArray");
   //get address
@@ -362,7 +384,7 @@ function finalInfoArray() {
       var pNumber = document.getElementById("perNum").value;
       var infoArray = [from, to, serviceType, specialDemands, numPassengers, pNumber, phoneNumber, date, time, pay];
     } else {
-      var infoArray = [from, to, serviceType, carSizeValue, phoneNumber, date, time, pay];
+      var infoArray = [from, to, serviceType, carSizeValue, ,0,phoneNumber, date, time, pay];
     }
     console.log(infoArray);
     return infoArray;
@@ -410,7 +432,9 @@ function getNumberOfPassengers() {
 function hideShow(toHide, toShow) {
     var x = document.getElementById(toHide);
     var y = document.getElementById(toShow);
-    x.style.display = "none";
+    if(x != null) {
+      x.style.display = "none";
+    }
     y.style.display = "block";
 }
 
