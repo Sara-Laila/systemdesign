@@ -10,18 +10,17 @@
   height:100%;
   width:100%;
   float: left;
-
 }
 
 #taxiid {
-    position: relative;
-    width: 45vw;
-    height: 90%;
-    border: 1px solid black;
-    border-radius: 4px;
-    padding: 0 1vw;
+  position: relative;
+  width: 45vw;
+  height: 90%;
+  border: 1px
+  solid black;
+  border-radius: 4px;
+  padding: 0 1vw;
 }
-
 .pac-container {
-    z-index: 1054 !important;
- }
+  z-index: 1054 !important;
+}
