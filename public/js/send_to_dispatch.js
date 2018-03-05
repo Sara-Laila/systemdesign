@@ -2,27 +2,51 @@
 var socket = io();
 
 var vm = new Vue({
-  el: '#fullContactForm',
+  el: '#secondModalView',
   data: {
-    orders: {},
-    position: {x:0, y:0},
+    orderId: null,
+    taxiId: 0,
+    map: null,
+    fromMarker: null,
+    destMarker: null,
+    taxiMarkers: {}
+  },
+  created: function () {
+    socket.on('initialize', function (data) {
+      // add taxi markers in the map for all taxis
+
+    }.bind(this));
+
+    socket.on('orderId', function (orderId) {
+      this.orderId = orderId;
+      console.log(this.orderId)
+    }.bind(this));
+
+  /*  socket.on('taxiAdded', function (taxi) {
+      this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
+    }.bind(this));
+
+    socket.on('taxiMoved', function (taxi) {
+      this.taxiMarkers[taxi.taxiId].setLatLng(taxi.latLong);
+    }.bind(this));
+
+      socket.on('taxiQuit', function (taxiId) {
+      this.map.removeLayer(this.taxiMarkers[taxiId]);
+      Vue.delete(this.taxiMarkers, taxiId);
+    }.bind(this));*/
+
+
   },
   methods: {
-    getNext: function () {
-      var lastOrder = Object.keys(this.orders).reduce( function (last, next) {
-        return Math.max(last, next);
-      }, 0);
-      return lastOrder + 1;
-    },
-    addOrder: function (event) {
-          console.log("Är i addOrder");
-
-      socket.emit("addOrder", { orderId: this.getNext(),
-                                details: { x: this.position.x, y: this.position.y},
-                                orderItems: readOrderItems(),
-                                customerDetails: readCustomerInfo(),
+    orderTaxi: function() {
+      createInfoList("kvittoInfo");
+      socket.emit('orderTaxi', { customerDetails: finalInfoArray(),
                               });
-      displayOrderInfo(readCustomerInfo(), this.position.x, this.position.y);
-    }
+                                /* FRÅN MIKAELS KOD
+              socket.emit("orderTaxi", { fromLatLong: [this.fromMarker.getLatLng().lat, this.fromMarker.getLatLng().lng],
+                                         destLatLong: [this.destMarker.getLatLng().lat, this.destMarker.getLatLng().lng],
+                                         orderItems: { passengers: 1, bags: 1, animals: "doge" }
+                                       }); */
+    },
   }
 });

@@ -25,6 +25,8 @@ var componentForm = {
         country: 'long_name',
         postal_code: 'short_name'
 };
+var from;
+var to;
 
 var axisCords;
 var hamburgerDrawerWidth = hamburgerDrawer.clientWidth;
@@ -65,15 +67,6 @@ var hideDivs = function(divToHide) {
         x.style.display = "none";
     }
 }
-var hideClass = function(classToHide) {
-    var x = document.getElementsByClassName(classToHide);
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-}
-
 function initMap() {
     directionsDisplay = new google.maps.DirectionsRenderer;
     directionsService = new google.maps.DirectionsService;
@@ -124,8 +117,8 @@ function geolocate() {
   }
 }
 
-function codeAddress() {
-    var address = document.getElementById('autocomplete').value;
+function codeAddress(address) {
+    //var address = document.getElementById('autocomplete').value;
     geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == 'OK') {
             dest = results[0].geometry.location;
@@ -201,127 +194,6 @@ function geocodeLatLng(geocoder, map, infowindow) {
   });
 }
 
-/*
-var vm = new Vue({
-  el: '#page',
-  data: {
-    orderId: null,
-    map: null,
-    fromMarker: null,
-    destMarker: null,
-    taxiMarkers: {}
-  },
-    created: function () {
-        socket.on('initialize', function (data) {
-      // add taxi markers in the map for all taxis
-      for (var taxiId in data.taxis) {
-        this.taxiMarkers[taxiId] = this.putTaxiMarker(data.taxis[taxiId]);
-      }
-    }.bind(this));
-    socket.on('orderId', function (orderId) {
-      this.orderId = orderId;
-    }.bind(this));
-    socket.on('taxiAdded', function (taxi) {
-      this.taxiMarkers[taxi.taxiId] = this.putTaxiMarker(taxi);
-    }.bind(this));
-
-    socket.on('taxiMoved', function (taxi) {
-      this.taxiMarkers[taxi.taxiId].setLatLng(taxi.latLong);
-    }.bind(this));
-
-    socket.on('taxiQuit', function (taxiId) {
-      this.map.removeLayer(this.taxiMarkers[taxiId]);
-      Vue.delete(this.taxiMarkers, taxiId);
-    }.bind(this));
-
-    // These icons are not reactive
-    this.taxiIcon = L.icon({
-      iconUrl: "img/taxi.png",
-      iconSize: [36,36],
-      iconAnchor: [18,36],
-      popupAnchor: [0,-36]
-    });
-
-    this.fromIcon = L.icon({
-          iconUrl: "img/customer.png",
-          iconSize: [36,50],
-          iconAnchor: [19,50]
-        });
-  },
-  mounted: function () {
-    // set up the map
-    this.map = new google.maps.Map(document.getElementById('map'), {
-
-    zoom: 14,
-      center: polacks,
-    disableDefaultUI: true
-  });
-
-    // create the tile layer with correct attribution
-    var osmUrl='http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    L.tileLayer(osmUrl, {
-        attribution: osmAttrib,
-        maxZoom: 18
-    }).addTo(this.map);
-    this.map.on('click', this.handleClick);
-
-    var searchDestControl = L.esri.Geocoding.geosearch({allowMultipleResults: false, zoomToResult: false, placeholder: "Destination"}).addTo(this.map);
-    var searchFromControl = L.esri.Geocoding.geosearch({allowMultipleResults: false, zoomToResult: false, placeholder: "From"});
-    // listen for the results event and add the result to the map
-    searchDestControl.on("results", function(data) {
-        this.destMarker = L.marker(data.latlng, {draggable: true}).addTo(this.map);
-        this.destMarker.on("drag", this.moveMarker);
-        searchFromControl.addTo(this.map);
-    }.bind(this));
-
-    // listen for the results event and add the result to the map
-    searchFromControl.on("results", function(data) {
-        this.fromMarker = L.marker(data.latlng, {icon: this.fromIcon, draggable: true}).addTo(this.map);
-        this.fromMarker.on("drag", this.moveMarker);
-        this.connectMarkers = L.polyline([this.fromMarker.getLatLng(), this.destMarker.getLatLng()], {color: 'blue'}).addTo(this.map);
-    }.bind(this));
-  },
-  methods: {
-    putTaxiMarker: function (taxi) {
-      var marker = L.marker(taxi.latLong, {icon: this.taxiIcon}).addTo(this.map);
-      marker.bindPopup("Taxi " + taxi.taxiId);
-      marker.taxiId = taxi.taxiId;
-      return marker;
-    },
-    orderTaxi: function() {
-            socket.emit("orderTaxi", { fromLatLong: [this.fromMarker.getLatLng().lat, this.fromMarker.getLatLng().lng],
-                                       destLatLong: [this.destMarker.getLatLng().lat, this.destMarker.getLatLng().lng],
-                                       orderItems: { passengers: 1, bags: 1, animals: "doge" }
-                                     });
-    },
-      handleClick: function (event) {
-          if (openStatus) {
-              drawToStart()
-              return;
-          }
-      // first click sets destination
-      if (this.destMarker === null) {
-        this.destMarker = L.marker([event.latlng.lat, event.latlng.lng], {draggable: true}).addTo(this.map);
-        this.destMarker.on("drag", this.moveMarker);
-      }
-      // second click sets pickup location
-      else if (this.fromMarker === null) {
-        this.fromMarker = L.marker(event.latlng, {icon: this.fromIcon, draggable: true}).addTo(this.map);
-        this.fromMarker.on("drag", this.moveMarker);
-        this.connectMarkers = L.polyline([this.fromMarker.getLatLng(), this.destMarker.getLatLng()], {color: 'blue'}).addTo(this.map);
-      }
-    },
-    moveMarker: function (event) {
-      this.connectMarkers.setLatLngs([this.fromMarker.getLatLng(), this.destMarker.getLatLng()], {color: 'blue'});
-      //socket.emit("moveMarker", { orderId: event.target.orderId,
-                                //latLong: [event.target.getLatLng().lat, event.target.getLatLng().lng]
-                              //  });
-
-    }
-  }
-});
- */
 function drawToStart() {
   hamburgerDrawer.animate([
     {
@@ -437,7 +309,6 @@ var vm = new Vue ({
     },
 });
 
-
 var getTypeOfService = function() {
   var service = document.getElementsByName("typeOfService");
   for (var i = 0; i < service.length; i++) {
@@ -451,16 +322,16 @@ var getTypeOfService = function() {
 
 $('#q-dest').keypress(function(e){
 
-    if (e.which == 13) {
-        callModal("#firstOrderModal");
-    }
+     if (e.which == 13) {
+         callModal("#firstOrderModal");
+     }
 
-});
+ });
 
-function callModal(modal){
-    $(modal).modal()
+ function callModal(modal){
+     $(modal).modal()
 
-}
+ }
 
 function finalInfoArray() {
   console.log("entered finalInfoArray");
@@ -554,40 +425,3 @@ function hideShow(toHide, toShow) {
           }
       });
   });
-
-/*Skicka orderns till servern*/
-function getInfo() {
-  var tel = document.getElementById("tel").value;
-  console.log(tel);
-  var payOpt = document.getElementsByName("pay");
-  console.log(payOpt);
-  for (var i = 0; i < payOpt.length; i++) {
-    if (payOpt[i].selected) {
-      var payment = payOpt[i].id;
-    };
-  };
-  var array = [tel, payment];
-   console.log(array);
-
-   return array;
-
-}
-
-var send = new Vue({
-  el: '#secondModalView',
-  data: {
-    orderId: Math.floor(1000 + Math.random() * 9000),
-    position: {x:0, y:0},
-  },
-  methods: {
-    sendOrder: function () {
-          console.log("Är i sendOrder");
-          /*Här skickas allti iväg, lägg till i getInfo() vad som behövs*/
-      socket.emit("addOrder", { orderId: this.orderId,
-                                details: { x: this.position.x, y: this.position.y},
-                                customerInfo: getInfo(),
-                              });
-      console.log(this.orderId);
-    }
-  }
-});

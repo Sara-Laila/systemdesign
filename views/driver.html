@@ -19,7 +19,7 @@
 
   </head>
   <body>
-
+    <div id="drivercontent">
       <div id="hamburger-menu">
         <ul class="list">
           <li class="active"><a>Meny</a></li>
@@ -35,8 +35,9 @@
           <span></span>
         </div>
 
-        <div id="taxiid">TAXI DRIVER # {{ taxiId }}</div>
-        <div id="loggButtons">
+        <div id="headerButtons">
+        <div id="taxiid" style="float:left">TAXI DRIVER #{{ taxiId }}</div>
+
           <button v-on:click="loggInLoggOff" id="logginButton" type="button" class="btn btn-default">{{loggText}}</button>
         </div>
       </header>
@@ -48,6 +49,30 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">Din nästa körning</h4>
+            </div>
+            <div class="modal-body">
+              <ul>
+                <div v-for="order in orders" v-if="order.taxiId == taxiId">
+                  # {{ order.orderId}}
+                  From: {{  }}, {{  }}
+                  Destination: {{  }}, {{  }}
+
+            <div class="modal-footer">
+              <button v-on:click="finishOrder(order.orderId)" type="button" class="btn btn-default">Avsluta</button>
+              <button v-on:click="acceptOrder(order)" type="button" class="btn btn-default">Acceptera</button>
+            </div>
+            </ul>
+            </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="modal fade" id="drivingModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Nuvarande körning</h4>
             </div>
             <div class="modal-body">
               <p>
@@ -87,23 +112,15 @@
     </div>
 
     <div id="content">
+      <div id="directionsPanel" style="float:right;width:30%;height 100%"></div>
       <div id="page">
         <div id="map"></div>
 
-        <ul>
-          <div v-for="order in orders" v-if="order.taxiId == taxiId">
-            # {{ order.orderId}} From: {{ order.fromLatLong[0].toFixed(3) }}, {{ order.fromLatLong[1].toFixed(3) }} Destination: {{ order.destLatLong[0].toFixed(3) }}, {{ order.destLatLong[1].toFixed(3) }}
-            <ul>
-              <li v-for="item in order.orderItems">
-                {{ item }}
-              </li>
-            </ul>
-            <button v-on:click="acceptOrder(order)">ACCEPT</button><button v-on:click="finishOrder(order.orderId)">FINISH</button>
-          </div>
-        </ul>
-        <button v-on:click="quit">Quit</button>
+        
+
       </div>
     </div>
+  </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"

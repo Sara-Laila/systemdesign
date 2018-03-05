@@ -4,6 +4,10 @@ all:
 	npm install
 	node app.js
 
+edit: 	public/ views/  clean
+	#emacsclient public/css/* views/* public/js/*
+	atom views/ public/ app.js
+
 branch:	
 	$(eval GIT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD))
 
@@ -19,6 +23,7 @@ add: public/ views/ clean
 	git add public/.
 	git add views/.
 	git add Makefile
+	git add app.js
 
 clean:
 
