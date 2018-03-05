@@ -26,8 +26,8 @@
     <div id="hamburger-menu">
       <ul class="list">
         <li class="active"><a>Meny</a></li>
-        <li><a data-toggle=modal data-target=#kvittoModal>Kvitto till senaste bokningen</a></li>
         <li><a id="tidigareBokningar" v-on:click="gatherBookings" data-toggle=modal data-target=#tidigareBokningarModal>Bokningar</a></li>
+        <li><a data-toggle=modal data-target=#kvittoModal>Kvitto till senaste bokningen</a></li>
         <li><a>Fakturor</a></li>
         <li><a>Kundservice</a></li>
         <li><a></a></li>
@@ -60,20 +60,25 @@
       <p>
         <div id="listPreviousOrders">
           <div v-for="(order, key) in previousOrders">
-            #{{ key }}: {{ order.customerDetails.join(", ") }};
+            #{{ key }}: <br>
+            Från: {{order.customerDetails[0]}}<br>
+            Till: {{order.customerDetails[1]}}<br>
+            Dag: {{order.customerDetails[6]}}<br>
+            Tid: {{order.customerDetails[7]}}<br>
+            Typ: {{order.customerDetails[2]}}<br>
 
-            <select v-on:change="editOrder(order)" v-model="order.edit">
+            <label for="editDropdown">Ändra/Avboka</label>
+            <select id="editDropdown" align-self="right" v-on:change="editOrder(order)" v-model="order.edit">
                   <option disabled value="">Alternativ</option>
                   <option value="change">Ändra resa</option>
                   <option value="delete">Avboka resa</option>
-                </select>
+            </select>
           </div>
         </div>
       </p>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Ändra resa</button>
-      <button type="button" class="btn btn-default" data-dismiss="modal">Avboka resa</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
     </div>
     </div>
     </div>
@@ -86,87 +91,100 @@
     <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h4 class="modal-title">Är du säker på att du vill avboka denna resa?</h4>
+      <h5 class="modal-title">Är du säker på att du vill avboka denna resa?</h5>
     </div>
     <div class="modal-body">
       <p>
-        {{editedOrder}}
+        Från: {{editedOrder[0]}}<br>
+        Till: {{editedOrder[1]}}<br>
+        Dag: {{editedOrder[6]}}<br>
+        Tid: {{editedOrder[7]}}<br>
+        Typ: {{editedOrder[2]}}<br>
       </p>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
-      <button v-on:click="deleteOrder(editedOrder)" type="button" class="btn btn-default" data-dismiss="modal">Avboka resa</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">NEJ</button>
+      <button v-on:click="deleteOrder(editedOrder)" type="button" class="btn btn-default" data-dismiss="modal">JA</button>
     </div>
     </div>
     </div>
     </div>
+
+
 </div>
 
-    <div id="secondModalView" class="modal fade" role="dialog">
+<div id="realSecondVue">
+  <div id="secondModalView" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="#firstOrderModal">Backa</button>
+          <h4 class="modal-title">Specifikationer:</h4>
+        </div>
+        <div class="modal-body">
+          <p id="whereTo">
+          </p>
+          <div class="bilStorlek">
+            <h6>Välj bilstorlek:</h6>
+              <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
+              <label class="bil-cc small" for="small"></label>
+              <input id="big" type="radio" name="car" value="stor bil" />
+              <label class="bil-cc big"for="big"></label>
+          </div>
+        </div>
+        <p>
+          <label for="pickupTime">Vilken tid vill du bli hämtad?</label><br>
+              <input type="date" name="date" id="date">
+              <input type="time" class= "time" id="pickupTime" name="time">
+            </p>
+          <p>
+            <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
+          </p>
+          <p>
+              <input type="text"  id="customerId"   placeholder="Ditt kundnummer">
+          </p>
+          <p>
+            <label for="payment">Betalnings Alternativ</label><br>
+            <select id="payment">
+              <option name="pay" id="Swish">Swish</option>
+              <option name="pay" id="Card">Card</option>
+              <option name="pay" id="BankID" selected="selected">BankID</option>
+            </select>
+          </p>
+          <div class="modal-footer">
+            <button v-on:click="orderTaxi" type="submit" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div id="kvittoModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="#firstOrderModal">Backa</button>
-            <h4 class="modal-title">Specifikationer:</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Kvitto:</h4>
           </div>
           <div class="modal-body">
-            <p id="whereTo">
-            </p>
-            <div class="bilStorlek">
-              <h6>Välj bilstorlek:</h6>
-                <input id="small" type="radio" name="car" value="liten bil" checked="checked" />
-                <label class="bil-cc small" for="small"></label>
-                <input id="big" type="radio" name="car" value="stor bil" />
-                <label class="bil-cc big"for="big"></label>
-            </div>
-          </div>
-          <p>
-            <label for="pickupTime">Vilken tid vill du bli hämtad?</label><br>
-                <input type="date" name="date" id="date">
-                <input type="time" class= "time" id="pickupTime" name="time">
+              <p>Tack för din bokning. Vi har tagit emot följande detaljer och en taxi kommer till:<br>
+                <br>
+                {{customerDetails[0]}} <br>
+                Dag: {{customerDetails[6]}}<br>
+                Tid: {{customerDetails[7]}}<br>
               </p>
-            <p>
-              <input type="number" class= "tel" id="tel" name="tel"  placeholder="Ditt telefonnummer">
-            </p>
-            <p>
-                <input type="text"  id="customerId"   placeholder="Ditt kundnummer">
-            </p>
-            <p>
-              <label for="payment">Betalnings Alternativ</label><br>
-              <select id="payment">
-                <option name="pay" id="Swish">Swish</option>
-                <option name="pay" id="Card">Card</option>
-                <option name="pay" id="BankID" selected="selected">BankID</option>
-              </select>
-            </p>
+              <div id="kvittoInfo" >
+              </div>
+          </div>
             <div class="modal-footer">
-              <button v-on:click="orderTaxi" type="submit" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#kvittoModal">Boka</button>
-            </div>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
           </div>
         </div>
       </div>
-  </div>
-
-<div id="kvittoModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Kvitto:</h4>
-      </div>
-      <div class="modal-body">
-          <h3>Tack för din betalning. Vi har tagit emot följande detaljer och en taxi kommer till dig inom [NUM] minuter</h3>
-          <div id="kvittoInfo" >
-          </div>
-      </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Stäng</button>
-      </div>
     </div>
-  </div>
+
 </div>
+
     <div id="content">
       <div id="q-dest">
         <form id="firstForm">
@@ -185,11 +203,10 @@
               <div class="col-sm-4">
                 <div id="serviceForm">
                   <label for="taxi">Taxi</label>
-                  <input id="taxi" type="radio" name="typeOfService" value="taxi">
+                  <input id="taxi" type="radio" name="typeOfService" value="taxi" required>
                   <label for="färdtjänst">Färdtjänst</label>
                   <input id="färdtjänst" type="radio" name="typeOfService" value="färdtjänst">
                   <button onclick="showWhereTo()" id="goForwardButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#secondModalView"></button>
-                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editOrderModal">Ändra/avboka resa</button>
                 </div>
               </div>
             </div>

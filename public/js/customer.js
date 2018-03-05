@@ -293,6 +293,16 @@ var vm = new Vue ({
     },
 });
 
+var getTypeOfService = function() {
+  var service = document.getElementsByName("typeOfService");
+  for (var i = 0; i < service.length; i++) {
+      if (service[i].checked) {
+          var serviceValue = service[i].value;
+          break;
+      };
+  };
+  return serviceValue;
+}
 
 function finalInfoArray() {
   console.log("entered finalInfoArray");

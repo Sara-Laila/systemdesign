@@ -2,11 +2,13 @@
 var socket = io();
 
 var vm1 = new Vue({
-  el: '#secondModalView',
+  el: '#realSecondVue',
   data: {
     orders: {},
     orderId: null,
     customerId: null,
+    customerDetails: [],
+    orderDetails: [],
     taxiId: 0,
     map: null,
     fromMarker: null,
@@ -46,6 +48,7 @@ var vm1 = new Vue({
   methods: {
     orderTaxi: function() {
       var array = finalInfoArray();
+      this.customerDetails = array;
       var customerId = array[5];
       socket.emit('orderTaxi', { customerDetails: array,
                                  customerId: customerId,
@@ -106,7 +109,7 @@ var vm3 = new Vue({
       if (order.edit == "delete") {
         $('#tidigareBokningarModal').modal('hide');
         $("#avbokningModal").modal();
-        this.editedOrder = order;
+        this.editedOrder = order.customerDetails;
       }
 
     },
