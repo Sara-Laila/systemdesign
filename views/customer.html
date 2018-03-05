@@ -17,7 +17,8 @@
     <script src="js/customer.js" defer></script>
     <script src="js/send_to_dispatch.js" defer></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSAw4lHyXwd150rMlfYUDSAZUbyFG7sQ0&callback=initMap&libraries=places">
     </script>
     <!-- <script src="js/drawermenu.js" defer></script> -->
   </head>
@@ -26,7 +27,7 @@
       <ul class="list">
         <li class="active"><a>Meny</a></li>
         <li><a data-toggle=modal data-target=#kvittoModal>Kvitto till senaste bokningen</a></li>
-        <li><a>Bokningar</a></li>
+        <li><a id="tidigareBokningar" v-on:click="gatherBookings" data-toggle=modal data-target=#tidigareBokningarModal>Bokningar</a></li>
         <li><a>Fakturor</a></li>
         <li><a>Kundservice</a></li>
         <li><a></a></li>
@@ -45,6 +46,61 @@
       <a href="#" id="logo"></a>
 
     </header>
+<div id="modaler">
+    <div id="tidigareBokningarModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Dina bokningar</h4>
+    </div>
+    <div class="modal-body">
+      <p>
+        <div id="listPreviousOrders">
+          <div v-for="(order, key) in previousOrders">
+            #{{ key }}: {{ order.customerDetails.join(", ") }};
+
+            <select v-on:change="editOrder(order)" v-model="order.edit">
+                  <option disabled value="">Alternativ</option>
+                  <option value="change">Ändra resa</option>
+                  <option value="delete">Avboka resa</option>
+                </select>
+          </div>
+        </div>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Ändra resa</button>
+      <button type="button" class="btn btn-default" data-dismiss="modal">Avboka resa</button>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div id="avbokningModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Är du säker på att du vill avboka denna resa?</h4>
+    </div>
+    <div class="modal-body">
+      <p>
+        {{editedOrder}}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+      <button v-on:click="deleteOrder(editedOrder)" type="button" class="btn btn-default" data-dismiss="modal">Avboka resa</button>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
 
     <div id="secondModalView" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -158,7 +214,6 @@
     </div>
   </div>
 </div>
-
     <div id="content">
       <div id="q-dest">
         <form id="firstForm">
@@ -181,6 +236,7 @@
                   <label for="färdtjänst">Färdtjänst</label>
                   <input id="färdtjänst" type="radio" name="typeOfService" value="färdtjänst">
                   <button onclick="showWhereTo()" id="goForwardButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#secondModalView"></button>
+                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editOrderModal">Ändra/avboka resa</button>
                 </div>
               </div>
             </div>

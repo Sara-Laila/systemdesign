@@ -100,7 +100,9 @@
           </div>
         </div>
     </div>
+</div>
 
+<div id="currentjob">
     <div class="modal fade" id="drivingModal" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -109,31 +111,33 @@
               <h4 class="modal-title">Nuvarande körning</h4>
             </div>
             <div class="modal-body">
-              <ul>
-                <div v-for="order in orders">
-                  # Order nr {{ order.orderId}} <br>
-                  Från: {{order.customerDetails[0]}} <br>
-                  Destination: {{ order.customerDetails[1] }}  <br>
+              <ul v-if="order != null">
+                  # Order nr  <br>
+                  Från: {{order[0]}} <br>
+                  Destination: {{ order[1] }}  <br>
+                  Tid <br>
+                  Typ av resa <br>
+                  Special krav <br>
 
-                </div>
+
             </ul>
+            <ul v-else>
+              Ingen nuvarande order.
+            </ul>
+
               <p>
-                Från {{this.currentJob.customerDetails[0]}}<br>
-                Till <br>
-                Tid <br>
-                Typ av resa <br>
-                Special krav <br>
+
                 <button type="button" class="btn btn-default" name="button">Ring kunden</button>
               </p>
             </div>
             <div class="modal-footer">
-              <button id="finishButton" v-on:click="finishOrder(this.currentJob.orderId)" type="button" class="btn btn-default" data-dismiss="modal">Körning färdig</button>
+              <button v-on:click="finishOrder" id="finishButton" type="button" class="btn btn-default" data-dismiss="modal">Körning färdig</button>
               <button v-on:click="startOrder" type="button" class="btn btn-default" >Starta</button>
             </div>
           </div>
         </div>
     </div>
-
+</div>
     <div id="content">
       <div id="directionsPanel" style="float:right;width:30%;height 100%"></div>
       <div id="page">
@@ -143,7 +147,6 @@
 
       </div>
     </div>
-  </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

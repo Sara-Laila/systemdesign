@@ -41,9 +41,6 @@ var vm = new Vue({
               }
             }
         }.bind(this));
-        //Helper function, should probably not be here
-        // It's probably not a good idea to generate a random taxi number, client-side.
-
     },
     mounted: function () {
     },
@@ -85,7 +82,6 @@ var vm = new Vue({
         setTaxiLocation: function () {
             myplace = document.getElementById("autocomplete").value;
             test(myplace);
-
             //denna ska göra om en adress till koordinat
 
             socket.emit("addTaxi", { taxiId: this.taxiId,
@@ -93,7 +89,9 @@ var vm = new Vue({
                                    });
         },
         moveTaxi: function (event) {
-          test(event); //event ska vara address den skall flytta till
+          var address = event;
+          //test(address);
+          this.taxiLocation = address; //event ska vara address den skall flytta till
           /* TODO! FRÅN MIKAELS SKELETTKOD
             socket.emit("moveTaxi", { taxiId: this.taxiId,
                                       latLong: [event.latlng.lat, event.latlng.lng]
@@ -112,27 +110,83 @@ var vm = new Vue({
             from = myplace;
             to = order.customerDetails[0];
             this.currentJob = order;
+            myplacemarker.setMap(null);
             codeAddress();
+            vm2.setCurrentJob(this.currentJob);
+
             socket.emit("orderAccepted", order);
         },
         startOrder: function(){
-          console.log("KOMMER DEN ENS HIT????");
+
           from = this.currentJob.customerDetails[0];
           to = this.currentJob.customerDetails[1];
           console.log(from, "I STARTORDER");
           console.log(to);
           codeAddress();
+          console.log(this.currentJob, "I STARTORDER");
+          vm2.orderStarted = true;
         },
         finishOrder: function (orderId) {
             Vue.delete(this.orders, orderId);
+            directionsDisplay.setMap(null);
+            myplace = this.currentJob.customerDetails[1];
+            test(myplace);
+            map.setZoom(14);
             socket.emit("finishOrder", orderId);
         },
         putCustomerMarkers: function (order) {
 
         },
+        hasCurrentJob: function(){
+          if(this.currentJob != null){
+            return this.currentJob;
+          }
+          else {
+            return null;
+          }
+        },
+        getNewOrderId: function(){
+
+        }
     },
 });
 
+var vm2 = new Vue({
+  el: '#currentjob',
+  data: {
+    orderObj: null,
+    order: {},
+    orderId: 0,
+    orderStarted: false
+  },
+  created: function() {
+      this.orderObj = vm.hasCurrentJob();
+    },
+  mounted: function() {
+
+  },
+  methods: {
+    setCurrentJob: function(order) {
+      this.orderObj = order;
+      this.order = order.customerDetails;
+      //this.orderId = order.orderId;
+      //this.to = order.customerDetails[0];
+      //this.from = order.customerDetails[1];
+      //this.customerNumber = order.customerDetails[5];
+    },
+    startOrder: function () {
+      vm.startOrder();
+      this.orderStarted = true;
+    },
+    finishOrder: function(){
+      vm.finishOrder(this.orderObj.orderId);
+      this.order = {};
+      this.orderStarted = false;
+    }
+
+  }
+
+});
 
 
 /*******/
@@ -295,6 +349,7 @@ function test(address){
           animation: google.maps.Animation.DROP
       });*/
       console.log(address, "in singleCodeAddress");
+      myplacemarker.setMap(null);
       moveMarker(myplacemarker,address);
 
     } else {
