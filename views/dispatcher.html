@@ -65,8 +65,8 @@
                     Till: {{order.customerDetails[1]}}<br>
                     Typ: {{order.customerDetails[2]}}<br>
                     Krav: {{order.customerDetails[3]}}<br>
-                    Dag: <br>
-                    Tid: <br>
+                    Dag: {{order.customerDetails[7]}}<br>
+                    Tid: {{order.customerDetails[8]}}<br>
                     <br>
                     <select v-on:change="assignTaxi(order)" v-model="order.taxiId">
                           <option disabled value="">Assign a taxi</option>
